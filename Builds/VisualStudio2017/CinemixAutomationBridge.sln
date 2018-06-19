@@ -1,0 +1,38 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2017
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CinemixAutomationBridge - Standalone Plugin", "CinemixAutomationBridge_StandalonePlugin.vcxproj", "{C85058B8-FFDC-FA9A-D8A7-034B4B7F7A71}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8} = {BF73389C-C910-3C84-0215-3E48E2AE2CD8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CinemixAutomationBridge - VST", "CinemixAutomationBridge_VST.vcxproj", "{BB7F623A-E22A-3074-CF6C-476B82F962CD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8} = {BF73389C-C910-3C84-0215-3E48E2AE2CD8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CinemixAutomationBridge - Shared Code", "CinemixAutomationBridge_SharedCode.vcxproj", "{BF73389C-C910-3C84-0215-3E48E2AE2CD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB7F623A-E22A-3074-CF6C-476B82F962CD}.Debug|x64.ActiveCfg = Debug|x64
+		{BB7F623A-E22A-3074-CF6C-476B82F962CD}.Debug|x64.Build.0 = Debug|x64
+		{BB7F623A-E22A-3074-CF6C-476B82F962CD}.Release|x64.ActiveCfg = Release|x64
+		{BB7F623A-E22A-3074-CF6C-476B82F962CD}.Release|x64.Build.0 = Release|x64
+		{C85058B8-FFDC-FA9A-D8A7-034B4B7F7A71}.Debug|x64.ActiveCfg = Debug|x64
+		{C85058B8-FFDC-FA9A-D8A7-034B4B7F7A71}.Debug|x64.Build.0 = Debug|x64
+		{C85058B8-FFDC-FA9A-D8A7-034B4B7F7A71}.Release|x64.ActiveCfg = Release|x64
+		{C85058B8-FFDC-FA9A-D8A7-034B4B7F7A71}.Release|x64.Build.0 = Release|x64
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8}.Debug|x64.ActiveCfg = Debug|x64
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8}.Debug|x64.Build.0 = Debug|x64
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8}.Release|x64.ActiveCfg = Release|x64
+		{BF73389C-C910-3C84-0215-3E48E2AE2CD8}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

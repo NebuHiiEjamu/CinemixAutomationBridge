@@ -1,32 +1,26 @@
-# Prerequisites
+.vs/*
+*~
+*.a
 *.d
-
-# Compiled Object files
-*.slo
-*.lo
+*.db
+*.db-shm
+*.db-wal
+*.dll
+*.dSYM
+*.dylib
+*.gch
+*.ilk
+*.lastbuildstate
+*.lib
+*.log
+*.manifest
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
 *.out
-*.app
+*.pbxuser
+*.pch
+*.pdb
+*.so
+*.suo
+*.user
+*.vst
