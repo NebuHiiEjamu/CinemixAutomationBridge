@@ -34,8 +34,8 @@ CAutomationBridge::CAutomationBridge()
 	m_bFullInit(false)
 #endif // JucePlugin_PreferredChannelConfigurations
 {
-	auto params = getParameters();
-	m_iNumParams = params.size();
+	m_params = getParameters();
+	m_iNumParams = m_params.size();
 }
 
 CAutomationBridge::~CAutomationBridge()
@@ -190,16 +190,16 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 					// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
 					if (++m_iFaderModeLeft[uBytes[0] - 64] > 3)
 						m_iFaderModeLeft[uBytes[0] - 64] = 0;
-					sendMidiEvent(uChannel, uBytes[0], m_iFaderModeLeft[uBytes[0] - 64]);
+					sendMidiEvent(midiMessages, uChannel, uBytes[0], m_iFaderModeLeft[uBytes[0] - 64]);
 				}
 				
 				// In AUTO mode...
 				if (m_iFaderModeLeft[uBytes[0] - 64] == 3)
 				{
 					// Touch, set to W
-					if (uBytes[1] == 6) sendMidiEvent(uChannel, uBytes[0], 2);
+					if (uBytes[1] == 6) sendMidiEvent(midiMessages, uChannel, uBytes[0], 2);
 					// Release, set to RW
-					else if (uBytes[1] == 5) sendMidiEvent(uChannel, uBytes[0], 3);
+					else if (uBytes[1] == 5) sendMidiEvent(midiMessages, uChannel, uBytes[0], 3);
 				}
 			}
 			
@@ -211,16 +211,16 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 					// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
 					if (++m_iFaderModeRight[uBytes[0] - 64] > 3)
 						m_iFaderModeRight[uBytes[0] - 64] = 0;
-					sendMidiEvent(uChannel, uBytes[0], m_iFaderModeRight[uBytes[0] - 64]);
+					sendMidiEvent(midiMessages, uChannel, uBytes[0], m_iFaderModeRight[uBytes[0] - 64]);
 				}
 				
 				// In AUTO mode...
 				if (m_iFaderModeRight[uBytes[0] - 64] == 3)
 				{
 					// Touch, set to W
-					if (uBytes[1] == 6) sendMidiEvent(uChannel, uBytes[0], 2);
+					if (uBytes[1] == 6) sendMidiEvent(midiMessages, uChannel, uBytes[0], 2);
 					// Release, set to RW
-					else if (uBytes[1] == 5) sendMidiEvent(uChannel, uBytes[0], 3);
+					else if (uBytes[1] == 5) sendMidiEvent(midiMessages, uChannel, uBytes[0], 3);
 				}
 			}
 			
@@ -275,9 +275,21 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new CAutomationBridge();
 }
 
-void CAutomationBridge::sendMidiEvent(uint8 uChannel, uint8 uCCNum, uint8 uValue)
+void CAutomationBridge::sendMidiEvent(MidiBuffer &buffer, uint8 uChannel, uint8 uCCNum, uint8 uValue)
 {
-	uChannel += 176;
+	MidiMessage message(uChannel + 176, uCCNum, uValue);
+	
+	
+}
+
+void CAutomationBridge::activateMixer()
+{
+	sendMidiEvent(5, 127, 127);
+	setAllChannelsMode(2); // Set all channels to Write Mode
+	
+	// Set Master Section to Write Mode (Master fader and Joysticks)
+	sendMidiEvent(5, 64, 2);
+	sendMidiEvent(
 }
 
 void CAutomationBridge::toggleTestMode()
@@ -327,8 +339,6 @@ void CAutomationBridge::saveConfig() const
 	}
 	
 	ptree iniFile;
-	
-	iniFile.put("NumberOfFaders", m_iNumFaders);
 	
 }
 
