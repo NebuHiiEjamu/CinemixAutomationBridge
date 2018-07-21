@@ -169,78 +169,91 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 		// ..do something to the data...
 	}*/
 	
-	Array<uint8> &midiData = midiMessages.data;
+	MidiBuffer processedMidi;
+	int time = 0;
+	MidiMessage msg;
 	
-	// If a complete 3-byte MIDI message is received
-	if (midiData.size() == 3)
+	for (MidiBuffer::Iterator i(midiMessages); i.getNextEvent(msg, time);)
 	{
-		uint8 uStatus = midiData[0] & 0xF0;
-		uint8 uChannel = midiData[0] & 0xF; uChannel++;
-		uint8 uBytes[2] = { midiData[1] & 0x7F, midiData[2] & 0x7F };
-		
-		if (uStatus == MIDI_CONTROL_CHANGE)
+		const uint8 *midiData = msg.getRawData();
+	
+		// If a complete 3-byte MIDI message is received
+		if (msg.getRawDataSize() == 3)
 		{
-			// Get Touch sensors and set the channels in WRITE mode automatically
-			// Left part
-			if (uChannel == 3 && uBytes[0] > 63 && uBytes[0] < 112)
+			uint8 uStatus = midiData[0] & 0xF0;
+			uint8 uChannel = midiData[0] & 0xF; uChannel++;
+			uint8 uBytes[2] = { midiData[1] & 0x7F, midiData[2] & 0x7F };
+			
+			if (uStatus == MIDI_CONTROL_CHANGE)
 			{
-				// When SEL button is depressed...
-				if (uBytes[1] == 1)
+				// Get Touch sensors and set the channels in WRITE mode automatically
+				// Left part
+				if (uChannel == 3 && uBytes[0] > 63 && uBytes[0] < 112)
 				{
-					// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
-					if (++m_iFaderModeLeft[uBytes[0] - 64] > 3)
-						m_iFaderModeLeft[uBytes[0] - 64] = 0;
-					sendMidiEvent(midiMessages, uChannel, uBytes[0], m_iFaderModeLeft[uBytes[0] - 64]);
+					// When SEL button is depressed...
+					if (uBytes[1] == 1)
+					{
+						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
+						if (++m_iFaderModeLeft[uBytes[0] - 64] > 3)
+							m_iFaderModeLeft[uBytes[0] - 64] = 0;
+						processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], m_iFaderModeLeft[uBytes[0] - 64]), time);
+					}
+					
+					// In AUTO mode...
+					if (m_iFaderModeLeft[uBytes[0] - 64] == 3)
+					{
+						// Touch, set to W
+						if (uBytes[1] == 6)
+							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 2), time);
+						// Release, set to RW
+						else if (uBytes[1] == 5)
+							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 3), time);
+					}
 				}
 				
-				// In AUTO mode...
-				if (m_iFaderModeLeft[uBytes[0] - 64] == 3)
+				// Right part
+				if (uChannel == 4 && uBytes[0] > 63 && uBytes[0] < 112)
 				{
-					// Touch, set to W
-					if (uBytes[1] == 6) sendMidiEvent(midiMessages, uChannel, uBytes[0], 2);
-					// Release, set to RW
-					else if (uBytes[1] == 5) sendMidiEvent(midiMessages, uChannel, uBytes[0], 3);
-				}
-			}
-			
-			// Right part
-			if (uChannel == 4 && uBytes[0] > 63 && uBytes[0] < 112)
-			{
-				if (uBytes[1] == 1)
-				{
-					// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
-					if (++m_iFaderModeRight[uBytes[0] - 64] > 3)
-						m_iFaderModeRight[uBytes[0] - 64] = 0;
-					sendMidiEvent(midiMessages, uChannel, uBytes[0], m_iFaderModeRight[uBytes[0] - 64]);
+					if (uBytes[1] == 1)
+					{
+						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
+						if (++m_iFaderModeRight[uBytes[0] - 64] > 3)
+							m_iFaderModeRight[uBytes[0] - 64] = 0;
+						processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], m_iFaderModeRight[uBytes[0] - 64]), time);
+					}
+					
+					// In AUTO mode...
+					if (m_iFaderModeRight[uBytes[0] - 64] == 3)
+					{
+						// Touch, set to W
+						if (uBytes[1] == 6)
+							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 2), time);
+						// Release, set to RW
+						else if (uBytes[1] == 5)
+							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 3), time);
+					}
 				}
 				
-				// In AUTO mode...
-				if (m_iFaderModeRight[uBytes[0] - 64] == 3)
+				// Master SEL R/W Button selects status for all channels
+				if (uChannel == 5 && uBytes[0] == 64 && uBytes[1] == 1)
 				{
-					// Touch, set to W
-					if (uBytes[1] == 6) sendMidiEvent(midiMessages, uChannel, uBytes[0], 2);
-					// Release, set to RW
-					else if (uBytes[1] == 5) sendMidiEvent(midiMessages, uChannel, uBytes[0], 3);
+					if (++m_iFaderModeMaster > 3) m_iFaderModeMaster = 0;
+					setAllChannelsMode(m_iFaderModeMaster);
 				}
-			}
-			
-			// Master SEL R/W Button selects status for all channels
-			if (uChannel == 5 && uBytes[0] == 64 && uBytes[1] == 1)
-			{
-				if (++m_iFaderModeMaster > 3) m_iFaderModeMaster = 0;
-				setAllChannelsMode(m_iFaderModeMaster);
-			}
-			
-			// Special check for AUX Mutes (could have found a more elegant way, but this one works!)
-			if (uChannel == 5 && uBytes[0] == 96)
-			{
-				switch (uBytes[1])
+				
+				// Special check for AUX Mutes (could have found a more elegant way, but this one works!)
+				if (uChannel == 5 && uBytes[0] == 96)
 				{
-					default: ;
+					switch (uBytes[1])
+					{
+						default: ;
+					}
 				}
 			}
 		}
 	}
+	
+	midiMessages.swapWith(processedMidi);
 }
 
 //==============================================================================
@@ -273,13 +286,6 @@ void CAutomationBridge::setStateInformation(const void *pData, int iSizeInBytes)
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
 	return new CAutomationBridge();
-}
-
-void CAutomationBridge::sendMidiEvent(MidiBuffer &buffer, uint8 uChannel, uint8 uCCNum, uint8 uValue)
-{
-	MidiMessage message(uChannel + 176, uCCNum, uValue);
-	
-	
 }
 
 void CAutomationBridge::activateMixer()

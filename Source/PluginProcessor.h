@@ -69,7 +69,6 @@ public:
 	//! Open MIDI Ports
 	void openAllMidiPorts();
 	
-	void sendMidiEvent(MidiBuffer &buffer, uint8 uChannel, uint8 uCCNum, uint8 uValue);
 	void setAllChannelsMode(int iMode);
 	void activateMixer();
 	void deactivateMixer();
