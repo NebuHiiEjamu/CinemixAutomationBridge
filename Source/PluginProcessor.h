@@ -16,11 +16,10 @@
 class CAutomationBridge: public AudioProcessor
 {
 public:
-	static const float ONE_127TH;
-	static const float ONE_255TH;
-	static const float ONE_16384TH;
-	static const float RAND_MAX_RECIP;
-public:
+	static constexpr float ONE_127TH = 0.00787401574803f;
+	static constexpr float ONE_255TH = 0.00392156862745f;
+	static constexpr float ONE_16384TH = 0.00006103515625f;
+	static constexpr float RAND_MAX_RECIP = 0.00003051757f;
 	//==============================================================================
 	CAutomationBridge();	
 	~CAutomationBridge();
@@ -75,7 +74,7 @@ public:
 	void sendSnapshot();
 	void resetAllMixer();
 	void toggleAllMutes();
-	void saveConfig() const;
+	bool saveConfig() const;
 	void loadConfig();
 	static String getConfigFilePath();
 	static String getResFilePath();
@@ -106,7 +105,6 @@ private:
 	int m_iCountSamples[2];
 	Array<float> m_fAnimRamp;
 	StringArray m_sParameterName;
-	String m_sConfigFileHash;
 	
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CAutomationBridge)

@@ -8,16 +8,8 @@
   ==============================================================================
 */
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/ini_parser.hpp>
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
-CAutomationBridge::ONE_127TH = 0.00787401574803f;
-CAutomationBridge::ONE_255TH = 0.00392156862745f;
-CAutomationBridge::ONE_16384TH = 0.00006103515625f;
-CAutomationBridge::RAND_MAX_RECIP = 0.00003051757f;
 	
 //==============================================================================
 CAutomationBridge::CAutomationBridge()
@@ -327,38 +319,47 @@ void CAutomationBridge::toggleTestMode()
 	}
 }
 
-void CAutomationBridge::saveConfig() const
+bool CAutomationBridge::saveConfig() const
 {
-	using namespace boost::property_tree;
-	
 	// No MIDI ports found? Don't save!
 	if (m_iNumMidiInPorts + m_iNumMidiOutPorts < 2)
 		return false;
 	
 	String sConfigFilePath = getConfigFilePath();
-	File configFile(sConfigFilePath);
+	XmlElement config("AutomationBridge");
+	XmlElement *pInPortListXml = new XmlElement("InPorts");
+	XmlElement *pOutPortListXml = new XmlElement("OutPorts");
 	
-	if (configFile.exists())
+	config.addChildElement(pInPortListXml);
+	config.addChildElement(pOutPortListXml);
+	
+	for (int i = 0; i < m_iNumMidiInPorts; i++)
 	{
-		SHA256 hash(configFile);
-		if (hash.toHexString() == m_sConfigFileHash) return;
+		XmlElement *pInPortXml = new XmlElement("port");
+		pInPortXml->setAttribute("name", m_sMidiInPortName[i]);
+		pInPortListXml->addChildElement(pInPortXml);
 	}
 	
-	ptree iniFile;
+	for (int i = 0; i < m_iNumMidiOutPorts; i++)
+	{
+		XmlElement *pOutPortXml = new XmlElement("port");
+		pOutPortXml->setAttribute("name", m_sMidiOutPortName[i]);
+		pOutPortListXml->addChildElement(pOutPortXml);
+	}
 	
+	return config.writeToFile(File(sConfigFilePath), String());
 }
 
 void CAutomationBridge::loadConfig()
 {
 	String sConfigFilePath = getConfigFilePath();
-	File configFile(sConfigFilePath);
+	XmlDocument configFile(File(sConfigFilePath));
+	XmlElement *pConfig = configFile.getDocumentElement();
 	
-	if (configFile.exists())
+	if (pConfig)
 	{
-		SHA256 hash(configFile);
-		m_sConfigFileHash = hash.toHexString();
+		
 	}
-	else return;
 }
 
 String CAutomationBridge::getConfigFilePath()
@@ -380,7 +381,7 @@ String CAutomationBridge::getConfigFilePath()
 	sConfigFilePath += ".config";
 #endif
 
-	sConfigFilePath << File::getSeparatorChar() << "AutomationBridge.ini"
+	sConfigFilePath << File::getSeparatorChar() << "AutomationBridge.xml"
 
 	return sConfigFilePath;
 }
