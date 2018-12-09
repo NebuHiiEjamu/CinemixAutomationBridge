@@ -2,24 +2,24 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class CTouchPad: public Component
+class TouchPad: public Component
 {
 public:
-	CTouchPad();
+	TouchPad();
 	
 	void paint(Graphics &g) override;
 	void mouseEnter(const MouseEvent &me) override;
 	
 	void getRestPoint(float &x, float &y) const
 	{
-		x = m_fXRest;
-		y = 1.0f - m_fYRest;
+		x = xRest;
+		y = 1.0f - yRest;
 	}
 public:
-	float fXValue, fYValue;
+	float xValue, yValue;
 protected:
-	Image m_bg;
-	float m_fXRest, m_fYRest;
+	Image bg;
+	float xRest, yRest;
 private:
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CTouchPad)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TouchPad)
 };

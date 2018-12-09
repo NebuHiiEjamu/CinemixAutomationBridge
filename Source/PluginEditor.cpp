@@ -12,7 +12,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-CAutomationBridgeEditor::CAutomationBridgeEditor(CAutomationBridge &p):
+AutomationBridgeEditor::AutomationBridgeEditor(CAutomationBridge &p):
 	AudioProcessorEditor(&p), m_processor(p),
 	m_bgImage(ImageFileFormat::loadFrom(File(
 {
@@ -21,23 +21,23 @@ CAutomationBridgeEditor::CAutomationBridgeEditor(CAutomationBridge &p):
 	setSize(400, 300);
 }
 
-CAutomationBridgeEditor::~CAutomationBridgeEditor()
+AutomationBridgeEditor::~AutomationBridgeEditor()
 {
 }
 
 //==============================================================================
-void CAutomationBridgeEditor::paint(Graphics &g)
+void AutomationBridgeEditor::paint(Graphics &g)
 {
 	// (Our component is opaque, so we must completely fill the background with a solid colour)
 	g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 
 	g.setColour(Colours::white);
 	g.setFont(15.0f);
-	g.drawImage(m_bgImage, 0, 0, m_bgImage.getWidth(), m_bgImage.getHeight(), 0, 0,
-		m_bgImage.getWidth(), m_bgImage.getHeight());
+	g.drawImage(bgImage, 0, 0, bgImage.getWidth(), bgImage.getHeight(), 0, 0,
+		bgImage.getWidth(), bgImage.getHeight());
 }
 
-void CAutomationBridgeEditor::resized()
+void AutomationBridgeEditor::resized()
 {
 	// This is generally where you'll want to lay out the positions of any
 	// subcomponents in your editor..

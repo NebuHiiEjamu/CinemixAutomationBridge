@@ -16,11 +16,11 @@
 //==============================================================================
 /**
 */
-class CAutomationBridgeEditor: public AudioProcessorEditor
+class AutomationBridgeEditor: public AudioProcessorEditor
 {
 public:	
-	CAutomationBridgeEditor(CAutomationBridge&);
-	~CAutomationBridgeEditor();
+	AutomationBridgeEditor(AutomationBridge&);
+	~AutomationBridgeEditor();
 
 	//==============================================================================
 	void paint(Graphics&) override;
@@ -29,12 +29,12 @@ public:
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
-	CAutomationBridge &m_processor;
-	Image m_bgImage;
-	Slider m_masterFader;
-	Array<Slider> m_faders;
-	ToggleButton m_joyMute[2], m_testMode, m_auxMute[10];
-	Array<ToggleButton> m_buttons;
+	CAutomationBridge &processor;
+	Image bgImage;
+	Slider masterFader;
+	Array<Slider> faders;
+	ToggleButton joyMute[2], testMode, auxMute[10];
+	Array<ToggleButton> buttons;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CAutomationBridgeEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AutomationBridgeEditor)
 };

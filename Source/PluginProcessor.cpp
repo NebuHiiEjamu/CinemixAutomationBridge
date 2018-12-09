@@ -12,7 +12,7 @@
 #include "PluginEditor.h"
 	
 //==============================================================================
-CAutomationBridge::CAutomationBridge()
+AutomationBridge::AutomationBridge()
 #ifndef JucePlugin_PreferredChannelConfigurations
 	: AudioProcessor(BusesProperties()
 #if !JucePlugin_IsMidiEffect
@@ -22,25 +22,25 @@ CAutomationBridge::CAutomationBridge()
 		.withOutput("Output", AudioChannelSet::stereo(), true)
 #endif // JucePlugin_IsMidiEffect
 	),
-	m_bTestMode(false),
-	m_bFullInit(false)
+	testMode(false),
+	fullInit(false)
 #endif // JucePlugin_PreferredChannelConfigurations
 {
-	m_params = getParameters();
-	m_iNumParams = m_params.size();
+	params = getParameters();
+	numParams = params.size();
 }
 
-CAutomationBridge::~CAutomationBridge()
+AutomationBridge::~AutomationBridge()
 {
 }
 
 //==============================================================================
-const String CAutomationBridge::getName() const
+const String AutomationBridge::getName() const
 {
 	return JucePlugin_Name;
 }
 
-bool CAutomationBridge::acceptsMidi() const
+bool AutomationBridge::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
 	return true;
@@ -49,7 +49,7 @@ bool CAutomationBridge::acceptsMidi() const
 #endif
 }
 
-bool CAutomationBridge::producesMidi() const
+bool AutomationBridge::producesMidi() const
 {
 #if JucePlugin_ProducesMidiOutput
 	return true;
@@ -58,7 +58,7 @@ bool CAutomationBridge::producesMidi() const
 #endif
 }
 
-bool CAutomationBridge::isMidiEffect() const
+bool AutomationBridge::isMidiEffect() const
 {
 #if JucePlugin_IsMidiEffect
 	return true;
@@ -67,50 +67,50 @@ bool CAutomationBridge::isMidiEffect() const
 #endif
 }
 
-double CAutomationBridge::getTailLengthSeconds() const
+double AutomationBridge::getTailLengthSeconds() const
 {
 	return 0.0;
 }
 
-int CAutomationBridge::getNumPrograms()
+int AutomationBridge::getNumPrograms()
 {
 	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
 				// so this should be at least 1, even if you're not really implementing programs.
 }
 
-int CAutomationBridge::getCurrentProgram()
+int AutomationBridge::getCurrentProgram()
 {
 	return 0;
 }
 
-void CAutomationBridge::setCurrentProgram(int iIndex)
+void AutomationBridge::setCurrentProgram(int index)
 {
 }
 
-const String CAutomationBridge::getProgramName(int iIndex)
+const String AutomationBridge::getProgramName(int index)
 {
 	return {};
 }
 
-void CAutomationBridge::changeProgramName(int iIndex, const String &sNewName)
+void AutomationBridge::changeProgramName(int index, const String &newName)
 {
 }
 
 //==============================================================================
-void CAutomationBridge::prepareToPlay(double fSampleRate, int iSamplesPerBlock)
+void AutomationBridge::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	// Use this method as the place to do any pre-playback
 	// initialisation that you need..
 }
 
-void CAutomationBridge::releaseResources()
+void AutomationBridge::releaseResources()
 {
 	// When playback stops, you can use this as an opportunity to free up any
 	// spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool CAutomationBridge::isBusesLayoutSupported(const BusesLayout &layouts) const
+bool AutomationBridge::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
 #if JucePlugin_IsMidiEffect
 	ignoreUnused(layouts);
@@ -132,12 +132,12 @@ bool CAutomationBridge::isBusesLayoutSupported(const BusesLayout &layouts) const
 }
 #endif // JucePlugin_PreferredChannelConfigurations
 
-void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midiMessages)
+void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midiMessages)
 {
 	ignoreUnused(buffer);
 	/*ScopedNoDenormals noDenormals;
-	auto iTotalInputChannels  = getTotalNumInputChannels();
-	auto iTotalOutputChannels = getTotalNumOutputChannels();
+	auto totalInputChannels  = getTotalNumInputChannels();
+	auto totalOutputChannels = getTotalNumOutputChannels();
 
 	// In case we have more outputs than inputs, this code clears any output
 	// channels that didn't contain input data, (because these aren't
@@ -145,7 +145,7 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 	// This is here to avoid people getting screaming feedback
 	// when they first compile a plugin, but obviously you don't need to keep
 	// this code if your algorithm always overwrites all the output channels.
-	for (auto i = iTotalInputChannels; i < iTotalOutputChannels; ++i)
+	for (auto i = totalInputChannels; i < totalOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
 
 	// This is the place where you'd normally do the guts of your plugin's
@@ -154,9 +154,9 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 	// the samples and the outer loop is handling the channels.
 	// Alternatively, you can process the samples with the channels
 	// interleaved by keeping the same state.
-	for (int iChannel = 0; iChannel < iTotalInputChannels; ++iChannel)
+	for (int channel = 0; channel < totalInputChannels; ++channel)
 	{
-		auto *pChannelData = buffer.getWritePointer(channel);
+		auto *channelData = buffer.getWritePointer(channel);
 
 		// ..do something to the data...
 	}*/
@@ -172,71 +172,71 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 		// If a complete 3-byte MIDI message is received
 		if (msg.getRawDataSize() == 3)
 		{
-			uint8 uStatus = midiData[0] & 0xF0;
-			uint8 uChannel = midiData[0] & 0xF; uChannel++;
-			uint8 uBytes[2] = { midiData[1] & 0x7F, midiData[2] & 0x7F };
+			uint8 status = midiData[0] & 0xF0;
+			uint8 channel = midiData[0] & 0xF; channel++;
+			uint8 bytes[2] = { midiData[1] & 0x7F, midiData[2] & 0x7F };
 			
-			if (uStatus == MIDI_CONTROL_CHANGE)
+			if (status == MIDI_CONTROL_CHANGE)
 			{
 				// Get Touch sensors and set the channels in WRITE mode automatically
 				// Left part
-				if (uChannel == 3 && uBytes[0] > 63 && uBytes[0] < 112)
+				if (channel == 3 && bytes[0] > 63 && bytes[0] < 112)
 				{
 					// When SEL button is depressed...
-					if (uBytes[1] == 1)
+					if (bytes[1] == 1)
 					{
 						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
-						if (++m_iFaderModeLeft[uBytes[0] - 64] > 3)
-							m_iFaderModeLeft[uBytes[0] - 64] = 0;
-						processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], m_iFaderModeLeft[uBytes[0] - 64]), time);
+						if (++faderModeLeft[bytes[0] - 64] > 3)
+							faderModeLeft[bytes[0] - 64] = 0;
+						processedMidi.addEvent(MidiMessage(channel, bytes[0], faderModeLeft[bytes[0] - 64]), time);
 					}
 					
 					// In AUTO mode...
-					if (m_iFaderModeLeft[uBytes[0] - 64] == 3)
+					if (faderModeLeft[bytes[0] - 64] == 3)
 					{
 						// Touch, set to W
-						if (uBytes[1] == 6)
-							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 2), time);
+						if (bytes[1] == 6)
+							processedMidi.addEvent(MidiMessage(channel, bytes[0], 2), time);
 						// Release, set to RW
-						else if (uBytes[1] == 5)
-							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 3), time);
+						else if (bytes[1] == 5)
+							processedMidi.addEvent(MidiMessage(channel, bytes[0], 3), time);
 					}
 				}
 				
 				// Right part
-				if (uChannel == 4 && uBytes[0] > 63 && uBytes[0] < 112)
+				if (channel == 4 && bytes[0] > 63 && bytes[0] < 112)
 				{
-					if (uBytes[1] == 1)
+					if (bytes[1] == 1)
 					{
 						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
-						if (++m_iFaderModeRight[uBytes[0] - 64] > 3)
-							m_iFaderModeRight[uBytes[0] - 64] = 0;
-						processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], m_iFaderModeRight[uBytes[0] - 64]), time);
+						if (++faderModeRight[bytes[0] - 64] > 3)
+							faderModeRight[bytes[0] - 64] = 0;
+						processedMidi.addEvent(MidiMessage(channel, bytes[0], faderModeRight[bytes[0] - 64]), time);
 					}
 					
 					// In AUTO mode...
-					if (m_iFaderModeRight[uBytes[0] - 64] == 3)
+					if (faderModeRight[bytes[0] - 64] == 3)
 					{
 						// Touch, set to W
-						if (uBytes[1] == 6)
-							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 2), time);
+						if (bytes[1] == 6)
+							processedMidi.addEvent(MidiMessage(channel, bytes[0], 2), time);
 						// Release, set to RW
-						else if (uBytes[1] == 5)
-							processedMidi.addEvent(MidiMessage(uChannel, uBytes[0], 3), time);
+						else if (bytes[1] == 5)
+							processedMidi.addEvent(MidiMessage(channel, bytes[0], 3), time);
 					}
 				}
 				
 				// Master SEL R/W Button selects status for all channels
-				if (uChannel == 5 && uBytes[0] == 64 && uBytes[1] == 1)
+				if (channel == 5 && bytes[0] == 64 && bytes[1] == 1)
 				{
-					if (++m_iFaderModeMaster > 3) m_iFaderModeMaster = 0;
-					setAllChannelsMode(m_iFaderModeMaster);
+					if (++faderModeMaster > 3) faderModeMaster = 0;
+					setAllChannelsMode(faderModeMaster);
 				}
 				
 				// Special check for AUX Mutes (could have found a more elegant way, but this one works!)
-				if (uChannel == 5 && uBytes[0] == 96)
+				if (channel == 5 && bytes[0] == 96)
 				{
-					switch (uBytes[1])
+					switch (bytes[1])
 					{
 						default: ;
 					}
@@ -249,25 +249,25 @@ void CAutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 }
 
 //==============================================================================
-bool CAutomationBridge::hasEditor() const
+bool AutomationBridge::hasEditor() const
 {
 	return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* CAutomationBridge::createEditor()
+AudioProcessorEditor* AutomationBridge::createEditor()
 {
-	return new CAutomationBridgeEditor(*this);
+	return new AutomationBridgeEditor(*this);
 }
 
 //==============================================================================
-void CAutomationBridge::getStateInformation(MemoryBlock &destData)
+void AutomationBridge::getStateInformation(MemoryBlock &destData)
 {
 	// You should use this method to store your parameters in the memory block.
 	// You could do that either as raw data, or use the XML or ValueTree classes
 	// as intermediaries to make it easy to save and load complex data.
 }
 
-void CAutomationBridge::setStateInformation(const void *pData, int iSizeInBytes)
+void AutomationBridge::setStateInformation(const void *data, int sizeInBytes)
 {
 	// You should use this method to restore your parameters from this memory block,
 	// whose contents will have been created by the getStateInformation() call.
@@ -277,10 +277,10 @@ void CAutomationBridge::setStateInformation(const void *pData, int iSizeInBytes)
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-	return new CAutomationBridge();
+	return new AutomationBridge();
 }
 
-void CAutomationBridge::activateMixer()
+void AutomationBridge::activateMixer()
 {
 	sendMidiEvent(5, 127, 127);
 	setAllChannelsMode(2); // Set all channels to Write Mode
@@ -290,11 +290,11 @@ void CAutomationBridge::activateMixer()
 	sendMidiEvent(
 }
 
-void CAutomationBridge::toggleTestMode()
+void AutomationBridge::toggleTestMode()
 {
-	if (m_bTestMode)
+	if (testMode)
 	{
-		m_bTestMode = false;
+		testMode = false;
 		resetAllMixer();
 		setAllChannelsMode(3);
 	}
@@ -305,93 +305,93 @@ void CAutomationBridge::toggleTestMode()
 
 		// Calculate frame rates for faders and mutes animations separately
 		// This is rather slow, but avoids flooding the  MIDI buffers
-		m_iFaderSpeed = static_cast<int>(getSampleRate() / 25);
-		m_iMuteSpeed = static_cast<int>(getSampleRate() / 10);
-		m_iCountSamples[0] = m_iCountSamples[1] = 0;
+		faderSpeed = static_cast<int>(getSampleRate() / 25);
+		muteSpeed = static_cast<int>(getSampleRate() / 10);
+		countSamples[0] = countSamples[1] = 0;
 		
-		float fScaleP = 2.0f / m_iNumFaders;
+		float scaleP = 2.0f / numFaders;
 		
 		// Starting point of all faders
-		for (int i = 0; i < m_iNumFaders; i++)
-			m_fAnimRamp[i] = -2.0f + fScaleP * i;
+		for (int i = 0; i < numFaders; i++)
+			animRamp[i] = -2.0f + scaleP * i;
 		
-		m_bTestMode = true;
+		testMode = true;
 	}
 }
 
-bool CAutomationBridge::saveConfig() const
+bool AutomationBridge::saveConfig() const
 {
 	// No MIDI ports found? Don't save!
-	if (m_iNumMidiInPorts + m_iNumMidiOutPorts < 2)
+	if (numMidiInPorts + numMidiOutPorts < 2)
 		return false;
 	
-	String sConfigFilePath = getConfigFilePath();
+	String configFilePath = getConfigFilePath();
 	XmlElement config("AutomationBridge");
-	XmlElement *pInPortListXml = new XmlElement("InPorts");
-	XmlElement *pOutPortListXml = new XmlElement("OutPorts");
+	XmlElement *inPortListXml = new XmlElement("InPorts");
+	XmlElement *outPortListXml = new XmlElement("OutPorts");
 	
-	config.addChildElement(pInPortListXml);
-	config.addChildElement(pOutPortListXml);
+	config.addChildElement(inPortListXml);
+	config.addChildElement(outPortListXml);
 	
-	for (int i = 0; i < m_iNumMidiInPorts; i++)
+	for (int i = 0; i < numMidiInPorts; i++)
 	{
-		XmlElement *pInPortXml = new XmlElement("port");
-		pInPortXml->setAttribute("name", m_sMidiInPortName[i]);
-		pInPortListXml->addChildElement(pInPortXml);
+		XmlElement *inPortXml = new XmlElement("port");
+		inPortXml->setAttribute("name", midiInPortName[i]);
+		inPortListXml->addChildElement(inPortXml);
 	}
 	
-	for (int i = 0; i < m_iNumMidiOutPorts; i++)
+	for (int i = 0; i < numMidiOutPorts; i++)
 	{
-		XmlElement *pOutPortXml = new XmlElement("port");
-		pOutPortXml->setAttribute("name", m_sMidiOutPortName[i]);
-		pOutPortListXml->addChildElement(pOutPortXml);
+		XmlElement *outPortXml = new XmlElement("port");
+		outPortXml->setAttribute("name", m_sMidiOutPortName[i]);
+		pOutPortListXml->addChildElement(outPortXml);
 	}
 	
-	return config.writeToFile(File(sConfigFilePath), String());
+	return config.writeToFile(File(configFilePath), String());
 }
 
-void CAutomationBridge::loadConfig()
+void AutomationBridge::loadConfig()
 {
-	String sConfigFilePath = getConfigFilePath();
-	XmlDocument configFile(File(sConfigFilePath));
-	XmlElement *pConfig = configFile.getDocumentElement();
+	String configFilePath = getConfigFilePath();
+	XmlDocument configFile(File(configFilePath));
+	XmlElement *config = configFile.getDocumentElement();
 	
-	if (pConfig)
+	if (config)
 	{
 		
 	}
 }
 
-String CAutomationBridge::getConfigFilePath()
+String AutomationBridge::getConfigFilePath()
 {
-	String sConfigFilePath;
+	String configFilePath;
 #ifdef _WIN32
-	String sAppDataDefaultPath = "C:\\Users\\";
-	sAppDataDefaultPath << SystemStats::getLogonName() << "\\AppData\\Roaming";
-	sConfigFilePath = SystemStats::getEnvironmentVariable("APPDATA", sAppDataPath);
+	String appDataDefaultPath = "C:\\Users\\";
+	appDataDefaultPath << SystemStats::getLogonName() << "\\AppData\\Roaming";
+	configFilePath = SystemStats::getEnvironmentVariable("APPDATA", appDataPath);
 #else
-	sConfigFilePath = SystemStats::getEnvironmentVariable("HOME", "~");
+	configFilePath = SystemStats::getEnvironmentVariable("HOME", "~");
 #endif
 
 #ifdef __APPLE__
-	sConfigFilePath += "/Library/Preferences";
+	configFilePath += "/Library/Preferences";
 #endif
 
 #if !defined(_WIN32) && !defined(__APPLE__)
-	sConfigFilePath += ".config";
+	configFilePath += ".config";
 #endif
 
-	sConfigFilePath << File::getSeparatorChar() << "AutomationBridge.xml"
+	configFilePath << File::getSeparatorChar() << "AutomationBridge.xml"
 
-	return sConfigFilePath;
+	return configFilePath;
 }
 
-static String CAutomationBridge::getResFilePath()
+static String AutomationBridge::getResFilePath()
 {
 	return String("data") + File::getSeparatorChar();
 }
 
-float CAutomationBridge::randGen() const
+float AutomationBridge::randGen() const
 {
-	return Random::getSystemRandom().nextFloat() * RAND_MAX_RECIP;
+	return Random::getSystemRandom().nextFloat() * randMaxRecip;
 }
