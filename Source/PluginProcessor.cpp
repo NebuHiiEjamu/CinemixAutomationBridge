@@ -1,30 +1,35 @@
 /*
-  ==============================================================================
+	Permission is hereby granted, free of charge, to any person
+	obtaining a copy of this software and associated documentation files
+	(the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+	Any person wishing to distribute modifications to the Software is
+	asked to send the modifications to the original developer so that
+	they can be incorporated into the canonical version.  This is,
+	however, not a binding provision of this license.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+	ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+	CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	This file was auto-generated!
-
-	It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
+	This contains the framework code for a JUCE plugin processor.
 */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 	
 //==============================================================================
-AutomationBridge::AutomationBridge()
-#ifndef JucePlugin_PreferredChannelConfigurations
-	: AudioProcessor(BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
-		.withInput("Input",  AudioChannelSet::stereo(), true)
-#endif // JucePlugin_IsSynth
-		.withOutput("Output", AudioChannelSet::stereo(), true)
-#endif // JucePlugin_IsMidiEffect
-	),
+AutomationBridge::AutomationBridge():
 	testMode(false),
-	fullInit(false)
-#endif // JucePlugin_PreferredChannelConfigurations
+	fullInit(false) // TODO: needed?
 {
 	params = getParameters();
 	numParams = params.size();
@@ -34,7 +39,6 @@ AutomationBridge::~AutomationBridge()
 {
 }
 
-//==============================================================================
 const String AutomationBridge::getName() const
 {
 	return JucePlugin_Name;
@@ -67,46 +71,12 @@ bool AutomationBridge::isMidiEffect() const
 #endif
 }
 
-double AutomationBridge::getTailLengthSeconds() const
-{
-	return 0.0;
-}
-
-int AutomationBridge::getNumPrograms()
-{
-	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-				// so this should be at least 1, even if you're not really implementing programs.
-}
-
-int AutomationBridge::getCurrentProgram()
-{
-	return 0;
-}
-
-void AutomationBridge::setCurrentProgram(int index)
-{
-}
-
-const String AutomationBridge::getProgramName(int index)
-{
-	return {};
-}
-
-void AutomationBridge::changeProgramName(int index, const String &newName)
-{
-}
-
-//==============================================================================
 void AutomationBridge::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	// Use this method as the place to do any pre-playback
-	// initialisation that you need..
 }
 
 void AutomationBridge::releaseResources()
 {
-	// When playback stops, you can use this as an opportunity to free up any
-	// spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -119,8 +89,10 @@ bool AutomationBridge::isBusesLayoutSupported(const BusesLayout &layouts) const
 	// This is the place where you check if the layout is supported.
 	// In this template code we only support mono or stereo.
 	if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-			&& layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+		&& layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+	{
 		return false;
+	}
 
 	// This checks if the input layout matches the output layout
 #if !JucePlugin_IsSynth
@@ -135,37 +107,12 @@ bool AutomationBridge::isBusesLayoutSupported(const BusesLayout &layouts) const
 void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midiMessages)
 {
 	ignoreUnused(buffer);
-	/*ScopedNoDenormals noDenormals;
-	auto totalInputChannels  = getTotalNumInputChannels();
-	auto totalOutputChannels = getTotalNumOutputChannels();
-
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// This is here to avoid people getting screaming feedback
-	// when they first compile a plugin, but obviously you don't need to keep
-	// this code if your algorithm always overwrites all the output channels.
-	for (auto i = totalInputChannels; i < totalOutputChannels; ++i)
-		buffer.clear(i, 0, buffer.getNumSamples());
-
-	// This is the place where you'd normally do the guts of your plugin's
-	// audio processing...
-	// Make sure to reset the state if your inner loop is processing
-	// the samples and the outer loop is handling the channels.
-	// Alternatively, you can process the samples with the channels
-	// interleaved by keeping the same state.
-	for (int channel = 0; channel < totalInputChannels; ++channel)
-	{
-		auto *channelData = buffer.getWritePointer(channel);
-
-		// ..do something to the data...
-	}*/
 	
 	MidiBuffer processedMidi;
 	int time = 0;
 	MidiMessage msg;
 	
-	for (MidiBuffer::Iterator i(midiMessages); i.getNextEvent(msg, time);)
+	for (MidiBuffer::Iterator iter(midiMessages); i.getNextEvent(msg, time);)
 	{
 		const uint8 *midiData = msg.getRawData();
 	
@@ -187,7 +134,9 @@ void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midi
 					{
 						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
 						if (++faderModeLeft[bytes[0] - 64] > 3)
+						{
 							faderModeLeft[bytes[0] - 64] = 0;
+						}
 						processedMidi.addEvent(MidiMessage(channel, bytes[0], faderModeLeft[bytes[0] - 64]), time);
 					}
 					
@@ -196,10 +145,14 @@ void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midi
 					{
 						// Touch, set to W
 						if (bytes[1] == 6)
+						{
 							processedMidi.addEvent(MidiMessage(channel, bytes[0], 2), time);
+						}
 						// Release, set to RW
 						else if (bytes[1] == 5)
+						{
 							processedMidi.addEvent(MidiMessage(channel, bytes[0], 3), time);
+						}
 					}
 				}
 				
@@ -210,7 +163,9 @@ void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midi
 					{
 						// Rotate between modes: 0=ISO, 1=READ, 2=WRITE, 3=AUTO
 						if (++faderModeRight[bytes[0] - 64] > 3)
+						{
 							faderModeRight[bytes[0] - 64] = 0;
+						}
 						processedMidi.addEvent(MidiMessage(channel, bytes[0], faderModeRight[bytes[0] - 64]), time);
 					}
 					
@@ -219,10 +174,14 @@ void AutomationBridge::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midi
 					{
 						// Touch, set to W
 						if (bytes[1] == 6)
+						{
 							processedMidi.addEvent(MidiMessage(channel, bytes[0], 2), time);
+						}
 						// Release, set to RW
 						else if (bytes[1] == 5)
+						{
 							processedMidi.addEvent(MidiMessage(channel, bytes[0], 3), time);
+						}
 					}
 				}
 				
@@ -309,11 +268,11 @@ void AutomationBridge::toggleTestMode()
 		muteSpeed = static_cast<int>(getSampleRate() / 10);
 		countSamples[0] = countSamples[1] = 0;
 		
-		float scaleP = 2.0f / numFaders;
+		float scaleP = 2.f / numFaders;
 		
 		// Starting point of all faders
 		for (int i = 0; i < numFaders; i++)
-			animRamp[i] = -2.0f + scaleP * i;
+			animRamp[i] = -2.f + scaleP * i;
 		
 		testMode = true;
 	}
@@ -343,7 +302,7 @@ bool AutomationBridge::saveConfig() const
 	for (int i = 0; i < numMidiOutPorts; i++)
 	{
 		XmlElement *outPortXml = new XmlElement("port");
-		outPortXml->setAttribute("name", m_sMidiOutPortName[i]);
+		outPortXml->setAttribute("name", midiOutPortName[i]);
 		pOutPortListXml->addChildElement(outPortXml);
 	}
 	
