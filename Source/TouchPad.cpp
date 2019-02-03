@@ -23,15 +23,20 @@
 
 #include "TouchPad.h"
 
-TouchPad::TouchPad(): xValue(0.5f), yValue(0.5f),
+TouchPad::TouchPad(const String &componentName):
+	xValue(0.5f), yValue(0.5f),
 	xRest(0.f), yRest(1.f)
 {
 }
 
-void TouchPad::mouseEnter(const MouseEvent &me) override
+void TouchPad::paint(Graphics &g)
 {
-	if (me.mods.isCommandDown() || me.mods.isAltDown() || me.mods.isShiftDown() ||
-		me.mods.isCtrlDown())
+}
+
+void TouchPad::mouseEnter(const MouseEvent &event)
+{
+	if (event.mods.isCommandDown() || event.mods.isAltDown() ||
+		event.mods.isShiftDown() || event.mods.isCtrlDown())
 	{
 		xValue = yValue = 0.5f;
 		return;

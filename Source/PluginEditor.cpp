@@ -27,10 +27,11 @@
 #include "PluginEditor.h"
 
 AutomationBridgeEditor::AutomationBridgeEditor(AutomationBridge &p):
-	AudioProcessorEditor(&p), processor(p),
-	bgImage(ImageFileFormat::loadFrom(File(
+	AudioProcessorEditor(&p),
+	processor(p),
+	background(ImageFileFormat::loadFrom(File(
 {
-	setSize(400, 300);
+	setSize(400, 300); // TODO: background size, load from config
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()

@@ -28,6 +28,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class AutomationBridge;
+class TouchPad;
 
 //==============================================================================
 /**
@@ -44,11 +45,15 @@ public:
 
 protected:
 	AutomationBridge &processor;
-	Image bgImage;
+	Image background;
 	Slider masterFader;
+	TouchPad joys[2];
 	Array<Slider> faders;
-	ToggleButton joyMute[2], testMode, auxMute[10];
 	Array<ToggleButton> buttons;
-
+	ToggleButton auxMute[10];
+	ToggleButton joyMute[2];
+	ToggleButton testMode;
+	
+private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AutomationBridgeEditor)
 };
