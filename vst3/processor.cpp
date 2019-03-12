@@ -3,9 +3,9 @@
 PlugProcessor::PlugProcessor():
 	mRandGen(mRandDev),
 	mRandDis(0.f, kRandMaxRecip),
-	mTestMode(false),
-	mRtMidiPortsOpen(false),
-	mAllMutesStatus(false)
+	mTestMode(0),
+	mRtMidiPortsOpen(0),
+	mAllMutesStatus(0)
 {
 }
 
@@ -21,11 +21,11 @@ void PlugProcessor::toggleTestMode()
 		for (int i = 0; i < mNumFaders; i++)
 			mAnimRamp[i] = -2.f + scaleP * i;
 		
-		mTestMode = true;
+		mTestMode = 1;
 	}
 	else
 	{
-		mTestMode = false;
+		mTestMode = 0;
 	}
 	
 }

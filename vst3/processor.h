@@ -114,7 +114,7 @@ private:
 	std::random_device mRandDev;
 	std::mt19937 mRandGen;
 	std::uniform_real_distribution<float> mRandDis;
-	bool mTestMode;
-	bool mRtMidiPortsOpen;
-	bool mAllMutesStatus;
+	int mTestMode : 1;
+		mRtMidiPortsOpen : 1;
+		mAllMutesStatus : 1;
 };
