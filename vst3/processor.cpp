@@ -1,5 +1,7 @@
 #include "processor.h"
 
+#include <RtMidi.h>
+
 PlugProcessor::PlugProcessor():
 	mRandGen(mRandDev),
 	mRandDis(0.f, kRandMaxRecip),
