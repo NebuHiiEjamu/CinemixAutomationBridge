@@ -15,7 +15,7 @@ void PlugProcessor::toggleTestMode()
 	{
 		mFaderSpeed = static_cast<int>(processSetup.sampleRate / 25);
 		mMuteSpeed = static_cast<int>(processSetup.sampleRate / 10);
-		for (int i : mCountSamples) i = 0;
+		for (int &i : mCountSamples) i = 0;
 
 		float scaleP = 2.f / mNumFaders;
 		for (int i = 0; i < mNumFaders; i++)
