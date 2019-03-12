@@ -29,9 +29,29 @@
 AutomationBridgeEditor::AutomationBridgeEditor(AutomationBridge &p):
 	AudioProcessorEditor(&p),
 	processor(p),
-	background(ImageFileFormat::loadFrom(File(
+	//background(ImageFileFormat::loadFrom(File(
 {
-	setSize(400, 300); // TODO: background size, load from config
+	int sChannels = 1;
+	int channelNum = 1;
+	setSize(920, 560); // TODO: background size, load from config
+
+	faders.resize(p.numChannelStrips * 2);
+	buttons.resize(p.numChannelStrips) * 2;
+	for (int i = 0; i < p.numChannelStrips; i++)
+	{
+		faders[i].setSliderStyle(LinearVertical);
+		faders[i].setValue(0.754);
+		addAndMakeVisible(faders[i]);
+
+		buttons[i].setButtonText("M");
+		addAndMakeVisible(buttons[i]);
+
+		Label upChannelLabel;
+		if (i > 23 && i < 28) upChannelLabel.setText("S" + sChannels++)
+		else upChannelLabel.setText(channelNum++);
+		upChannelLabel.setColour(Label::textColourId, Colour::fromRGB(255, 255, 255));
+		addAndMakeVisible(upChannelLabel);
+	}
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()
