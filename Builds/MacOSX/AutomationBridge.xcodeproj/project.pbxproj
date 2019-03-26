@@ -61,10 +61,6 @@
 			isa = PBXBuildFile;
 			fileRef = 74A03A73D17BECB23DD58F6B;
 		};
-		B9FA651E75BB14C393350C88 = {
-			isa = PBXBuildFile;
-			fileRef = AC8EC283A98D0BF279A639A8;
-		};
 		921733A6985865D77552E4CC = {
 			isa = PBXBuildFile;
 			fileRef = 4296073ADE50CC4ADFED3239;
@@ -137,10 +133,6 @@
 			isa = PBXBuildFile;
 			fileRef = 3058B2BEAFEF24FC178B54CA;
 		};
-		F0C9F030D538B8E415AD681F = {
-			isa = PBXBuildFile;
-			fileRef = 810BDC8F847F91D720171FAB;
-		};
 		90EEA95543B179F03164DFD3 = {
 			isa = PBXBuildFile;
 			fileRef = 15E47CC8CEE3063508915DD1;
@@ -161,22 +153,11 @@
 			isa = PBXBuildFile;
 			fileRef = 40A040EB19BC90FC81DA6361;
 		};
-		F364234F4DF7A67836BBF465 = {
-			isa = PBXBuildFile;
-			fileRef = 85B3BFA2D24ECC02492EC682;
-		};
 		0274CC7136752FE8053CA768 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
 			name = "juce_audio_basics";
 			path = "~/JUCE/modules/juce_audio_basics";
-			sourceTree = "<absolute>";
-		};
-		02A3CDF43FE5CA36FE31816F = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_opengl";
-			path = "~/JUCE/modules/juce_opengl";
 			sourceTree = "<absolute>";
 		};
 		02C9E7454D6728EC1F5114E8 = {
@@ -298,13 +279,6 @@
 			path = RecentFilesMenuTemplate.nib;
 			sourceTree = "SOURCE_ROOT";
 		};
-		666D2922E92AFA4801AD2D9C = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_events";
-			path = "~/JUCE/modules/juce_events";
-			sourceTree = "<absolute>";
-		};
 		669976E705CED935C395BF13 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -319,40 +293,12 @@
 			path = "~/JUCE/modules/juce_audio_plugin_client";
 			sourceTree = "<absolute>";
 		};
-		67D7EB5440B6903298B50F62 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = AppConfig.h;
-			path = ../../JuceLibraryCode/AppConfig.h;
-			sourceTree = "SOURCE_ROOT";
-		};
 		69A03C78CB94AB872CBF801E = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AudioUnit.framework;
 			path = System/Library/Frameworks/AudioUnit.framework;
 			sourceTree = SDKROOT;
-		};
-		6D7ECD3C1DF019B95324BBDD = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = "include_juce_audio_processors.mm";
-			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
-			sourceTree = "SOURCE_ROOT";
-		};
-		77F20985DA02EA344B38596F = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_audio_formats";
-			path = "~/JUCE/modules/juce_audio_formats";
-			sourceTree = "<absolute>";
-		};
-		820D5A16A16A56486EE28BF4 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_gui_basics";
-			path = "~/JUCE/modules/juce_gui_basics";
-			sourceTree = "<absolute>";
 		};
 		A9E570DF983D5896DFF90DBE = {
 			isa = PBXFileReference;
@@ -368,6 +314,20 @@
 			path = AutomationBridge.component;
 			sourceTree = "BUILT_PRODUCTS_DIR";
 		};
+		666D2922E92AFA4801AD2D9C = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_events";
+			path = "~/JUCE/modules/juce_events";
+			sourceTree = "<absolute>";
+		};
+		67D7EB5440B6903298B50F62 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = AppConfig.h;
+			path = ../../JuceLibraryCode/AppConfig.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		680A9E4FC5BC42C1623D3DB6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -375,12 +335,26 @@
 			path = System/Library/Frameworks/CoreAudio.framework;
 			sourceTree = SDKROOT;
 		};
+		6D7ECD3C1DF019B95324BBDD = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_processors.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
 		74A03A73D17BECB23DD58F6B = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = IOKit.framework;
 			path = System/Library/Frameworks/IOKit.framework;
 			sourceTree = SDKROOT;
+		};
+		77F20985DA02EA344B38596F = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_formats";
+			path = "~/JUCE/modules/juce_audio_formats";
+			sourceTree = "<absolute>";
 		};
 		7B5A2315C209C1FC4AE3DE76 = {
 			isa = PBXFileReference;
@@ -396,19 +370,12 @@
 			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp";
 			sourceTree = "SOURCE_ROOT";
 		};
-		810BDC8F847F91D720171FAB = {
+		820D5A16A16A56486EE28BF4 = {
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = "include_juce_cryptography.mm";
-			path = "../../JuceLibraryCode/include_juce_cryptography.mm";
-			sourceTree = "SOURCE_ROOT";
-		};
-		85B3BFA2D24ECC02492EC682 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = "include_juce_opengl.mm";
-			path = "../../JuceLibraryCode/include_juce_opengl.mm";
-			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = file;
+			name = "juce_gui_basics";
+			path = "~/JUCE/modules/juce_gui_basics";
+			sourceTree = "<absolute>";
 		};
 		85FF1A2FB9D9E25C4172D966 = {
 			isa = PBXFileReference;
@@ -459,25 +426,11 @@
 			path = AutomationBridge.entitlements;
 			sourceTree = "SOURCE_ROOT";
 		};
-		AC8EC283A98D0BF279A639A8 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = OpenGL.framework;
-			path = System/Library/Frameworks/OpenGL.framework;
-			sourceTree = SDKROOT;
-		};
 		AD561A2BD704E35B6A5C03AD = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
 			name = "juce_gui_extra";
 			path = "~/JUCE/modules/juce_gui_extra";
-			sourceTree = "<absolute>";
-		};
-		ADD333F2A88205E7720EDD46 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_cryptography";
-			path = "~/JUCE/modules/juce_cryptography";
 			sourceTree = "<absolute>";
 		};
 		AED2D652E6E7578A8DF2F6DE = {
@@ -628,13 +581,11 @@
 				A603B55C7661866C1A1CB9FC,
 				9455326AD52A20D244EF90F9,
 				FFAECB9152A30634BB4B51B2,
-				ADD333F2A88205E7720EDD46,
 				CC781D87C8B9F4267FE37EF6,
 				666D2922E92AFA4801AD2D9C,
 				D1D4CBB3AFE59042FA1B7077,
 				820D5A16A16A56486EE28BF4,
 				AD561A2BD704E35B6A5C03AD,
-				02A3CDF43FE5CA36FE31816F,
 			);
 			name = "JUCE Modules";
 			sourceTree = "<group>";
@@ -656,13 +607,11 @@
 				6D7ECD3C1DF019B95324BBDD,
 				E5DF1AB57F1AE2C58604DCA6,
 				3058B2BEAFEF24FC178B54CA,
-				810BDC8F847F91D720171FAB,
 				15E47CC8CEE3063508915DD1,
 				934832E2AF974037219A834D,
 				444F9EBF261CBB379C3B53F3,
 				3B041ACFE1EC670E8B022A4D,
 				40A040EB19BC90FC81DA6361,
-				85B3BFA2D24ECC02492EC682,
 				B977A5070E7084F93116580E,
 			);
 			name = "JUCE Library Code";
@@ -692,7 +641,6 @@
 				B5F27FF970A240D2713F5FA1,
 				BCA6F1387BAEF87FC0603B3E,
 				74A03A73D17BECB23DD58F6B,
-				AC8EC283A98D0BF279A639A8,
 				4296073ADE50CC4ADFED3239,
 				FDF86C7E3830751419B5C747,
 			);
@@ -1293,13 +1241,14 @@
 			files = (
 				6D5F96C7B7955DD71D0E2961,
 				A14039FBA4121AB1D868199F,
+				20656D1E36CFEF9CF1935235,
 				36CC7065CF7D028308C2B862,
 				68CBEF6A410DDC0F47B8559B,
 				6C1E717E090316F71DE97FFD,
+				51F7A0F13DD6DFAB126C579C,
 				5AD3E8FCD937184888894BDB,
 				E362F42C9F3972D411A16851,
 				EE2EAD0942D946E37735BDEE,
-				B9FA651E75BB14C393350C88,
 				921733A6985865D77552E4CC,
 				6485A3CCFD110470BC992F69,
 			);
@@ -1370,7 +1319,6 @@
 				5AD3E8FCD937184888894BDB,
 				E362F42C9F3972D411A16851,
 				EE2EAD0942D946E37735BDEE,
-				B9FA651E75BB14C393350C88,
 				921733A6985865D77552E4CC,
 				6485A3CCFD110470BC992F69,
 			);
@@ -1425,13 +1373,14 @@
 			files = (
 				6D5F96C7B7955DD71D0E2961,
 				A14039FBA4121AB1D868199F,
+				20656D1E36CFEF9CF1935235,
 				36CC7065CF7D028308C2B862,
 				68CBEF6A410DDC0F47B8559B,
 				6C1E717E090316F71DE97FFD,
+				51F7A0F13DD6DFAB126C579C,
 				5AD3E8FCD937184888894BDB,
 				E362F42C9F3972D411A16851,
 				EE2EAD0942D946E37735BDEE,
-				B9FA651E75BB14C393350C88,
 				921733A6985865D77552E4CC,
 				6485A3CCFD110470BC992F69,
 			);
@@ -1477,13 +1426,11 @@
 				96AFD5EF21750AA70C59D017,
 				460BBC5ECC69F2D1E689CFB7,
 				2A2015A961A68EB1C08A0D2A,
-				F0C9F030D538B8E415AD681F,
 				90EEA95543B179F03164DFD3,
 				34C7BAB580CF39B817443843,
 				45FDE45A826C75AEC8616AB8,
 				B15109DBD7343A2D9E58DD70,
 				498BA2690F5B8CE5706D0719,
-				F364234F4DF7A67836BBF465,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
