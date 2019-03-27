@@ -8,6 +8,7 @@
 *.dll
 *.dSYM
 *.dylib
+*.exp
 *.gch
 *.ilk
 *.lastbuildstate
@@ -23,5 +24,7 @@
 *.pdb
 *.so
 *.suo
+*.tlog
 *.user
+*.VC.db
 *.vst

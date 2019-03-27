@@ -40,9 +40,12 @@ public:
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
     AutomationBridgeAudioProcessor& processor;
+	AudioDeviceManager deviceManager;
+	ComboBox midiInputList;
+	Image background;
+	int lastInputIndex;
+	bool isAddingFromMidiInput;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessorEditor)
 };

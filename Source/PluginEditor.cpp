@@ -26,7 +26,10 @@
 
 //==============================================================================
 AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+	: AudioProcessorEditor (&p),
+	  processor (p),
+	  lastInputIndex(0),
+	  isAddingFromMidiInput(false)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -44,8 +47,39 @@ void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
     g.setColour (Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    g.setFont (15.f);
+    g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
+		background.getWidth(), background.getHeight());
+	
+	addAndMakeVisible (midiInputList);
+	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
+	auto midiInputs = MidiInput::getDevices();
+	midiInputList.addItemList (midiInputs, 0);
+	midiInputList.onChange = [this, &]
+	{
+		auto devices = MidiInput::getDevices();
+		auto index = midiInputList.getSelectedItemIndex();
+		deviceManager.removeMidiInputCallback (devices[lastInputIndex], this);
+		auto newInput = devices[index];
+		if (! deviceManager.isMidiInputEnabled (newInput))
+			deviceManager.setMidiInputEnabled (newInput, true);
+		deviceManager.addMidiInputCallback (newInput, this);
+		midiInputList.setSelectedId (index + 1, dontSendNotification);
+		lastInputIndex = index;
+	};
+
+	// find the first enabled device and use that by default
+    for (auto midiInput : midiInputs)
+    {
+        if (deviceManager.isMidiInputEnabled (midiInput))
+        {
+            setMidiInput (midiInputs.indexOf (midiInput));
+            break;
+        }
+    }
+
+	// if no enabled devices were found just use the first one in the list
+    if (midiInputList.getSelectedId() == 0) setMidiInput (0);
 }
 
 void AutomationBridgeAudioProcessorEditor::resized()

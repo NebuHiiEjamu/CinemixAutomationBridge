@@ -25,12 +25,23 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-//==============================================================================
-/**
-*/
+
+class BridgeInputCallback  : public MidiInputCallback
+{
+public:
+    void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override;
+};
+
+class InputMessageCallback  : public CallbackMessage
+{
+public:
+    void messageCallback() override;
+};
+
 class AutomationBridgeAudioProcessor  : public AudioProcessor
 {
 public:
+    static constexpr float randMaxRecip = 0.00003051757f;
     //==============================================================================
     AutomationBridgeAudioProcessor();
     ~AutomationBridgeAudioProcessor();
@@ -69,6 +80,10 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    int testMode : 1;
+
+    float randGen() const;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessor)
 };

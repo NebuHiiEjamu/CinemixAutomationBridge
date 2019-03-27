@@ -24,6 +24,17 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+void BridgeInputCallback::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
+{
+    const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
+    (new IncomingMessageCallback (this, message, source))->post();
+}
+
+void InputMessageCallback::messageCallback()
+{
+
+}
+
 //==============================================================================
 AutomationBridgeAudioProcessor::AutomationBridgeAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -194,6 +205,11 @@ void AutomationBridgeAudioProcessor::setStateInformation (const void* data, int 
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+float AutomationBridgeAudioProcessor::randGen() const
+{
+    return Random::getSystemRandom().nextFloat() * randMaxRecip;
 }
 
 //==============================================================================
