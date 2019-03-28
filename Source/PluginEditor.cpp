@@ -55,7 +55,7 @@ void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
 	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
 	auto midiInputs = MidiInput::getDevices();
 	midiInputList.addItemList (midiInputs, 0);
-	midiInputList.onChange = [this, &]
+	midiInputList.onChange = [&, this]
 	{
 		auto devices = MidiInput::getDevices();
 		auto index = midiInputList.getSelectedItemIndex();
