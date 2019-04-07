@@ -24,13 +24,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-void BridgeInputCallback::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
-{
-    const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
-    (new IncomingMessageCallback (this, message, source))->post();
-}
-
-void InputMessageCallback::messageCallback()
+void IncomingMessageCallback::messageCallback()
 {
 
 }

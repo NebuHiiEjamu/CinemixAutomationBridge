@@ -29,7 +29,8 @@
 //==============================================================================
 /**
 */
-class AutomationBridgeAudioProcessorEditor  : public AudioProcessorEditor
+class AutomationBridgeAudioProcessorEditor  : public AudioProcessorEditor,
+											  private MidiInputCallback
 {
 public:
     AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor&);
@@ -47,5 +48,25 @@ private:
 	int lastInputIndex;
 	bool isAddingFromMidiInput;
 
+	void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override;
+
+	/** Starts listening to a MIDI input device, enabling it if necessary. */
+	void setMidiInput (int index);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessorEditor)
+};
+
+class IncomingMessageCallback  : public CallbackMessage
+{
+public:
+	IncomingMessageCallback(AutomationBridgeAudioProcessorEditor* o, const MidiMessage& m, const String& s)
+		: owner(o), message(m), source(s)
+	{}
+
+	void messageCallback() override;
+
+private:
+	Component::SafePointer<AutomationBridgeAudioProcessorEditor> owner;
+	MidiMessage message;
+	String source;
 };

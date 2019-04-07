@@ -1,4 +1,3 @@
-.vs/*
 *~
 *.a
 *.d
@@ -11,6 +10,7 @@
 *.exp
 *.gch
 *.ilk
+*.ipch
 *.lastbuildstate
 *.lib
 *.log
@@ -22,9 +22,10 @@
 *.pbxuser
 *.pch
 *.pdb
+*.res
 *.so
 *.suo
 *.tlog
 *.user
 *.VC.db
-*.vst
+*.vst3

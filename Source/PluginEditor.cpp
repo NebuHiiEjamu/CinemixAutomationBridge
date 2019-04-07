@@ -31,16 +31,21 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	  lastInputIndex(0),
 	  isAddingFromMidiInput(false)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (400, 300);
 }
 
 AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
 {
+	deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
 //==============================================================================
+void AutomationBridgeAudioProcessorEditor::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
+{
+    const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
+    (new IncomingMessageCallback (this, message, source->getName()))->post();
+}
+
 void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
@@ -55,21 +60,13 @@ void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
 	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
 	auto midiInputs = MidiInput::getDevices();
 	midiInputList.addItemList (midiInputs, 0);
-	midiInputList.onChange = [&, this]
+	midiInputList.onChange = [this]
 	{
-		auto devices = MidiInput::getDevices();
-		auto index = midiInputList.getSelectedItemIndex();
-		deviceManager.removeMidiInputCallback (devices[lastInputIndex], this);
-		auto newInput = devices[index];
-		if (! deviceManager.isMidiInputEnabled (newInput))
-			deviceManager.setMidiInputEnabled (newInput, true);
-		deviceManager.addMidiInputCallback (newInput, this);
-		midiInputList.setSelectedId (index + 1, dontSendNotification);
-		lastInputIndex = index;
+		setMidiInput (midiInputList.getSelectedItemIndex());
 	};
 
 	// find the first enabled device and use that by default
-    for (auto midiInput : midiInputs)
+    for (auto& midiInput : midiInputs)
     {
         if (deviceManager.isMidiInputEnabled (midiInput))
         {
@@ -86,4 +83,16 @@ void AutomationBridgeAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void AutomationBridgeAudioProcessorEditor::setMidiInput (int index)
+{
+	auto devices = MidiInput::getDevices();
+	deviceManager.removeMidiInputCallback (devices[lastInputIndex], this);
+	auto newInput = devices[index];
+	if (! deviceManager.isMidiInputEnabled (newInput))
+		deviceManager.setMidiInputEnabled (newInput, true);
+	deviceManager.addMidiInputCallback (newInput, this);
+	midiInputList.setSelectedId (index + 1, dontSendNotification);
+	lastInputIndex = index;
 }

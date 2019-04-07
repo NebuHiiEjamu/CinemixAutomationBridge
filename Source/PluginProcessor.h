@@ -25,19 +25,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-
-class BridgeInputCallback  : public MidiInputCallback
-{
-public:
-    void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override;
-};
-
-class InputMessageCallback  : public CallbackMessage
-{
-public:
-    void messageCallback() override;
-};
-
 class AutomationBridgeAudioProcessor  : public AudioProcessor
 {
 public:
