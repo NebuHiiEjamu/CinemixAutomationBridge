@@ -31,6 +31,10 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	  lastInputIndex(0),
 	  isAddingFromMidiInput(false)
 {
+	for (auto& param : p.getParameters())
+	{
+		DBG("Name: " << param->getName(255) << ", Value: " << param->getValue() << ", Steps: " << param->getNumSteps());
+	}
     setSize (400, 300);
 }
 
