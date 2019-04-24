@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="qeEMQZ" name="AutomationBridge" projectType="audioplug" jucerVersion="5.4.3"
-              pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn"
-              pluginAUMainType="'aufx'" cppLanguageStandard="latest" pluginRTASCategory="8192"
-              pluginAAXCategory="8192">
+              pluginCharacteristicsValue="pluginIsMidiEffectPlugin" pluginAUMainType="'aufx'"
+              cppLanguageStandard="latest" pluginRTASCategory="8192" pluginAAXCategory="8192"
+              pluginCode="DRcm" pluginManufacturer="Laphicet Crowe" pluginAUIsSandboxSafe="1">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
       <FILE id="cNee1v" name="PluginProcessor.cpp" compile="1" resource="0"
