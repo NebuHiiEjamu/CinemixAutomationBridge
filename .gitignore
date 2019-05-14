@@ -29,3 +29,7 @@
 *.user
 *.VC.db
 *.vst3
+.directory
+.DS_Store
+desktop.ini
+Thumbs.db
