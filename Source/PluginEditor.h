@@ -45,6 +45,8 @@ private:
 	AudioDeviceManager deviceManager;
 	ComboBox midiInputList;
 	Image background;
+	TextEditor logBox; // Logic has no log window because Apple is shit
+
 	int lastInputIndex;
 	bool isAddingFromMidiInput;
 

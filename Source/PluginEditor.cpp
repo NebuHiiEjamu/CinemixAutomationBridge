@@ -31,11 +31,37 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	  lastInputIndex(0),
 	  isAddingFromMidiInput(false)
 {
-	for (auto& param : p.getParameters())
-	{
-		DBG("Name: " << param->getName(255) << ", Value: " << param->getValue() << ", Steps: " << param->getNumSteps());
-	}
     setSize (400, 300);
+
+	addAndMakeVisible (midiInputList);
+	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
+	auto midiInputs = MidiInput::getDevices();
+	midiInputList.addItemList (midiInputs, 0);
+	midiInputList.onChange = [this]
+	{
+		setMidiInput (midiInputList.getSelectedItemIndex());
+	};
+
+	// find the first enabled device and use that by default
+    for (auto& midiInput : midiInputs)
+    {
+        if (deviceManager.isMidiInputEnabled (midiInput))
+        {
+            setMidiInput (midiInputs.indexOf (midiInput));
+            break;
+        }
+    }
+
+	// if no enabled devices were found just use the first one in the list
+    if (midiInputList.getSelectedId() == 0) setMidiInput (0);
+
+	// Logic debug
+	logBox.setMultiLine (true);
+	logBox.setReadOnly (true);
+	logBox.setCaretPosition (0);
+	addAndMakeVisible (logBox);
+	for (auto& param : p.getParameters())
+		logBox.insertTextAtCaret (String() << "Name: " << param->getName(255) << ", Value: " << param->getValue() << ", Steps: " << param->getNumSteps());
 }
 
 AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
@@ -59,28 +85,6 @@ void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
     g.setFont (15.f);
     g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
 		background.getWidth(), background.getHeight());
-	
-	addAndMakeVisible (midiInputList);
-	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
-	auto midiInputs = MidiInput::getDevices();
-	midiInputList.addItemList (midiInputs, 0);
-	midiInputList.onChange = [this]
-	{
-		setMidiInput (midiInputList.getSelectedItemIndex());
-	};
-
-	// find the first enabled device and use that by default
-    for (auto& midiInput : midiInputs)
-    {
-        if (deviceManager.isMidiInputEnabled (midiInput))
-        {
-            setMidiInput (midiInputs.indexOf (midiInput));
-            break;
-        }
-    }
-
-	// if no enabled devices were found just use the first one in the list
-    if (midiInputList.getSelectedId() == 0) setMidiInput (0);
 }
 
 void AutomationBridgeAudioProcessorEditor::resized()
