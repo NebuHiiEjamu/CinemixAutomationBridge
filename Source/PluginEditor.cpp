@@ -60,6 +60,10 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	logBox.setReadOnly (true);
 	logBox.setCaretPosition (0);
 	addAndMakeVisible (logBox);
+	String path = File::getSpecialLocation (userDocumentsDirectory).getFullPathName();
+	path += File::getSeparatorString();
+	path += "cinemix_debug.log";
+	FileOutputStream fos(path);
 	for (auto& param : p.getParameters())
 	{
 		String s("Name: ");
@@ -68,7 +72,11 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 		s += String(param->getValue());
 		s += ", Steps: ";
 		s += param->getNumSteps());
+		s += '\n';
 		logBox.insertTextAtCaret (s);
+
+		// and for good measure
+		fos.writeText(s, false, false);
 	}
 }
 
