@@ -61,7 +61,15 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	logBox.setCaretPosition (0);
 	addAndMakeVisible (logBox);
 	for (auto& param : p.getParameters())
-		logBox.insertTextAtCaret (String() << "Name: " << param->getName(255) << ", Value: " << param->getValue() << ", Steps: " << param->getNumSteps());
+	{
+		String s("Name: ");
+		s += param->getName(255);
+		s += ", Value: ";
+		s += String(param->getValue());
+		s += ", Steps: ";
+		s += param->getNumSteps());
+		logBox.insertTextAtCaret (s);
+	}
 }
 
 AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
