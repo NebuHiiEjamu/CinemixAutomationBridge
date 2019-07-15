@@ -64,19 +64,14 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	path += File::getSeparatorString();
 	path += "cinemix_debug.log";
 	FileOutputStream fos(path);
-	for (auto& param : p.getParameters())
+	for (auto& midiInput : midiInputs)
 	{
-		String s("Name: ");
-		s += param->getName(255);
-		s += ", Value: ";
-		s += String(param->getValue());
-		s += ", Steps: ";
-		s += param->getNumSteps());
+		String s(midiInput);
 		s += '\n';
 		logBox.insertTextAtCaret (s);
 
 		// and for good measure
-		fos.writeText(s, false, false);
+		fos.writeText(s, false, false, nullptr);
 	}
 }
 
