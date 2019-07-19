@@ -60,7 +60,7 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	logBox.setReadOnly (true);
 	logBox.setCaretPosition (0);
 	addAndMakeVisible (logBox);
-	String path = File::getSpecialLocation (userDocumentsDirectory).getFullPathName();
+	String path = File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName();
 	path += File::getSeparatorString();
 	path += "cinemix_debug.log";
 	FileOutputStream fos(path);
