@@ -28,34 +28,23 @@
 AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor& p)
 	: AudioProcessorEditor (&p),
 	  processor (p),
-	  lastInputIndex(0),
-	  isAddingFromMidiInput(false)
 {
     setSize (400, 300);
+	midiIn = nullptr;
 
-	addAndMakeVisible (midiInputList);
-	midiInputList.setTextWhenNoChoicesAvailable ("No MIDI Inputs Enabled");
-	auto midiInputs = MidiInput::getDevices();
-	midiInputList.addItemList (midiInputs, 0);
-	midiInputList.onChange = [this]
+	Array<MidiDeviceInfo> &midiInputs = MidiInput::getAvailableDevices();
+	for (int i = 1; i <= midiInputs.size(); i++)
 	{
-		setMidiInput (midiInputList.getSelectedItemIndex());
-	};
+		String s = midiInputs[i-1]->name;
+		s += " (";
+		s += midiInputs[i-1]->identifier;
+		s += ")";
+		inputList.addItem(s, i);
+	}
+	
+	addAndMakeVisible(midiInputs);
 
-	// find the first enabled device and use that by default
-    for (auto& midiInput : midiInputs)
-    {
-        if (deviceManager.isMidiInputEnabled (midiInput))
-        {
-            setMidiInput (midiInputs.indexOf (midiInput));
-            break;
-        }
-    }
-
-	// if no enabled devices were found just use the first one in the list
-    if (midiInputList.getSelectedId() == 0) setMidiInput (0);
-
-	// Logic debug
+	/*// Logic debug
 	logBox.setMultiLine (true);
 	logBox.setReadOnly (true);
 	logBox.setCaretPosition (0);
@@ -72,12 +61,12 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 
 		// and for good measure
 		fos.writeText(s, false, false, nullptr);
-	}
+	}*/
 }
 
 AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
 {
-	deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
+	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
 //==============================================================================

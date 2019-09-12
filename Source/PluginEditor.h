@@ -26,7 +26,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
-//==============================================================================
 /**
 */
 class AutomationBridgeAudioProcessorEditor  : public AudioProcessorEditor,
@@ -36,24 +35,20 @@ public:
     AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor&);
     ~AutomationBridgeAudioProcessorEditor();
 
-    //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+	void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message);
 
 private:
     AutomationBridgeAudioProcessor& processor;
-	AudioDeviceManager deviceManager;
-	ComboBox midiInputList;
-	Image background;
-	TextEditor logBox; // Logic has no log window because Apple is shit
-
-	int lastInputIndex;
-	bool isAddingFromMidiInput;
-
-	void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override;
-
-	/** Starts listening to a MIDI input device, enabling it if necessary. */
-	void setMidiInput (int index);
+	Array<Slider> faders;
+	Array<ToggleButton> faderToggles;
+	Array<ToggleButton> mutes;
+	ComboBox inputList;
+	Slider masterFader;
+	Array<Slider> joys;
+	ToggleButton testModeToggle;
+	MidiDeviceInfo *midiIn;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessorEditor)
 };
