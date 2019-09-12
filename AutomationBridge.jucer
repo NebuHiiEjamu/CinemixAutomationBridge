@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="qeEMQZ" name="AutomationBridge" projectType="audioplug" jucerVersion="5.4.3"
+<JUCERPROJECT id="qeEMQZ" name="AutomationBridge" projectType="audioplug" jucerVersion="5.4.4"
               pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
-              pluginAUMainType="'aufx'" cppLanguageStandard="latest" pluginRTASCategory="8192"
+              pluginAUMainType="'aumi'" cppLanguageStandard="latest" pluginRTASCategory="8192"
               pluginAAXCategory="8192" pluginCode="DRcm" pluginManufacturer="Laphicet Crowe"
               pluginAUIsSandboxSafe="1" pluginFormats="buildAU">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">

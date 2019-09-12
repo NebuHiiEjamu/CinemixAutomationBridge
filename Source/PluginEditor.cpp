@@ -25,14 +25,14 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor& p)
+AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
 	  processor (p),
 {
     setSize (400, 300);
 	midiIn = nullptr;
 
-	Array<MidiDeviceInfo> &midiInputs = MidiInput::getAvailableDevices();
+	Array<MidiDeviceInfo> midiInputs = MidiInput::getAvailableDevices();
 	for (int i = 1; i <= midiInputs.size(); i++)
 	{
 		String s = midiInputs[i-1]->name;
@@ -42,7 +42,7 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 		inputList.addItem(s, i);
 	}
 	
-	addAndMakeVisible(midiInputs);
+	addAndMakeVisible (inputList);
 
 	/*// Logic debug
 	logBox.setMultiLine (true);
@@ -64,18 +64,12 @@ AutomationBridgeAudioProcessorEditor::AutomationBridgeAudioProcessorEditor (Auto
 	}*/
 }
 
-AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
+AutomationBridgeEditor::~AutomationBridgeEditor()
 {
 	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
-/*void AutomationBridgeAudioProcessorEditor::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
-{
-    const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
-    (new IncomingMessageCallback (this, message, source->getName()))->post();
-}*/
-
-void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
+void AutomationBridgeEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
@@ -86,7 +80,7 @@ void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
 		background.getWidth(), background.getHeight());
 }
 
-void AutomationBridgeAudioProcessorEditor::resized()
+void AutomationBridgeEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..

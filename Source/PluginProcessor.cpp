@@ -94,6 +94,12 @@ void AutomationBridge::changeProgramName (int index, const String& newName)
 {
 }
 
+void AutomationBridge::prepareToPlay (double sampleRate, int samplesPerBlock)
+{
+    // Use this method as the place to do any pre-playback
+    // initialisation that you need..
+}
+
 void AutomationBridge::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any

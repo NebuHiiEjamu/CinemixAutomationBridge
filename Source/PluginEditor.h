@@ -28,19 +28,17 @@
 
 /**
 */
-class AutomationBridgeAudioProcessorEditor  : public AudioProcessorEditor,
-											  private MidiInputCallback
+class AutomationBridgeEditor  : public AudioProcessorEditor
 {
 public:
-    AutomationBridgeAudioProcessorEditor (AutomationBridgeAudioProcessor&);
-    ~AutomationBridgeAudioProcessorEditor();
+    AutomationBridgeEditor (AutomationBridge&);
+    ~AutomationBridgeEditor();
 
     void paint (Graphics&) override;
     void resized() override;
-	//void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message);
 
 private:
-    AutomationBridgeAudioProcessor& processor;
+    AutomationBridge& processor;
 	Array<Slider> faders;
 	Array<ToggleButton> faderToggles;
 	Array<ToggleButton> mutes;
@@ -50,20 +48,6 @@ private:
 	ToggleButton testModeToggle;
 	MidiDeviceInfo *midiIn;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
 };
 
-/*class IncomingMessageCallback  : public CallbackMessage
-{
-public:
-	IncomingMessageCallback(AutomationBridgeAudioProcessorEditor* o, const MidiMessage& m, const String& s)
-		: owner(o), message(m), source(s)
-	{}
-
-	void messageCallback() override;
-
-private:
-	Component::SafePointer<AutomationBridgeAudioProcessorEditor> owner;
-	MidiMessage message;
-	String source;
-};*/
