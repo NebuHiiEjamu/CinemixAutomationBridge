@@ -69,12 +69,11 @@ AutomationBridgeAudioProcessorEditor::~AutomationBridgeAudioProcessorEditor()
 	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
-//==============================================================================
-void AutomationBridgeAudioProcessorEditor::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
+/*void AutomationBridgeAudioProcessorEditor::handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message)
 {
     const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
     (new IncomingMessageCallback (this, message, source->getName()))->post();
-}
+}*/
 
 void AutomationBridgeAudioProcessorEditor::paint (Graphics& g)
 {
@@ -91,16 +90,4 @@ void AutomationBridgeAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-}
-
-void AutomationBridgeAudioProcessorEditor::setMidiInput (int index)
-{
-	auto devices = MidiInput::getDevices();
-	deviceManager.removeMidiInputCallback (devices[lastInputIndex], this);
-	auto newInput = devices[index];
-	if (! deviceManager.isMidiInputEnabled (newInput))
-		deviceManager.setMidiInputEnabled (newInput, true);
-	deviceManager.addMidiInputCallback (newInput, this);
-	midiInputList.setSelectedId (index + 1, dontSendNotification);
-	lastInputIndex = index;
 }

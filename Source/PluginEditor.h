@@ -37,7 +37,7 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
-	void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message);
+	//void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message);
 
 private:
     AutomationBridgeAudioProcessor& processor;
@@ -53,7 +53,7 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeAudioProcessorEditor)
 };
 
-class IncomingMessageCallback  : public CallbackMessage
+/*class IncomingMessageCallback  : public CallbackMessage
 {
 public:
 	IncomingMessageCallback(AutomationBridgeAudioProcessorEditor* o, const MidiMessage& m, const String& s)
@@ -66,4 +66,4 @@ private:
 	Component::SafePointer<AutomationBridgeAudioProcessorEditor> owner;
 	MidiMessage message;
 	String source;
-};
+};*/
