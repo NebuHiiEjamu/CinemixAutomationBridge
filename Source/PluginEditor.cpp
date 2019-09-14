@@ -42,6 +42,7 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 		inputList.addItem(s, i);
 	}
 	
+	inputList.setTopLeftPosition (10, 10);
 	addAndMakeVisible (inputList);
 
 	/*// Logic debug
