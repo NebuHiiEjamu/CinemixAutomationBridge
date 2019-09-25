@@ -27,23 +27,24 @@
 //==============================================================================
 AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
-	  processor (p),
+	  processor (p)
 {
     setSize (400, 300);
+	setOpaque(true);
+
 	midiIn = nullptr;
+
+	addAndMakeVisible (inputList);
 
 	Array<MidiDeviceInfo> midiInputs = MidiInput::getAvailableDevices();
 	for (int i = 1; i <= midiInputs.size(); i++)
 	{
-		String s = midiInputs[i-1]->name;
+		String s = midiInputs[i-1].name;
 		s += " (";
-		s += midiInputs[i-1]->identifier;
+		s += midiInputs[i-1].identifier;
 		s += ")";
 		inputList.addItem(s, i);
 	}
-	
-	inputList.setTopLeftPosition (10, 10);
-	addAndMakeVisible (inputList);
 
 	/*// Logic debug
 	logBox.setMultiLine (true);
@@ -77,12 +78,11 @@ void AutomationBridgeEditor::paint (Graphics& g)
 
     g.setColour (Colours::white);
     g.setFont (15.f);
-    g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
-		background.getWidth(), background.getHeight());
+    /*g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
+		background.getWidth(), background.getHeight());*/
 }
 
 void AutomationBridgeEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    inputList.setTopLeftPosition (10, 10);
 }
