@@ -4,16 +4,28 @@
               pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginAUMainType="'aumi'" cppLanguageStandard="latest" pluginRTASCategory="8192"
               pluginAAXCategory="8192" pluginCode="DRcm" pluginManufacturer="Laphicet Crowe"
-              pluginAUIsSandboxSafe="1" pluginFormats="buildAU">
+              pluginAUIsSandboxSafe="1" pluginFormats="buildAU" pluginManufacturerCode="ChMe">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
+      <FILE id="SGecpH" name="CheckBoxColumn.cpp" compile="1" resource="0"
+            file="Source/CheckBoxColumn.cpp"/>
+      <FILE id="dA7vcE" name="CheckBoxColumn.h" compile="0" resource="0"
+            file="Source/CheckBoxColumn.h"/>
+      <FILE id="OMOmpC" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="TnokgN" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="cNee1v" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="PQWl9d" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="OMOmpC" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="TnokgN" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="moXNGg" name="PluginSettings.cpp" compile="1" resource="0"
+            file="Source/PluginSettings.cpp"/>
+      <FILE id="sXTsTr" name="PluginSettings.h" compile="0" resource="0"
+            file="Source/PluginSettings.h"/>
+      <FILE id="fLSKUk" name="SimpleListBoxModel.cpp" compile="1" resource="0"
+            file="Source/SimpleListBoxModel.cpp"/>
+      <FILE id="IKKiQF" name="SimpleListBoxModel.h" compile="0" resource="0"
+            file="Source/SimpleListBoxModel.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

@@ -29,41 +29,19 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
 	  processor (p)
 {
-    setSize (400, 300);
+    setSize (1200, 720);
 	setOpaque(true);
+	setResizable(true, true);
 
 	midiIn = nullptr;
+	midiOut = nullptr;
 
-	addAndMakeVisible (inputList);
+	resizer (this, nullptr);
+	addAndMakeVisible (resizer);
 
-	Array<MidiDeviceInfo> midiInputs = MidiInput::getAvailableDevices();
-	for (int i = 1; i <= midiInputs.size(); i++)
-	{
-		String s = midiInputs[i-1].name;
-		s += " (";
-		s += midiInputs[i-1].identifier;
-		s += ")";
-		inputList.addItem(s, i);
-	}
-
-	/*// Logic debug
-	logBox.setMultiLine (true);
-	logBox.setReadOnly (true);
-	logBox.setCaretPosition (0);
-	addAndMakeVisible (logBox);
-	String path = File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName();
-	path += File::getSeparatorString();
-	path += "cinemix_debug.log";
-	FileOutputStream fos(path);
-	for (auto& midiInput : midiInputs)
-	{
-		String s(midiInput);
-		s += '\n';
-		logBox.insertTextAtCaret (s);
-
-		// and for good measure
-		fos.writeText(s, false, false, nullptr);
-	}*/
+	addAndMakeVisible (testModeToggle);
+	testModeToggle.setButtonText ("Test Mode");
+	testModeToggle.setClickingToggleState (true);
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()
@@ -77,12 +55,18 @@ void AutomationBridgeEditor::paint (Graphics& g)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
     g.setColour (Colours::white);
-    g.setFont (15.f);
+    g.setFont (14.0f);
     /*g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
 		background.getWidth(), background.getHeight());*/
 }
 
 void AutomationBridgeEditor::resized()
 {
-    inputList.setTopLeftPosition (10, 10);
+	Rectangle<int> area = getLocalBounds();
+	Rectangle<int> header = area.removeFromTop (25);
+	Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
+	Rectangle<int> faderRowTop = faderLayout.removeFromTop (faderLayout.getHeight() / 2);
+	inputList.setBounds (header.removeFromLeft (100));
+	outputList.setBounds (header.removeFromLeft (100));
+	testModeToggle.setBounds (header.removeFromRight (100));
 }

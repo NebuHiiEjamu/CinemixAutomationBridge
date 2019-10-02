@@ -65,13 +65,25 @@
 			isa = PBXBuildFile;
 			fileRef = 6540F05FA36822BF8621F591;
 		};
-		9AFEDA08D030FE7330D5FD59 = {
+		9C3A44CBB279323DEE78B67A = {
 			isa = PBXBuildFile;
-			fileRef = B2E627AF84C8C955FE156F1E;
+			fileRef = 6A6BFC092899A24D37214F03;
 		};
 		27E2EFD4EF513D6C2EF7F106 = {
 			isa = PBXBuildFile;
 			fileRef = 02C9E7454D6728EC1F5114E8;
+		};
+		9AFEDA08D030FE7330D5FD59 = {
+			isa = PBXBuildFile;
+			fileRef = B2E627AF84C8C955FE156F1E;
+		};
+		3C4CA3EA98DBF276C8A23EF0 = {
+			isa = PBXBuildFile;
+			fileRef = 8517561EA7CBA3FF6A4FBAA4;
+		};
+		692D3631332B0BE4BE8701B4 = {
+			isa = PBXBuildFile;
+			fileRef = 107E0729ACADFCB60658F6B1;
 		};
 		4F2FC90A0643B2AFDAAFB157 = {
 			isa = PBXBuildFile;
@@ -164,6 +176,13 @@
 			name = Accelerate.framework;
 			path = System/Library/Frameworks/Accelerate.framework;
 			sourceTree = SDKROOT;
+		};
+		107E0729ACADFCB60658F6B1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = SimpleListBoxModel.cpp;
+			path = ../../Source/SimpleListBoxModel.cpp;
+			sourceTree = "SOURCE_ROOT";
 		};
 		15E47CC8CEE3063508915DD1 = {
 			isa = PBXFileReference;
@@ -298,11 +317,25 @@
 			path = System/Library/Frameworks/AudioUnit.framework;
 			sourceTree = SDKROOT;
 		};
+		6A6BFC092899A24D37214F03 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CheckBoxColumn.cpp;
+			path = ../../Source/CheckBoxColumn.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		6D7ECD3C1DF019B95324BBDD = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = "include_juce_audio_processors.mm";
 			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		6E99D34614BBB736DB2FA1B8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CheckBoxColumn.h;
+			path = ../../Source/CheckBoxColumn.h;
 			sourceTree = "SOURCE_ROOT";
 		};
 		74A03A73D17BECB23DD58F6B = {
@@ -325,6 +358,13 @@
 			name = "juce_gui_basics";
 			path = "~/JUCE/modules/juce_gui_basics";
 			sourceTree = "<absolute>";
+		};
+		8517561EA7CBA3FF6A4FBAA4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = PluginSettings.cpp;
+			path = ../../Source/PluginSettings.cpp;
+			sourceTree = "SOURCE_ROOT";
 		};
 		85FF1A2FB9D9E25C4172D966 = {
 			isa = PBXFileReference;
@@ -466,6 +506,13 @@
 			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		E24494170CD89C7BD1D9EACB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = PluginSettings.h;
+			path = ../../Source/PluginSettings.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		E5DF1AB57F1AE2C58604DCA6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -479,6 +526,13 @@
 			name = Cocoa.framework;
 			path = System/Library/Frameworks/Cocoa.framework;
 			sourceTree = SDKROOT;
+		};
+		EC747996DFE6A823DA63782F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SimpleListBoxModel.h;
+			path = ../../Source/SimpleListBoxModel.h;
+			sourceTree = "SOURCE_ROOT";
 		};
 		FDF86C7E3830751419B5C747 = {
 			isa = PBXFileReference;
@@ -497,10 +551,16 @@
 		B537D979F150769FE32CB268 = {
 			isa = PBXGroup;
 			children = (
-				B2E627AF84C8C955FE156F1E,
-				CC739C4296608FF58980A034,
+				6A6BFC092899A24D37214F03,
+				6E99D34614BBB736DB2FA1B8,
 				02C9E7454D6728EC1F5114E8,
 				915BDFF35CF10556AA841338,
+				B2E627AF84C8C955FE156F1E,
+				CC739C4296608FF58980A034,
+				8517561EA7CBA3FF6A4FBAA4,
+				E24494170CD89C7BD1D9EACB,
+				107E0729ACADFCB60658F6B1,
+				EC747996DFE6A823DA63782F,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1028,8 +1088,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AFEDA08D030FE7330D5FD59,
+				9C3A44CBB279323DEE78B67A,
 				27E2EFD4EF513D6C2EF7F106,
+				9AFEDA08D030FE7330D5FD59,
+				3C4CA3EA98DBF276C8A23EF0,
+				692D3631332B0BE4BE8701B4,
 				4F2FC90A0643B2AFDAAFB157,
 				34053A2AC5B8CF852DAE9E8C,
 				B32E72C16C746F53C01DECDB,

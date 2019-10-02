@@ -409,10 +409,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
+    <ClCompile Include="..\..\Source\CheckBoxColumn.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PluginSettings.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SimpleListBoxModel.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2343,10 +2352,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\PluginProcessor.h">
+    <ClInclude Include="..\..\Source\CheckBoxColumn.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginProcessor.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginSettings.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SimpleListBoxModel.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

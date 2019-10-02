@@ -21,31 +21,28 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#pragma once
-
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
+#include "CheckBoxColumn.h"
+#include "SimpleListBoxModel.h"
 
-/**
-*/
-class AutomationBridgeEditor  : public AudioProcessorEditor
+//==============================================================================
+CheckBoxColumn::CheckBoxColumn(SimpleListBoxModel& o, String& text)
+	: owner(o)
 {
-public:
-    AutomationBridgeEditor (AutomationBridge&);
-    ~AutomationBridgeEditor();
+	addAndMakeVisible (checkBox);
+	checkBox.setButtonText (text);
+}
 
-    void paint (Graphics&) override;
-    void resized() override;
+CheckBoxColumn::~CheckBoxColumn()
+{
+}
 
-private:
-    AutomationBridge& processor;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
+void CheckBoxColumn::resized()
+{
+    checkBox.setBoundsInset (BorderSize<int> (2));
+}
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
-};
-
+void CheckBoxColumn::setId(int newId)
+{
+	id = newId;
+}

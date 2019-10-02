@@ -24,28 +24,43 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
 
-/**
+class AutomationBridgeEditor;
+
+//==============================================================================
+/*
 */
-class AutomationBridgeEditor  : public AudioProcessorEditor
+class AutomationBridgeSettings    : public DocumentWindow
 {
 public:
-    AutomationBridgeEditor (AutomationBridge&);
-    ~AutomationBridgeEditor();
+    AutomationBridgeSettings (AutomationBridgeEditor&);
+	  ~AutomationBridgeSettings();
 
     void paint (Graphics&) override;
     void resized() override;
+    int getFaderCount() const;
+    int getWidth() const;
+    int getHeight() const;
+    MidiDeviceInfo* getInput(int) const;
+    MidiDeviceInfo* getOutput(int) const;
 
 private:
-    AutomationBridge& processor;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
+  	void load();
+	void save() const;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
+private:
+    Array<MidiDeviceInfo*> inputs;
+    Array<MidiDeviceInfo*> outputs;
+    AutomationBridgeEditor &editor;
+    Slider fadersSlider;
+    TextButton cancelButton;
+    TextButton applyButton;
+    TextButton saveButton;
+    String path;
+    int faders;
+    int width;
+    int height;
+
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeSettings)
 };
-

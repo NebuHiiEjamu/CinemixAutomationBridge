@@ -21,31 +21,37 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#pragma once
-
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
+#include "SimpleListBoxModel.h"
 
-/**
-*/
-class AutomationBridgeEditor  : public AudioProcessorEditor
+//==============================================================================
+SimpleListBoxModel::SimpleListBoxModel(const Array<MidiDeviceInfo>& d),
+	: data(d), font(Font(14.0f))
 {
-public:
-    AutomationBridgeEditor (AutomationBridge&);
-    ~AutomationBridgeEditor();
+	addAndMakeVisible (listBox);
+	listBox.setModel (this);
+	listBox.setColour (ListBox::outlineColourId, Colours::grey);
+	listBox.setOutlineThickness (1);
 
-    void paint (Graphics&) override;
-    void resized() override;
+	for (MidiDeviceInfo& info : data)
+	
+}
 
-private:
-    AutomationBridge& processor;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
+SimpleListBoxModel::~SimpleListBoxModel()
+{
+}
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
-};
+int SimpleListBoxModel::getNumRows()
+{
+	return data.size();
+}
 
+void SimpleListBoxModel::paintListBoxItem (int rowNumber, Graphics& g, int width, int height,
+    bool /*rowIsSelected*/)
+{
+	g.setColour (getLookAndFeel().findColour (ListBox::textColourId));
+	g.setFont (font);
+	g.drawText (data[rowNumber].name, 2, 0, width - 4, height, Justification::centredLeft);
+	g.setColour (getLookAndFeel().findColour (ListBox::backgroundColourId));
+	g.fillRect (width - 1, 0, 1, height);
+}

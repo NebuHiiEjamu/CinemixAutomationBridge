@@ -24,28 +24,26 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
 
-/**
+class SimpleListBoxModel;
+
+//==============================================================================
+/*
 */
-class AutomationBridgeEditor  : public AudioProcessorEditor
+class CheckBoxColumn    : public Component
 {
 public:
-    AutomationBridgeEditor (AutomationBridge&);
-    ~AutomationBridgeEditor();
+    CheckBoxColumn(SimpleListBoxModel&, String&);
+    ~CheckBoxColumn();
 
-    void paint (Graphics&) override;
     void resized() override;
+    void setId(int);
 
 private:
-    AutomationBridge& processor;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
+    SimpleListBoxModel& owner;
+    ToggleButton checkBox;
+    int id;
+    
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CheckBoxColumn)
 };
-

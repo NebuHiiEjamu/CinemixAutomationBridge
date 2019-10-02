@@ -24,28 +24,24 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
 
-/**
+//==============================================================================
+/*
 */
-class AutomationBridgeEditor  : public AudioProcessorEditor
+class SimpleListBoxModel    : public ListBoxModel
 {
 public:
-    AutomationBridgeEditor (AutomationBridge&);
-    ~AutomationBridgeEditor();
+    SimpleListBoxModel(const Array<MidiDeviceInfo>&);
+    ~SimpleListBoxModel();
 
-    void paint (Graphics&) override;
-    void resized() override;
+    int getNumRows();
+    void paintListBoxItem (int, Graphics&, int, int, bool);
 
 private:
-    AutomationBridge& processor;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
+	Array<MidiDeviceInfo>& data;
+	ListBox listBox;
+	Font font;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleListBoxModel)
 };
-
