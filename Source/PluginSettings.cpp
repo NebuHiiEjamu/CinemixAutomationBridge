@@ -23,15 +23,14 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginSettings.h"
-#include "DeviceListBox.h"
 
 //==============================================================================
 AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
-    : DocumentWindow ("Automation Bridge Settings", DocumentWindow::backgroundColourId,
+: DocumentWindow ("Automation Bridge Settings", Colours::grey,
       DocumentWindow::minimiseButton | DocumentWindow::closeButton, false),
     editor (e)
 {
-    centreWithSize (300, 300);
+    //centreWithSize (300, 300);
     setVisible (true);
     setUsingNativeTitleBar (true);
 
@@ -44,38 +43,38 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #endif
 	load();
 
-    addAndMakeVisible (fadersSlider);
+    addAndMakeVisible (&fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
-    fadersSlider.setTextSuffix (" faders");
+    fadersSlider.setTextValueSuffix (" faders");
 
 	inDevices = MidiInput::getAvailableDevices();
-	outDevices = MidiOutput::getAvailableDevices()
+    outDevices = MidiOutput::getAvailableDevices();
 
-	inputs = DeviceListBox (inDevices, inputsOn);
+	inputs = new DeviceListBox (inDevices, inputsOn);
 	addAndMakeVisible (inputs);
 	Label inputsLbl;
-	inputsLbl.setText ("Input Devices:");
-	inputsLbl.attachToComponent (&inputs);
+    inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
+	inputsLbl.attachToComponent (inputs, false);
 
-	outputs = DeviceListBox (outDevices, outputsOn);
+	outputs = new DeviceListBox (outDevices, outputsOn);
 	addAndMakeVisible (outputs);
 	Label outputsLbl;
-	outputsLbl.setText ("Output Devices:");
-	outputsLbl.attachToComponent (&outputs);
+	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
+	outputsLbl.attachToComponent (outputs, false);
 
-    addAndMakeVisible (cancelButton);
+    addAndMakeVisible (&cancelButton);
     cancelButton.setButtonText ("Cancel");
     cancelButton.onClick = [this] {
 		delete this;
     };
 
-    addAndMakeVisible (applyButton);
+    addAndMakeVisible (&applyButton);
     applyButton.setButtonText ("Apply");
     applyButton.onClick = [this] {
 		save();
     };
 
-    addAndMakeVisible (saveButton);
+    addAndMakeVisible (&saveButton);
     saveButton.setButtonText ("Save");
     saveButton.onClick = [this] {
 		save();
@@ -85,6 +84,8 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 
 AutomationBridgeSettings::~AutomationBridgeSettings()
 {
+    delete inputs;
+    delete outputs;
 }
 
 int AutomationBridgeSettings::getFaderCount() const
@@ -102,14 +103,14 @@ int AutomationBridgeSettings::getHeight() const
 	return height;
 }
 
-MidiDeviceInfo* AutomationBridgeSettings::getActiveInput(int i) const
+MidiDeviceInfo AutomationBridgeSettings::getActiveInput(int i) const
 {
-	return &inDevices[inputsOn[i]];
+	return inDevices[inputsOn[i]];
 }
 
-MidiDeviceInfo* AutomationBridgeSettings::getActiveOutput(int i) const
+MidiDeviceInfo AutomationBridgeSettings::getActiveOutput(int i) const
 {
-	return &outDevices[outputsOn[i]];
+	return outDevices[outputsOn[i]];
 }
 
 void AutomationBridgeSettings::save() const
@@ -156,10 +157,10 @@ void AutomationBridgeSettings::load()
 			for (int i = 0; i < outputsSize; i++) outputIds.add (fs.readString());
 
 			for (int i = 0; i < inDevices.size(); i++)
-				if (inputIds.contains (inDevices[i].identifier) inputsOn.add (i);
+				if (inputIds.contains (inDevices[i].identifier)) inputsOn.add (i);
 
 			for (int i = 0; i < outDevices.size(); i++)
-				if (outputIds.contains (outDevices[i].identifier) outputsOn.add (i);
+				if (outputIds.contains (outDevices[i].identifier)) outputsOn.add (i);
 		}
 	}
 }
@@ -181,6 +182,6 @@ void AutomationBridgeSettings::resized()
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));
 	fadersSlider.setBounds (area.removeFromTop (25));
-	inputs.setBounds (area.removeFromTop (area.getHeight() / 2);
-	outputs.setBounds (area);
+	inputs->setBounds (area.removeFromTop (area.getHeight() / 2));
+	outputs->setBounds (area);
 }

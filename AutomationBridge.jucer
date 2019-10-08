@@ -4,7 +4,8 @@
               pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginAUMainType="'aumi'" cppLanguageStandard="latest" pluginRTASCategory="8192"
               pluginAAXCategory="8192" pluginCode="DRcm" pluginManufacturer="Laphicet Crowe"
-              pluginAUIsSandboxSafe="1" pluginFormats="buildAU" pluginManufacturerCode="ChMe">
+              pluginAUIsSandboxSafe="1" pluginFormats="buildAU" pluginManufacturerCode="ChMe"
+              bundleIdentifier="AutomationBridge">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
       <FILE id="OMOmpC" name="PluginEditor.cpp" compile="1" resource="0"
@@ -102,6 +103,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="1"/>
+    <OSX/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_FLAC="0" JUCE_USE_OGGVORBIS="0"
                JUCE_USE_MP3AUDIOFORMAT="0" JUCE_USE_WINDOWS_MEDIA_FORMAT="0"

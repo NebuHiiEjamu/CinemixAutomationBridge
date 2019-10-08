@@ -393,7 +393,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.yourcompany.AutomationBridge
+ #define JucePlugin_CFBundleIdentifier     AutomationBridge
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           8192

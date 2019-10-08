@@ -34,8 +34,8 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	setOpaque (true);
 	setResizable (true, true);
 
-	resizer (this, nullptr);
-	addAndMakeVisible (resizer);
+	/*resizer (this, nullptr);
+	addAndMakeVisible (resizer);*/
 
 	addAndMakeVisible (prefsButton);
 	prefsButton.setButtonText ("Settings");
@@ -49,7 +49,7 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 
 	addAndMakeVisible (testModeToggle);
 	testModeToggle.setButtonText ("Test Mode");
-	testModeToggle.setClickingToggleState (true);
+	testModeToggle.setClickingTogglesState (true);
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()

@@ -32,11 +32,11 @@ class DeviceListBox    : public ListBox,
 					   	 private ListBoxModel
 {
 public:
-    DeviceListBox (const Array<MidiDeviceInfo>&, SortedSet<int>&);
+    DeviceListBox (Array<MidiDeviceInfo>&, SortedSet<int>&);
     ~DeviceListBox();
 
-    int getNumRows();
-	void paintListBoxItem (int, Graphics&, int, int, bool);
+    int getNumRows() override;
+	void paintListBoxItem (int, Graphics&, int, int, bool) override;
 	void paint (Graphics&) override;
 	void listBoxItemClicked (int, const MouseEvent&) override;
 	void returnKeyPressed (int) override;

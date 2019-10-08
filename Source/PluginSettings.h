@@ -24,9 +24,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
-class AutomationBridgeEditor;
-class DeviceListBox;
+#include "PluginEditor.h"
+#include "DeviceListBox.h"
 
 //==============================================================================
 /*
@@ -42,18 +41,18 @@ public:
     int getFaderCount() const;
     int getWidth() const;
     int getHeight() const;
-    MidiDeviceInfo* getActiveInput(int) const;
-    MidiDeviceInfo* getActiveOutput(int) const;
+    MidiDeviceInfo getActiveInput(int) const;
+    MidiDeviceInfo getActiveOutput(int) const;
 
 private:
   	void load();
 	void save() const;
 
 private:
-	Array<MidiDeviceInfo>& inDevices;
-	Array<MidiDeviceInfo>& outDevices;
-    DeviceListBox inputs;
-	DeviceListBox outputs;
+    Array<MidiDeviceInfo> inDevices;
+    Array<MidiDeviceInfo> outDevices;
+    DeviceListBox* inputs;
+	DeviceListBox* outputs;
 	SortedSet<int> inputsOn;
 	SortedSet<int> outputsOn;
     AutomationBridgeEditor &editor;

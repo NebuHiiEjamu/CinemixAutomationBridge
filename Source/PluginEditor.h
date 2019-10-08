@@ -48,7 +48,7 @@ private:
 	Array<Slider> joys;
 	TextButton prefsButton;
 	TextButton testModeToggle;
-	ResizableBorderComponent resizer;
+	//ResizableBorderComponent resizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
 };
