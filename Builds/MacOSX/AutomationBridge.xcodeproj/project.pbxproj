@@ -65,10 +65,6 @@
 			isa = PBXBuildFile;
 			fileRef = 6540F05FA36822BF8621F591;
 		};
-		9C3A44CBB279323DEE78B67A = {
-			isa = PBXBuildFile;
-			fileRef = 6A6BFC092899A24D37214F03;
-		};
 		27E2EFD4EF513D6C2EF7F106 = {
 			isa = PBXBuildFile;
 			fileRef = 02C9E7454D6728EC1F5114E8;
@@ -81,9 +77,9 @@
 			isa = PBXBuildFile;
 			fileRef = 8517561EA7CBA3FF6A4FBAA4;
 		};
-		692D3631332B0BE4BE8701B4 = {
+		945E5D2D53FE1CB4D9F9F205 = {
 			isa = PBXBuildFile;
-			fileRef = 107E0729ACADFCB60658F6B1;
+			fileRef = AF5E07EF8AA905D4FB225150;
 		};
 		4F2FC90A0643B2AFDAAFB157 = {
 			isa = PBXBuildFile;
@@ -176,13 +172,6 @@
 			name = Accelerate.framework;
 			path = System/Library/Frameworks/Accelerate.framework;
 			sourceTree = SDKROOT;
-		};
-		107E0729ACADFCB60658F6B1 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = SimpleListBoxModel.cpp;
-			path = ../../Source/SimpleListBoxModel.cpp;
-			sourceTree = "SOURCE_ROOT";
 		};
 		15E47CC8CEE3063508915DD1 = {
 			isa = PBXFileReference;
@@ -303,6 +292,13 @@
 			path = ../../JuceLibraryCode/AppConfig.h;
 			sourceTree = "SOURCE_ROOT";
 		};
+		67E8B0630F46C60D1BF420C4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = DeviceListBox.h;
+			path = ../../Source/DeviceListBox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		680A9E4FC5BC42C1623D3DB6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -317,25 +313,11 @@
 			path = System/Library/Frameworks/AudioUnit.framework;
 			sourceTree = SDKROOT;
 		};
-		6A6BFC092899A24D37214F03 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = CheckBoxColumn.cpp;
-			path = ../../Source/CheckBoxColumn.cpp;
-			sourceTree = "SOURCE_ROOT";
-		};
 		6D7ECD3C1DF019B95324BBDD = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = "include_juce_audio_processors.mm";
 			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
-			sourceTree = "SOURCE_ROOT";
-		};
-		6E99D34614BBB736DB2FA1B8 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = CheckBoxColumn.h;
-			path = ../../Source/CheckBoxColumn.h;
 			sourceTree = "SOURCE_ROOT";
 		};
 		74A03A73D17BECB23DD58F6B = {
@@ -428,6 +410,13 @@
 			name = AudioToolbox.framework;
 			path = System/Library/Frameworks/AudioToolbox.framework;
 			sourceTree = SDKROOT;
+		};
+		AF5E07EF8AA905D4FB225150 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = DeviceListBox.cpp;
+			path = ../../Source/DeviceListBox.cpp;
+			sourceTree = "SOURCE_ROOT";
 		};
 		B2E627AF84C8C955FE156F1E = {
 			isa = PBXFileReference;
@@ -527,13 +516,6 @@
 			path = System/Library/Frameworks/Cocoa.framework;
 			sourceTree = SDKROOT;
 		};
-		EC747996DFE6A823DA63782F = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = SimpleListBoxModel.h;
-			path = ../../Source/SimpleListBoxModel.h;
-			sourceTree = "SOURCE_ROOT";
-		};
 		FDF86C7E3830751419B5C747 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -551,16 +533,14 @@
 		B537D979F150769FE32CB268 = {
 			isa = PBXGroup;
 			children = (
-				6A6BFC092899A24D37214F03,
-				6E99D34614BBB736DB2FA1B8,
 				02C9E7454D6728EC1F5114E8,
 				915BDFF35CF10556AA841338,
 				B2E627AF84C8C955FE156F1E,
 				CC739C4296608FF58980A034,
 				8517561EA7CBA3FF6A4FBAA4,
 				E24494170CD89C7BD1D9EACB,
-				107E0729ACADFCB60658F6B1,
-				EC747996DFE6A823DA63782F,
+				AF5E07EF8AA905D4FB225150,
+				67E8B0630F46C60D1BF420C4,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1088,11 +1068,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C3A44CBB279323DEE78B67A,
 				27E2EFD4EF513D6C2EF7F106,
 				9AFEDA08D030FE7330D5FD59,
 				3C4CA3EA98DBF276C8A23EF0,
-				692D3631332B0BE4BE8701B4,
+				945E5D2D53FE1CB4D9F9F205,
 				4F2FC90A0643B2AFDAAFB157,
 				34053A2AC5B8CF852DAE9E8C,
 				B32E72C16C746F53C01DECDB,

@@ -7,10 +7,6 @@
               pluginAUIsSandboxSafe="1" pluginFormats="buildAU" pluginManufacturerCode="ChMe">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
-      <FILE id="SGecpH" name="CheckBoxColumn.cpp" compile="1" resource="0"
-            file="Source/CheckBoxColumn.cpp"/>
-      <FILE id="dA7vcE" name="CheckBoxColumn.h" compile="0" resource="0"
-            file="Source/CheckBoxColumn.h"/>
       <FILE id="OMOmpC" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="TnokgN" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
@@ -22,10 +18,9 @@
             file="Source/PluginSettings.cpp"/>
       <FILE id="sXTsTr" name="PluginSettings.h" compile="0" resource="0"
             file="Source/PluginSettings.h"/>
-      <FILE id="fLSKUk" name="SimpleListBoxModel.cpp" compile="1" resource="0"
-            file="Source/SimpleListBoxModel.cpp"/>
-      <FILE id="IKKiQF" name="SimpleListBoxModel.h" compile="0" resource="0"
-            file="Source/SimpleListBoxModel.h"/>
+      <FILE id="fLSKUk" name="DeviceListBox.cpp" compile="1" resource="0"
+            file="Source/DeviceListBox.cpp"/>
+      <FILE id="zrObSd" name="DeviceListBox.h" compile="0" resource="0" file="Source/DeviceListBox.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

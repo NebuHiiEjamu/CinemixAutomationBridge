@@ -21,28 +21,28 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#pragma once
+
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CheckBoxColumn.h"
-#include "SimpleListBoxModel.h"
 
 //==============================================================================
-CheckBoxColumn::CheckBoxColumn(SimpleListBoxModel& o, String& text)
-	: owner(o)
+/*
+*/
+class DeviceListBox    : public ListBox,
+					   	 private ListBoxModel
 {
-	addAndMakeVisible (checkBox);
-	checkBox.setButtonText (text);
-}
+public:
+    DeviceListBox (const Array<MidiDeviceInfo>&, SortedSet<int>&);
+    ~DeviceListBox();
 
-CheckBoxColumn::~CheckBoxColumn()
-{
-}
-
-void CheckBoxColumn::resized()
-{
-    checkBox.setBoundsInset (BorderSize<int> (2));
-}
-
-void CheckBoxColumn::setId(int newId)
-{
-	id = newId;
-}
+    int getNumRows();
+	void paintListBoxItem (int, Graphics&, int, int, bool);
+	void paint (Graphics&) override;
+	void listBoxItemClicked (int, const MouseEvent&) override;
+	void returnKeyPressed (int) override;
+private:
+	Array<MidiDeviceInfo>& items;
+	SortedSet<int>& itemsChecked;
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeviceListBox)
+};

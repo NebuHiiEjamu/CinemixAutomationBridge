@@ -26,6 +26,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class AutomationBridgeEditor;
+class DeviceListBox;
 
 //==============================================================================
 /*
@@ -41,16 +42,20 @@ public:
     int getFaderCount() const;
     int getWidth() const;
     int getHeight() const;
-    MidiDeviceInfo* getInput(int) const;
-    MidiDeviceInfo* getOutput(int) const;
+    MidiDeviceInfo* getActiveInput(int) const;
+    MidiDeviceInfo* getActiveOutput(int) const;
 
 private:
   	void load();
 	void save() const;
 
 private:
-    Array<MidiDeviceInfo*> inputs;
-    Array<MidiDeviceInfo*> outputs;
+	Array<MidiDeviceInfo>& inDevices;
+	Array<MidiDeviceInfo>& outDevices;
+    DeviceListBox inputs;
+	DeviceListBox outputs;
+	SortedSet<int> inputsOn;
+	SortedSet<int> outputsOn;
     AutomationBridgeEditor &editor;
     Slider fadersSlider;
     TextButton cancelButton;

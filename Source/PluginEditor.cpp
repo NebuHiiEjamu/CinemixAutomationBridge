@@ -23,6 +23,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "PluginSettings.h"
 
 //==============================================================================
 AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
@@ -30,14 +31,21 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	  processor (p)
 {
     setSize (1200, 720);
-	setOpaque(true);
-	setResizable(true, true);
-
-	midiIn = nullptr;
-	midiOut = nullptr;
+	setOpaque (true);
+	setResizable (true, true);
 
 	resizer (this, nullptr);
 	addAndMakeVisible (resizer);
+
+	addAndMakeVisible (prefsButton);
+	prefsButton.setButtonText ("Settings");
+	prefsButton.onClick = [this] {
+		prefsWin = new AutomationBridgeSettings (*this);
+		RectanglePlacement rp (RectanglePlacement::xMid | RectanglePlacement::yMid |
+			RectanglePlacement::doNotResize);
+		
+		prefsWin->setVisible (true);
+	};
 
 	addAndMakeVisible (testModeToggle);
 	testModeToggle.setButtonText ("Test Mode");
@@ -66,7 +74,6 @@ void AutomationBridgeEditor::resized()
 	Rectangle<int> header = area.removeFromTop (25);
 	Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
 	Rectangle<int> faderRowTop = faderLayout.removeFromTop (faderLayout.getHeight() / 2);
-	inputList.setBounds (header.removeFromLeft (100));
-	outputList.setBounds (header.removeFromLeft (100));
+	prefsButton.setBounds (header.removeFromLeft (150));
 	testModeToggle.setBounds (header.removeFromRight (100));
 }

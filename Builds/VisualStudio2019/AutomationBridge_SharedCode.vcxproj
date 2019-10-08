@@ -136,11 +136,10 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\CheckBoxColumn.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginSettings.cpp"/>
-    <ClCompile Include="..\..\Source\SimpleListBoxModel.cpp"/>
+    <ClCompile Include="..\..\Source\DeviceListBox.cpp"/>
     <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1928,11 +1927,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\CheckBoxColumn.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginSettings.h"/>
-    <ClInclude Include="..\..\Source\SimpleListBoxModel.h"/>
+    <ClInclude Include="..\..\Source\DeviceListBox.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

@@ -26,6 +26,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
+class AutomationBridgeSettings;
+
 /**
 */
 class AutomationBridgeEditor  : public AudioProcessorEditor
@@ -39,10 +41,12 @@ public:
 
 private:
     AutomationBridge& processor;
+	SafePointer<AutomationBridgeSettings> prefsWin;
 	Array<Slider> faders;
 	Array<TextButton> mutes;
 	Slider masterFader;
 	Array<Slider> joys;
+	TextButton prefsButton;
 	TextButton testModeToggle;
 	ResizableBorderComponent resizer;
 

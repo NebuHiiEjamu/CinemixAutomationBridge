@@ -23,6 +23,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginSettings.h"
+#include "DeviceListBox.h"
 
 //==============================================================================
 AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
@@ -41,16 +42,31 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #else
     path += "AutomationBridge.dat";
 #endif
+	load();
 
     addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
     fadersSlider.setTextSuffix (" faders");
 
+	inDevices = MidiInput::getAvailableDevices();
+	outDevices = MidiOutput::getAvailableDevices()
+
+	inputs = DeviceListBox (inDevices, inputsOn);
+	addAndMakeVisible (inputs);
+	Label inputsLbl;
+	inputsLbl.setText ("Input Devices:");
+	inputsLbl.attachToComponent (&inputs);
+
+	outputs = DeviceListBox (outDevices, outputsOn);
+	addAndMakeVisible (outputs);
+	Label outputsLbl;
+	outputsLbl.setText ("Output Devices:");
+	outputsLbl.attachToComponent (&outputs);
+
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
     cancelButton.onClick = [this] {
-		load();
-		editor.findParentComponentOfClass<DocumentWindow>()->exitModalState (0);
+		delete this;
     };
 
     addAndMakeVisible (applyButton);
@@ -63,10 +79,8 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     saveButton.setButtonText ("Save");
     saveButton.onClick = [this] {
 		save();
-		editor.findParentComponentOfClass<DocumentWindow>()->exitModalState (0);
+		delete this;
     };
-
-    load();
 }
 
 AutomationBridgeSettings::~AutomationBridgeSettings()
@@ -88,14 +102,14 @@ int AutomationBridgeSettings::getHeight() const
 	return height;
 }
 
-MidiDeviceInfo* AutomationBridgeSettings::getInput(int i) const
+MidiDeviceInfo* AutomationBridgeSettings::getActiveInput(int i) const
 {
-	return inputs[i];
+	return &inDevices[inputsOn[i]];
 }
 
-MidiDeviceInfo* AutomationBridgeSettings::getOutput(int i) const
+MidiDeviceInfo* AutomationBridgeSettings::getActiveOutput(int i) const
 {
-	return outputs[i];
+	return &outDevices[outputsOn[i]];
 }
 
 void AutomationBridgeSettings::save() const
@@ -108,11 +122,11 @@ void AutomationBridgeSettings::save() const
 		fs.writeInt (faders);
 		fs.writeInt (width);
 		fs.writeInt (height);
-		fs.writeInt (inputs.size());
-		fs.writeInt (outputs.size());
+		fs.writeInt (inputsOn.size());
+		fs.writeInt (outputsOn.size());
 
-		for (MidiDeviceInfo *info : inputs) fs.writeString (info->identifier);
-		for (MidiDeviceInfo *info : outputs) fs.writeString (info->identifier);
+		for (int i : inputsOn) fs.writeString (inDevices[i].identifier);
+		for (int i : outputsOn) fs.writeString (outDevices[i].identifier);
 
 		fs.flush();
 	}
@@ -141,11 +155,11 @@ void AutomationBridgeSettings::load()
 			StringArray outputIds;
 			for (int i = 0; i < outputsSize; i++) outputIds.add (fs.readString());
 
-			for (MidiDeviceInfo &info : MidiInput::getAvailableDevices())
-				if (inputIds.contains (info.identifier) inputs.add (&info);
+			for (int i = 0; i < inDevices.size(); i++)
+				if (inputIds.contains (inDevices[i].identifier) inputsOn.add (i);
 
-			for (MidiDeviceInfo &info : MidiOutput::getAvailableDevices())
-				if (outputIds.contains (info.identifier) outputs.add (&info);
+			for (int i = 0; i < outDevices.size(); i++)
+				if (outputIds.contains (outDevices[i].identifier) outputsOn.add (i);
 		}
 	}
 }
@@ -162,4 +176,11 @@ void AutomationBridgeSettings::paint (Graphics& g)
 void AutomationBridgeSettings::resized()
 {
     Rectangle<int> area = getLocalBounds();
+	Rectangle<int> footer = area.removeFromBottom (30);
+	saveButton.setBounds (footer.removeFromRight (100));
+	applyButton.setBounds (footer.removeFromRight (100));
+	cancelButton.setBounds (footer.removeFromRight (100));
+	fadersSlider.setBounds (area.removeFromTop (25));
+	inputs.setBounds (area.removeFromTop (area.getHeight() / 2);
+	outputs.setBounds (area);
 }
