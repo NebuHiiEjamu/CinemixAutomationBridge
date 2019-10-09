@@ -30,10 +30,6 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
       DocumentWindow::minimiseButton | DocumentWindow::closeButton, false),
     editor (e)
 {
-    //centreWithSize (300, 300);
-    setVisible (true);
-    setUsingNativeTitleBar (true);
-
     path = File::getSpecialLocation (File::userApplicationDataDirectory).getFullPathName();
     path += File::getSeparatorString();
 #ifdef __APPLE__
@@ -80,6 +76,9 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 		save();
 		delete this;
     };
+
+	setVisible (true);
+	centreWithSize (300, 300);
 }
 
 AutomationBridgeSettings::~AutomationBridgeSettings()
