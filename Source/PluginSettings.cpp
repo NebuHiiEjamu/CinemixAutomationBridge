@@ -39,7 +39,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #endif
 	load();
 
-    addAndMakeVisible (&fadersSlider);
+    Component::addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
     fadersSlider.setTextValueSuffix (" faders");
 
@@ -47,30 +47,30 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     outDevices = MidiOutput::getAvailableDevices();
 
 	inputs = new DeviceListBox (inDevices, inputsOn);
-	addAndMakeVisible (inputs);
+	Component::addAndMakeVisible (inputs);
 	Label inputsLbl;
     inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLbl.attachToComponent (inputs, false);
 
 	outputs = new DeviceListBox (outDevices, outputsOn);
-	addAndMakeVisible (outputs);
+	Component::addAndMakeVisible (outputs);
 	Label outputsLbl;
 	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
 	outputsLbl.attachToComponent (outputs, false);
 
-    addAndMakeVisible (&cancelButton);
+    Component::addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
     cancelButton.onClick = [this] {
 		delete this;
     };
 
-    addAndMakeVisible (&applyButton);
+    Component::addAndMakeVisible (applyButton);
     applyButton.setButtonText ("Apply");
     applyButton.onClick = [this] {
 		save();
     };
 
-    addAndMakeVisible (&saveButton);
+    Component::addAndMakeVisible (saveButton);
     saveButton.setButtonText ("Save");
     saveButton.onClick = [this] {
 		save();
