@@ -28,7 +28,7 @@
 //==============================================================================
 AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
-	  processor (p)
+	  processor (p), bounds (getLocalBounds())
 {
     setSize (1200, 720);
 	setOpaque (true);
@@ -44,9 +44,8 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 		RectanglePlacement rp (RectanglePlacement::xMid | RectanglePlacement::yMid |
 			RectanglePlacement::doNotResize);
 		Rectangle<int> area (0, 0, 640, 480);
-		
-		prefsWin->setBounds (rp.appliedTo (area,
-			Desktop::getInstance().getDisplays().getMainDisplay().userArea.reduced (20)));
+        Rectangle<int> result = rp.appliedTo (area, bounds.reduced (20));
+		prefsWin->setBounds (result);
 		prefsWin->setVisible (true);
 	};
 

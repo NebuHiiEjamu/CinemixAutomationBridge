@@ -41,13 +41,14 @@ public:
 
 private:
     AutomationBridge& processor;
-	SafePointer<AutomationBridgeSettings> prefsWin;
+	AutomationBridgeSettings* prefsWin;
 	Array<Slider> faders;
 	Array<TextButton> mutes;
 	Slider masterFader;
 	Array<Slider> joys;
 	TextButton prefsButton;
 	TextButton testModeToggle;
+    Rectangle<int> bounds;
 	//ResizableBorderComponent resizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
