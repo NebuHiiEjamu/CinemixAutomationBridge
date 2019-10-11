@@ -43,7 +43,10 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 		prefsWin = new AutomationBridgeSettings (*this);
 		RectanglePlacement rp (RectanglePlacement::xMid | RectanglePlacement::yMid |
 			RectanglePlacement::doNotResize);
+		Rectangle<int> area (0, 0, 640, 480);
 		
+		prefsWin->setBounds (rp.appliedTo (area,
+			Desktop::getInstance().getDisplays().getMainDisplay().userArea.reduced (20)));
 		prefsWin->setVisible (true);
 	};
 

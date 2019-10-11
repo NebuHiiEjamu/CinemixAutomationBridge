@@ -26,7 +26,7 @@
 
 //==============================================================================
 AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
-: DocumentWindow ("Automation Bridge Settings", Colours::grey,
+: DocumentWindow ("Automation Bridge Settings", findColour (ResizableWindow::backgroundColourId),
       DocumentWindow::minimiseButton | DocumentWindow::closeButton, false),
     editor (e)
 {
@@ -42,6 +42,10 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     Component::addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
     fadersSlider.setTextValueSuffix (" faders");
+	fadersSlider.setRange (48.0, 128.0, 1.0);
+	fadersSlider.onValueChange = [this] {
+		faders = roundToInt (getValue());
+	};
 
 	inDevices = MidiInput::getAvailableDevices();
     outDevices = MidiOutput::getAvailableDevices();
