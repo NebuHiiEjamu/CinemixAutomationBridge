@@ -47,6 +47,7 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
         Rectangle<int> result = rp.appliedTo (area, bounds.reduced (20));
 		prefsWin->setBounds (result);
 		prefsWin->setVisible (true);
+		prefsWin->addToDesktop (0);
 	};
 
 	addAndMakeVisible (testModeToggle);
@@ -76,6 +77,6 @@ void AutomationBridgeEditor::resized()
 	Rectangle<int> header = area.removeFromTop (25);
 	Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
 	Rectangle<int> faderRowTop = faderLayout.removeFromTop (faderLayout.getHeight() / 2);
-	prefsButton.setBounds (header.removeFromLeft (150));
+	prefsButton.setBounds (header.removeFromLeft (100));
 	testModeToggle.setBounds (header.removeFromRight (100));
 }
