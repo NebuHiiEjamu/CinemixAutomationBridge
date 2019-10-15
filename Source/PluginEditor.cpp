@@ -31,18 +31,19 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
 	  processor (p)
 {
-    setSize (1200, 720);
 	setOpaque (true);
 	setResizable (true, true);
     
     mainPanel = new PluginMainPanel (this);
-    addAndMakeVisible(dynamic_cast<Component*>(mainPanel));
+    addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
     
     prefsPanel = new AutomationBridgeSettings (this);
-    addChildComponent(dynamic_cast<Component*>(prefsPanel));
+    addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
 
 	/*resizer (this, nullptr);
 	addAndMakeVisible (resizer);*/
+
+	setSize (1200, 720);
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()
@@ -56,7 +57,7 @@ AutomationBridgeEditor::~AutomationBridgeEditor()
 void AutomationBridgeEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.fillAll (Colours::blue);
 }
 
 AutomationBridgeSettings* AutomationBridgeEditor::getPrefsPanel()

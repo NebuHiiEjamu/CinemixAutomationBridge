@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class AutomationBridgeEditor;
@@ -50,8 +51,8 @@ private:
 private:
     Array<MidiDeviceInfo> inDevices;
     Array<MidiDeviceInfo> outDevices;
-    DeviceListBox* inputs;
-	DeviceListBox* outputs;
+    std::unique_ptr<DeviceListBox> inputs;
+	std::unique_ptr<DeviceListBox> outputs;
 	SortedSet<int> inputsOn;
 	SortedSet<int> outputsOn;
     AutomationBridgeEditor *editor;

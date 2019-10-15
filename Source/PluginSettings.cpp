@@ -51,13 +51,13 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 	inDevices = MidiInput::getAvailableDevices();
     outDevices = MidiOutput::getAvailableDevices();
 
-	inputs = new DeviceListBox (inDevices, inputsOn);
+	inputs.reset (new DeviceListBox (inDevices, inputsOn));
 	addAndMakeVisible (inputs);
 	Label inputsLbl;
     inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLbl.attachToComponent (inputs, false);
 
-	outputs = new DeviceListBox (outDevices, outputsOn);
+	outputs.reset (new DeviceListBox (outDevices, outputsOn));
 	Component::addAndMakeVisible (outputs);
 	Label outputsLbl;
 	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
@@ -91,8 +91,6 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 
 AutomationBridgeSettings::~AutomationBridgeSettings()
 {
-    delete inputs;
-    delete outputs;
 }
 
 int AutomationBridgeSettings::getFaderCount() const

@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
@@ -44,8 +45,8 @@ public:
 
 private:
     AutomationBridge& processor;
-	AutomationBridgeSettings* prefsPanel;
-    PluginMainPanel* mainPanel;
+	std::unique_ptr<AutomationBridgeSettings> prefsPanel;
+    std::unique_ptr<PluginMainPanel> mainPanel;
 	//ResizableBorderComponent resizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
