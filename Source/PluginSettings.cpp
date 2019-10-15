@@ -23,12 +23,12 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginSettings.h"
+#include "DeviceListBox.h"
+#include "PluginEditor.h"
+#include "PluginMainPanel.h"
 
 //==============================================================================
-AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
-: DocumentWindow ("Automation Bridge Settings", Colours::grey,
-      DocumentWindow::minimiseButton | DocumentWindow::closeButton, false),
-    editor (e)
+AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 {
     path = File::getSpecialLocation (File::userApplicationDataDirectory).getFullPathName();
     path += File::getSeparatorString();
@@ -37,12 +37,13 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #else
     path += "AutomationBridge.dat";
 #endif
-	load();
+    
+    editor = e;
 
-    Component::addAndMakeVisible (fadersSlider);
+    addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
     fadersSlider.setTextValueSuffix (" faders");
-	fadersSlider.setRange (48.0, 128.0, 1.0);
+	fadersSlider.setRange (48.0, 128.0, 2.0);
 	fadersSlider.onValueChange = [this] {
 		faders = roundToInt (fadersSlider.getValue());
 	};
@@ -51,7 +52,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     outDevices = MidiOutput::getAvailableDevices();
 
 	inputs = new DeviceListBox (inDevices, inputsOn);
-	Component::addAndMakeVisible (inputs);
+	addAndMakeVisible (inputs);
 	Label inputsLbl;
     inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLbl.attachToComponent (inputs, false);
@@ -62,28 +63,30 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
 	outputsLbl.attachToComponent (outputs, false);
 
-    Component::addAndMakeVisible (cancelButton);
+    addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
     cancelButton.onClick = [this] {
-		delete this;
+        load();
+        editor->getMainPanel()->setVisible (true);
+        setVisible (false);
     };
 
-    Component::addAndMakeVisible (applyButton);
+    addAndMakeVisible (applyButton);
     applyButton.setButtonText ("Apply");
     applyButton.onClick = [this] {
 		save();
     };
 
-    Component::addAndMakeVisible (saveButton);
+    addAndMakeVisible (saveButton);
     saveButton.setButtonText ("Save");
     saveButton.onClick = [this] {
 		save();
-		delete this;
+        editor->getMainPanel()->setVisible (true);
+        setVisible (false);
     };
     
     setOpaque (true);
-	/*setVisible (true);
-	centreWithSize (300, 300);*/
+    setVisible (false);
 }
 
 AutomationBridgeSettings::~AutomationBridgeSettings()
@@ -95,16 +98,6 @@ AutomationBridgeSettings::~AutomationBridgeSettings()
 int AutomationBridgeSettings::getFaderCount() const
 {
 	return faders;
-}
-
-int AutomationBridgeSettings::getWidth() const
-{
-	return width;
-}
-
-int AutomationBridgeSettings::getHeight() const
-{
-	return height;
 }
 
 MidiDeviceInfo AutomationBridgeSettings::getActiveInput(int i) const
@@ -125,8 +118,8 @@ void AutomationBridgeSettings::save() const
 	{
 		fs.writeInt (1); // format version for future revisions
 		fs.writeInt (faders);
-		fs.writeInt (width);
-		fs.writeInt (height);
+		fs.writeInt (editor->getWidth());
+		fs.writeInt (editor->getHeight());
 		fs.writeInt (inputsOn.size());
 		fs.writeInt (outputsOn.size());
 
@@ -149,8 +142,7 @@ void AutomationBridgeSettings::load()
 		{
 			fs.readInt(); // format version is 1, ignore for now
 			faders = fs.readInt();
-			width = fs.readInt();
-			height = fs.readInt();
+            editor->setSize (fs.readInt(), fs.readInt());
 			int inputsSize = fs.readInt();
 			int outputsSize = fs.readInt();
 
@@ -167,12 +159,16 @@ void AutomationBridgeSettings::load()
 				if (outputIds.contains (outDevices[i].identifier)) outputsOn.add (i);
 		}
 	}
+    else
+    {
+        faders = 74; // nothing particularly special about default value
+    }
 }
 
 void AutomationBridgeSettings::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.fillAll (Colours::blue);
 
     g.setColour (Colours::white);
     g.setFont (14.0f);

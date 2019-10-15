@@ -409,16 +409,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\DeviceListBox.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PluginMainPanel.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginSettings.cpp">
-      <Filter>AutomationBridge\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DeviceListBox.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
     <ClCompile Include="C:\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2349,16 +2352,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\DeviceListBox.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginMainPanel.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginSettings.h">
-      <Filter>AutomationBridge\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DeviceListBox.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="C:\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

@@ -8,9 +8,16 @@
               bundleIdentifier="AutomationBridge">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
+      <FILE id="fLSKUk" name="DeviceListBox.cpp" compile="1" resource="0"
+            file="Source/DeviceListBox.cpp"/>
+      <FILE id="zrObSd" name="DeviceListBox.h" compile="0" resource="0" file="Source/DeviceListBox.h"/>
       <FILE id="OMOmpC" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="TnokgN" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="yLSJEN" name="PluginMainPanel.cpp" compile="1" resource="0"
+            file="Source/PluginMainPanel.cpp"/>
+      <FILE id="rqrRot" name="PluginMainPanel.h" compile="0" resource="0"
+            file="Source/PluginMainPanel.h"/>
       <FILE id="cNee1v" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="PQWl9d" name="PluginProcessor.h" compile="0" resource="0"
@@ -19,9 +26,6 @@
             file="Source/PluginSettings.cpp"/>
       <FILE id="sXTsTr" name="PluginSettings.h" compile="0" resource="0"
             file="Source/PluginSettings.h"/>
-      <FILE id="fLSKUk" name="DeviceListBox.cpp" compile="1" resource="0"
-            file="Source/DeviceListBox.cpp"/>
-      <FILE id="zrObSd" name="DeviceListBox.h" compile="0" resource="0" file="Source/DeviceListBox.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

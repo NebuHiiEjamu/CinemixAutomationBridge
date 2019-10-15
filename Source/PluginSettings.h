@@ -24,23 +24,22 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginEditor.h"
-#include "DeviceListBox.h"
+
+class AutomationBridgeEditor;
+class DeviceListBox;
 
 //==============================================================================
 /*
 */
-class AutomationBridgeSettings    : public DocumentWindow
+class AutomationBridgeSettings    : public Component
 {
 public:
-    AutomationBridgeSettings (AutomationBridgeEditor&);
-	  ~AutomationBridgeSettings();
+    AutomationBridgeSettings (AutomationBridgeEditor*);
+    ~AutomationBridgeSettings();
 
     void paint (Graphics&) override;
     void resized() override;
     int getFaderCount() const;
-    int getWidth() const;
-    int getHeight() const;
     MidiDeviceInfo getActiveInput(int) const;
     MidiDeviceInfo getActiveOutput(int) const;
 
@@ -55,15 +54,13 @@ private:
 	DeviceListBox* outputs;
 	SortedSet<int> inputsOn;
 	SortedSet<int> outputsOn;
-    AutomationBridgeEditor &editor;
+    AutomationBridgeEditor *editor;
     Slider fadersSlider;
     TextButton cancelButton;
     TextButton applyButton;
     TextButton saveButton;
     String path;
     int faders;
-    int width;
-    int height;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeSettings)

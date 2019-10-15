@@ -65,9 +65,17 @@
 			isa = PBXBuildFile;
 			fileRef = 6540F05FA36822BF8621F591;
 		};
+		945E5D2D53FE1CB4D9F9F205 = {
+			isa = PBXBuildFile;
+			fileRef = AF5E07EF8AA905D4FB225150;
+		};
 		27E2EFD4EF513D6C2EF7F106 = {
 			isa = PBXBuildFile;
 			fileRef = 02C9E7454D6728EC1F5114E8;
+		};
+		6B79378783E4237619AC8438 = {
+			isa = PBXBuildFile;
+			fileRef = CFD8F91ED30C7F87B9CECE66;
 		};
 		9AFEDA08D030FE7330D5FD59 = {
 			isa = PBXBuildFile;
@@ -76,10 +84,6 @@
 		3C4CA3EA98DBF276C8A23EF0 = {
 			isa = PBXBuildFile;
 			fileRef = 8517561EA7CBA3FF6A4FBAA4;
-		};
-		945E5D2D53FE1CB4D9F9F205 = {
-			isa = PBXBuildFile;
-			fileRef = AF5E07EF8AA905D4FB225150;
 		};
 		4F2FC90A0643B2AFDAAFB157 = {
 			isa = PBXBuildFile;
@@ -248,6 +252,13 @@
 			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = "include_juce_audio_plugin_client_AU_1.mm";
 			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_AU_1.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		4D49CC094D4019E3FB0CF5E2 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = PluginMainPanel.h;
+			path = ../../Source/PluginMainPanel.h;
 			sourceTree = "SOURCE_ROOT";
 		};
 		603842DCEA94A100512B17FA = {
@@ -453,6 +464,13 @@
 			path = ../../Source/PluginProcessor.h;
 			sourceTree = "SOURCE_ROOT";
 		};
+		CFD8F91ED30C7F87B9CECE66 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = PluginMainPanel.cpp;
+			path = ../../Source/PluginMainPanel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		D07562F008494DD6040CF678 = {
 			isa = PBXFileReference;
 			explicitFileType = archive.ar;
@@ -533,14 +551,16 @@
 		B537D979F150769FE32CB268 = {
 			isa = PBXGroup;
 			children = (
+				AF5E07EF8AA905D4FB225150,
+				67E8B0630F46C60D1BF420C4,
 				02C9E7454D6728EC1F5114E8,
 				915BDFF35CF10556AA841338,
+				CFD8F91ED30C7F87B9CECE66,
+				4D49CC094D4019E3FB0CF5E2,
 				B2E627AF84C8C955FE156F1E,
 				CC739C4296608FF58980A034,
 				8517561EA7CBA3FF6A4FBAA4,
 				E24494170CD89C7BD1D9EACB,
-				AF5E07EF8AA905D4FB225150,
-				67E8B0630F46C60D1BF420C4,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1068,10 +1088,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				945E5D2D53FE1CB4D9F9F205,
 				27E2EFD4EF513D6C2EF7F106,
+				6B79378783E4237619AC8438,
 				9AFEDA08D030FE7330D5FD59,
 				3C4CA3EA98DBF276C8A23EF0,
-				945E5D2D53FE1CB4D9F9F205,
 				4F2FC90A0643B2AFDAAFB157,
 				34053A2AC5B8CF852DAE9E8C,
 				B32E72C16C746F53C01DECDB,

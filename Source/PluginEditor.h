@@ -27,6 +27,7 @@
 #include "PluginProcessor.h"
 
 class AutomationBridgeSettings;
+class PluginMainPanel;
 
 /**
 */
@@ -38,17 +39,13 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
+    AutomationBridgeSettings* getPrefsPanel();
+    PluginMainPanel* getMainPanel();
 
 private:
     AutomationBridge& processor;
-	AutomationBridgeSettings* prefsWin;
-	Array<Slider> faders;
-	Array<TextButton> mutes;
-	Slider masterFader;
-	Array<Slider> joys;
-	TextButton prefsButton;
-	TextButton testModeToggle;
-    Rectangle<int> bounds;
+	AutomationBridgeSettings* prefsPanel;
+    PluginMainPanel* mainPanel;
 	//ResizableBorderComponent resizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)

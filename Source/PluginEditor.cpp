@@ -23,40 +23,33 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "PluginMainPanel.h"
 #include "PluginSettings.h"
 
 //==============================================================================
 AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	: AudioProcessorEditor (&p),
-	  processor (p), bounds (getLocalBounds())
+	  processor (p)
 {
     setSize (1200, 720);
 	setOpaque (true);
 	setResizable (true, true);
+    
+    mainPanel = new PluginMainPanel (this);
+    addAndMakeVisible(dynamic_cast<Component*>(mainPanel));
+    
+    prefsPanel = new AutomationBridgeSettings (this);
+    addChildComponent(dynamic_cast<Component*>(prefsPanel));
 
 	/*resizer (this, nullptr);
 	addAndMakeVisible (resizer);*/
-
-	addAndMakeVisible (prefsButton);
-	prefsButton.setButtonText ("Settings");
-	prefsButton.onClick = [this] {
-		prefsWin = new AutomationBridgeSettings (*this);
-		RectanglePlacement rp (RectanglePlacement::xMid | RectanglePlacement::yMid |
-			RectanglePlacement::doNotResize);
-		Rectangle<int> area (0, 0, 640, 480);
-        Rectangle<int> result = rp.appliedTo (area, bounds.reduced (20));
-		prefsWin->setBounds (result);
-		prefsWin->setVisible (true);
-		prefsWin->addToDesktop (0);
-	};
-
-	addAndMakeVisible (testModeToggle);
-	testModeToggle.setButtonText ("Test Mode");
-	testModeToggle.setClickingTogglesState (true);
 }
 
 AutomationBridgeEditor::~AutomationBridgeEditor()
 {
+    if (mainPanel) delete mainPanel;
+    if (prefsPanel) delete prefsPanel;
+    
 	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
@@ -64,19 +57,20 @@ void AutomationBridgeEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+}
 
-    g.setColour (Colours::white);
-    g.setFont (14.0f);
-    /*g.drawImage (background, 0, 0, background.getWidth(), background.getHeight(), 0, 0,
-		background.getWidth(), background.getHeight());*/
+AutomationBridgeSettings* AutomationBridgeEditor::getPrefsPanel()
+{
+    return prefsPanel;
+}
+
+PluginMainPanel* AutomationBridgeEditor::getMainPanel()
+{
+    return mainPanel;
 }
 
 void AutomationBridgeEditor::resized()
 {
-	Rectangle<int> area = getLocalBounds();
-	Rectangle<int> header = area.removeFromTop (25);
-	Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
-	Rectangle<int> faderRowTop = faderLayout.removeFromTop (faderLayout.getHeight() / 2);
-	prefsButton.setBounds (header.removeFromLeft (100));
-	testModeToggle.setBounds (header.removeFromRight (100));
+    if (prefsPanel && prefsPanel->isVisible()) prefsPanel->setBounds (getLocalBounds());
+    else if (mainPanel) mainPanel->setBounds (getLocalBounds());
 }
