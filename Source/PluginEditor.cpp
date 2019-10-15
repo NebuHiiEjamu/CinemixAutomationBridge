@@ -34,10 +34,10 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	setOpaque (true);
 	setResizable (true, true);
     
-    mainPanel = new PluginMainPanel (this);
+    mainPanel = std::make_unique<PluginMainPanel> (this);
     addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
     
-    prefsPanel = new AutomationBridgeSettings (this);
+    prefsPanel = std::make_unique<AutomationBridgeSettings> (this);
     addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
 
 	/*resizer (this, nullptr);
@@ -48,9 +48,6 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 
 AutomationBridgeEditor::~AutomationBridgeEditor()
 {
-    if (mainPanel) delete mainPanel;
-    if (prefsPanel) delete prefsPanel;
-    
 	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 

@@ -51,13 +51,13 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 	inDevices = MidiInput::getAvailableDevices();
     outDevices = MidiOutput::getAvailableDevices();
 
-	inputs.reset (new DeviceListBox (inDevices, inputsOn));
+	inputs = std::make_unique<DeviceListBox> (inDevices, inputsOn));
 	addAndMakeVisible (inputs);
 	Label inputsLbl;
     inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLbl.attachToComponent (inputs, false);
 
-	outputs.reset (new DeviceListBox (outDevices, outputsOn));
+	outputs = std::make_unique<DeviceListBox> (outDevices, outputsOn));
 	Component::addAndMakeVisible (outputs);
 	Label outputsLbl;
 	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
