@@ -60,6 +60,8 @@ private:
     TextButton cancelButton;
     TextButton applyButton;
     TextButton saveButton;
+	Label inputsLabel;
+	Label outputsLabel;
     String path;
     int faders;
 

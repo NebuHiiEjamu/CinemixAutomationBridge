@@ -55,15 +55,13 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 
 	inputs = std::make_unique<DeviceListBox> (inDevices, inputsOn);
 	addAndMakeVisible (inputs.get());
-	Label inputsLbl;
-    inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
-	inputsLbl.attachToComponent (inputs.get(), false);
+    inputsLabel.setText ("Input Devices:", NotificationType::dontSendNotification);
+	inputsLabel.attachToComponent (inputs.get(), false);
 
 	outputs = std::make_unique<DeviceListBox> (outDevices, outputsOn);
 	addAndMakeVisible (outputs.get());
-	Label outputsLbl;
-	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
-	outputsLbl.attachToComponent (outputs.get(), false);
+	outputsLabel.setText ("Output Devices:", NotificationType::dontSendNotification);
+	outputsLabel.attachToComponent (outputs.get(), false);
 
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
@@ -116,7 +114,9 @@ void AutomationBridgeSettings::save() const
 
 	if (fs.openedOk())
 	{
-        fs.truncate();
+		fs.setPosition (0);
+		fs.truncate();
+		
 		fs.writeInt (1); // format version for future revisions
 		fs.writeInt (faders);
 		fs.writeInt (editor->getWidth());
