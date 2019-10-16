@@ -40,9 +40,6 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
     prefsPanel = std::make_unique<AutomationBridgeSettings> (this);
     addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
 
-	/*resizer (this, nullptr);
-	addAndMakeVisible (resizer);*/
-
 	setSize (1200, 720);
 }
 
@@ -59,16 +56,16 @@ void AutomationBridgeEditor::paint (Graphics& g)
 
 AutomationBridgeSettings* AutomationBridgeEditor::getPrefsPanel()
 {
-    return prefsPanel;
+    return prefsPanel.get();
 }
 
 PluginMainPanel* AutomationBridgeEditor::getMainPanel()
 {
-    return mainPanel;
+    return mainPanel.get();
 }
 
 void AutomationBridgeEditor::resized()
 {
-    if (prefsPanel && prefsPanel->isVisible()) prefsPanel->setBounds (getLocalBounds());
-    else if (mainPanel) mainPanel->setBounds (getLocalBounds());
+    if (mainPanel) mainPanel->setBounds (getLocalBounds());
+    if (prefsPanel) prefsPanel->setBounds (getLocalBounds());
 }

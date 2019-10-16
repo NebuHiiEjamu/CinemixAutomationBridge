@@ -28,6 +28,8 @@
 DeviceListBox::DeviceListBox (Array<MidiDeviceInfo>& mdi, SortedSet<int>& checked)
 	: items(mdi), itemsChecked(checked)
 {
+    setModel (this);
+    setOpaque (true);
 }
 
 DeviceListBox::~DeviceListBox()
@@ -65,18 +67,22 @@ void DeviceListBox::paint (Graphics& g)
 
 	if (items.isEmpty())
 	{
-		g.setColour (Colours::red);
+		g.setColour (Colours::dimgrey);
 		g.setFont (getRowHeight() / 2);
 		g.drawText ("No devices detected", 0, 0, getWidth(), getHeight() / 2,
 			Justification::centred);
 	}
+    
+    /*g.setColour (Colours::white);
+    g.setFont (18.0f);
+    g.drawText (String(count), getLocalBounds(), Justification::centredLeft, true);*/
 }
 
 void DeviceListBox::paintListBoxItem (int row, Graphics& g, int w, int h, bool)
 {
 	if (isPositiveAndBelow (row, items.size()))
 	{
-		g.fillAll (findColour (ListBox::backgroundColourId));
+        g.fillAll (Colours::blue);
 
 		bool enabled = itemsChecked.contains (row) ? true : false;
 		int x = getRowHeight();
@@ -85,8 +91,7 @@ void DeviceListBox::paintListBoxItem (int row, Graphics& g, int w, int h, bool)
 		getLookAndFeel().drawTickBox (g, *this, x - tickW, (h - tickW) / 2, tickW, tickW, enabled,
 			true, true, false);
 		g.setFont (h * 0.6f);
-		g.setColour (findColour (ListBox::textColourId, true).withMultipliedAlpha
-			(enabled ? 1.0f : 0.0f));
+        g.setColour (Colours::white);
 		g.drawText (items[row].name, x + 5, 0, w - x - 5, h, Justification::centredLeft, true);
 	}
 }

@@ -47,7 +47,6 @@ private:
     AutomationBridge& processor;
 	std::unique_ptr<AutomationBridgeSettings> prefsPanel;
     std::unique_ptr<PluginMainPanel> mainPanel;
-	//ResizableBorderComponent resizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
 };

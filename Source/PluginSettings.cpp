@@ -39,6 +39,8 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 #endif
     
     editor = e;
+    
+    load();
 
     addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
@@ -51,17 +53,17 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 	inDevices = MidiInput::getAvailableDevices();
     outDevices = MidiOutput::getAvailableDevices();
 
-	inputs = std::make_unique<DeviceListBox> (inDevices, inputsOn));
-	addAndMakeVisible (inputs);
+	inputs = std::make_unique<DeviceListBox> (inDevices, inputsOn);
+	addAndMakeVisible (inputs.get());
 	Label inputsLbl;
     inputsLbl.setText ("Input Devices:", NotificationType::dontSendNotification);
-	inputsLbl.attachToComponent (inputs, false);
+	inputsLbl.attachToComponent (inputs.get(), false);
 
-	outputs = std::make_unique<DeviceListBox> (outDevices, outputsOn));
-	Component::addAndMakeVisible (outputs);
+	outputs = std::make_unique<DeviceListBox> (outDevices, outputsOn);
+	addAndMakeVisible (outputs.get());
 	Label outputsLbl;
 	outputsLbl.setText ("Output Devices:", NotificationType::dontSendNotification);
-	outputsLbl.attachToComponent (outputs, false);
+	outputsLbl.attachToComponent (outputs.get(), false);
 
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
@@ -114,6 +116,7 @@ void AutomationBridgeSettings::save() const
 
 	if (fs.openedOk())
 	{
+        fs.truncate();
 		fs.writeInt (1); // format version for future revisions
 		fs.writeInt (faders);
 		fs.writeInt (editor->getWidth());
@@ -161,6 +164,8 @@ void AutomationBridgeSettings::load()
     {
         faders = 74; // nothing particularly special about default value
     }
+    
+    fadersSlider.setValue (static_cast<double> (faders));
 }
 
 void AutomationBridgeSettings::paint (Graphics& g)
