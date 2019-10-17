@@ -34,11 +34,11 @@ AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
 	setOpaque (true);
 	setResizable (true, true);
     
-    mainPanel = std::make_unique<PluginMainPanel> (this);
-    addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
-    
-    prefsPanel = std::make_unique<AutomationBridgeSettings> (this);
+    prefsPanel = std::make_unique<AutomationBridgeSettings> (*this);
     addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
+    
+    mainPanel = std::make_unique<PluginMainPanel> (*this);
+    addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
 
 	setSize (1200, 720);
 }
@@ -62,6 +62,11 @@ AutomationBridgeSettings* AutomationBridgeEditor::getPrefsPanel()
 PluginMainPanel* AutomationBridgeEditor::getMainPanel()
 {
     return mainPanel.get();
+}
+
+AutomationBridge& AutomationBridgeEditor::getProcessor()
+{
+    return processor;
 }
 
 void AutomationBridgeEditor::resized()

@@ -28,7 +28,8 @@
 #include "PluginMainPanel.h"
 
 //==============================================================================
-AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
+AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
+: editor (e)
 {
     path = File::getSpecialLocation (File::userApplicationDataDirectory).getFullPathName();
     path += File::getSeparatorString();
@@ -38,7 +39,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
     path += "AutomationBridge.dat";
 #endif
     
-    editor = e;
+    faders = 48; // failsafe
     
     load();
 
@@ -65,9 +66,9 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
-    cancelButton.onClick = [this] {
+    cancelButton.onClick = [this, &e] {
         load();
-        editor->getMainPanel()->setVisible (true);
+        e.getMainPanel()->setVisible (true);
         setVisible (false);
     };
 
@@ -79,9 +80,9 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor* e)
 
     addAndMakeVisible (saveButton);
     saveButton.setButtonText ("Save");
-    saveButton.onClick = [this] {
+    saveButton.onClick = [this, &e] {
 		save();
-        editor->getMainPanel()->setVisible (true);
+        e.getMainPanel()->setVisible (true);
         setVisible (false);
     };
     
@@ -119,8 +120,8 @@ void AutomationBridgeSettings::save() const
 		
 		fs.writeInt (1); // format version for future revisions
 		fs.writeInt (faders);
-		fs.writeInt (editor->getWidth());
-		fs.writeInt (editor->getHeight());
+		fs.writeInt (editor.getWidth());
+		fs.writeInt (editor.getHeight());
 		fs.writeInt (inputsOn.size());
 		fs.writeInt (outputsOn.size());
 
@@ -143,7 +144,7 @@ void AutomationBridgeSettings::load()
 		{
 			fs.readInt(); // format version is 1, ignore for now
 			faders = fs.readInt();
-            editor->setSize (fs.readInt(), fs.readInt());
+            editor.setSize (fs.readInt(), fs.readInt());
 			int inputsSize = fs.readInt();
 			int outputsSize = fs.readInt();
 
@@ -185,6 +186,6 @@ void AutomationBridgeSettings::resized()
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));
 	fadersSlider.setBounds (area.removeFromTop (25));
-	inputs->setBounds (area.removeFromTop (area.getHeight() / 2));
-	outputs->setBounds (area);
+	inputs->setBounds (area.removeFromTop (area.getHeight() / 2).reduced (0, 25));
+    outputs->setBounds (area);
 }

@@ -26,24 +26,49 @@
 #include "PluginEditor.h"
 #include "PluginSettings.h"
 
-//==============================================================================
-PluginMainPanel::PluginMainPanel(AutomationBridgeEditor* e)
+Label* MiniText::createSliderTextBox(Slider& s)
 {
-    editor = e;
+    Label* text = new Label();
+    font = text->getFont();
+    font.setHeight (10.0f);
+    text->setFont (font);
+    return text;
+}
+
+//==============================================================================
+PluginMainPanel::PluginMainPanel(AutomationBridgeEditor& e)
+: editor (e)
+{
     
     addAndMakeVisible (prefsButton);
     prefsButton.setButtonText ("Settings");
-    prefsButton.onClick = [this] {
-        editor->getPrefsPanel()->setVisible (true);
+    prefsButton.onClick = [this, &e] {
+        e.getPrefsPanel()->setVisible (true);
         setVisible (false);
     };
     
     addAndMakeVisible (testModeToggle);
     testModeToggle.setButtonText ("Test Mode");
-    testModeToggle.onClick = [this] {
-        //processor.testMode();
-    };
     testModeToggle.setClickingTogglesState (true);
+    testModeToggle.onClick = [this, &e] {
+        //e.getProcessor().testMode();
+    };
+    
+    for (int i = 0; i < e.getPrefsPanel()->getFaderCount(); i++)
+    {
+        Slider* newFader = new Slider();
+        addAndMakeVisible (dynamic_cast<Component*> (newFader));
+        newFader->setSliderStyle (Slider::LinearBarVertical);
+        newFader->setRange (0.0, 127.0, 1.0);
+        newFader->setLookAndFeel (&miniTextLAF);
+        faders.add (newFader);
+        
+        TextButton* newMute = new TextButton("M");
+        addAndMakeVisible (dynamic_cast<Component*> (newMute));
+        newMute->changeWidthToFitText();
+        newMute->setClickingTogglesState (true);
+        mutes.add (newMute);
+    }
     
     setOpaque (true);
     setVisible (true);
@@ -65,7 +90,24 @@ void PluginMainPanel::resized()
     Rectangle<int> area = getLocalBounds();
     Rectangle<int> header = area.removeFromTop (25);
     Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
-    Rectangle<int> faderRowTop = faderLayout.removeFromTop (faderLayout.getHeight() / 2);
     prefsButton.setBounds (header.removeFromLeft (100));
     testModeToggle.setBounds (header.removeFromRight (100));
+    
+    Rectangle<int> faderPair;
+    for (int i = 0; i < faders.size(); i++)
+    {
+        Rectangle<int> faderMute;
+        
+        if (i % 2 == 0)
+        {
+            faderPair = faderLayout.removeFromLeft (25);
+            faderMute = faderPair.removeFromTop (faderPair.getHeight() / 2);
+        }
+        else
+            faderMute = faderPair;
+            faders[i]->setBounds (faderPair);
+        
+        mutes[i]->setBounds (faderMute.removeFromBottom (25));
+        faders[i]->setBounds (faderMute);
+    }
 }

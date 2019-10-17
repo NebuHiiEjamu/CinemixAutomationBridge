@@ -72,10 +72,6 @@ void DeviceListBox::paint (Graphics& g)
 		g.drawText ("No devices detected", 0, 0, getWidth(), getHeight() / 2,
 			Justification::centred);
 	}
-    
-    /*g.setColour (Colours::white);
-    g.setFont (18.0f);
-    g.drawText (String(count), getLocalBounds(), Justification::centredLeft, true);*/
 }
 
 void DeviceListBox::paintListBoxItem (int row, Graphics& g, int w, int h, bool)

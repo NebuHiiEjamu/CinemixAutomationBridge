@@ -35,7 +35,7 @@ class DeviceListBox;
 class AutomationBridgeSettings    : public Component
 {
 public:
-    AutomationBridgeSettings (AutomationBridgeEditor*);
+    AutomationBridgeSettings (AutomationBridgeEditor&);
     ~AutomationBridgeSettings();
 
     void paint (Graphics&) override;
@@ -55,7 +55,7 @@ private:
 	std::unique_ptr<DeviceListBox> outputs;
 	SortedSet<int> inputsOn;
 	SortedSet<int> outputsOn;
-    AutomationBridgeEditor *editor;
+    AutomationBridgeEditor& editor;
     Slider fadersSlider;
     TextButton cancelButton;
     TextButton applyButton;

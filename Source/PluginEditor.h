@@ -40,6 +40,7 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
+    AutomationBridge& getProcessor();
     AutomationBridgeSettings* getPrefsPanel();
     PluginMainPanel* getMainPanel();
 
