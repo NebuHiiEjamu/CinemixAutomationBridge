@@ -1,0 +1,13 @@
+Version 1.0:
+
+- Label each fader with a number under mutes
+- Master fader, aux mutes, joystick UI controls
+- Dynamically add/remove faders/mutes as specified in settings
+- Activate/deactivate or reset buttons
+- Core functionality
+- Fix initial paint issue w/ editor
+
+Version 1.1:
+
+- Scalable background image
+- UI customisation
