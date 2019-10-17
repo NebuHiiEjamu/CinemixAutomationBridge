@@ -66,6 +66,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
+	cancelButton->changeWidthToFitText();
     cancelButton.onClick = [this, &e] {
         load();
         e.getMainPanel()->setVisible (true);
@@ -74,12 +75,14 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 
     addAndMakeVisible (applyButton);
     applyButton.setButtonText ("Apply");
+	applyButton->changeWidthToFitText();
     applyButton.onClick = [this] {
 		save();
     };
 
     addAndMakeVisible (saveButton);
     saveButton.setButtonText ("Save");
+	saveButton->changeWidthToFitText();
     saveButton.onClick = [this, &e] {
 		save();
         e.getMainPanel()->setVisible (true);

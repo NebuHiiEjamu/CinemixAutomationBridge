@@ -42,6 +42,7 @@ PluginMainPanel::PluginMainPanel(AutomationBridgeEditor& e)
     
     addAndMakeVisible (prefsButton);
     prefsButton.setButtonText ("Settings");
+    prefsButton->changeWidthToFitText();
     prefsButton.onClick = [this, &e] {
         e.getPrefsPanel()->setVisible (true);
         setVisible (false);
@@ -50,6 +51,7 @@ PluginMainPanel::PluginMainPanel(AutomationBridgeEditor& e)
     addAndMakeVisible (testModeToggle);
     testModeToggle.setButtonText ("Test Mode");
     testModeToggle.setClickingTogglesState (true);
+    testModeToggle->changeWidthToFitText();
     testModeToggle.onClick = [this, &e] {
         //e.getProcessor().testMode();
     };
