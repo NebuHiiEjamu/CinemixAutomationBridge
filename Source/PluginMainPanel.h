@@ -27,19 +27,12 @@
 
 class AutomationBridgeEditor;
 
-class MiniText : public LookAndFeel_V4
-{
-public:
-    Label* createSliderTextBox(Slider&) override;
-private:
-    Font font;
-};
-
 //==============================================================================
 /*
 */
 class PluginMainPanel    : public Component
 {
+    friend class AutomationBridgeSettings;
 public:
     PluginMainPanel(AutomationBridgeEditor&);
     ~PluginMainPanel();
@@ -51,11 +44,11 @@ private:
     AutomationBridgeEditor& editor;
     OwnedArray<Slider> faders;
     OwnedArray<TextButton> mutes;
+    OwnedArray<Label> faderIds;
     Slider masterFader;
     OwnedArray<Slider> joys;
     TextButton prefsButton;
     TextButton testModeToggle;
-    MiniText miniTextLAF;
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginMainPanel)
 };

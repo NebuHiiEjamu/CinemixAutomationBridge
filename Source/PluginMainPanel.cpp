@@ -26,23 +26,14 @@
 #include "PluginEditor.h"
 #include "PluginSettings.h"
 
-Label* MiniText::createSliderTextBox(Slider& s)
-{
-    Label* text = new Label();
-    font = text->getFont();
-    font.setHeight (10.0f);
-    text->setFont (font);
-    return text;
-}
-
 //==============================================================================
-PluginMainPanel::PluginMainPanel(AutomationBridgeEditor& e)
+PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
 : editor (e)
 {
     
     addAndMakeVisible (prefsButton);
     prefsButton.setButtonText ("Settings");
-    prefsButton->changeWidthToFitText();
+    prefsButton.changeWidthToFitText();
     prefsButton.onClick = [this, &e] {
         e.getPrefsPanel()->setVisible (true);
         setVisible (false);
@@ -51,26 +42,10 @@ PluginMainPanel::PluginMainPanel(AutomationBridgeEditor& e)
     addAndMakeVisible (testModeToggle);
     testModeToggle.setButtonText ("Test Mode");
     testModeToggle.setClickingTogglesState (true);
-    testModeToggle->changeWidthToFitText();
+    testModeToggle.changeWidthToFitText();
     testModeToggle.onClick = [this, &e] {
         //e.getProcessor().testMode();
     };
-    
-    for (int i = 0; i < e.getPrefsPanel()->getFaderCount(); i++)
-    {
-        Slider* newFader = new Slider();
-        addAndMakeVisible (dynamic_cast<Component*> (newFader));
-        newFader->setSliderStyle (Slider::LinearBarVertical);
-        newFader->setRange (0.0, 127.0, 1.0);
-        newFader->setLookAndFeel (&miniTextLAF);
-        faders.add (newFader);
-        
-        TextButton* newMute = new TextButton("M");
-        addAndMakeVisible (dynamic_cast<Component*> (newMute));
-        newMute->changeWidthToFitText();
-        newMute->setClickingTogglesState (true);
-        mutes.add (newMute);
-    }
     
     setOpaque (true);
     setVisible (true);
@@ -109,6 +84,7 @@ void PluginMainPanel::resized()
             faderMute = faderPair;
             faders[i]->setBounds (faderPair);
         
+        faderIds[i]->setBounds (faderMute.removeFromBottom (25));
         mutes[i]->setBounds (faderMute.removeFromBottom (25));
         faders[i]->setBounds (faderMute);
     }

@@ -46,6 +46,8 @@ public:
 
 private:
   	void load();
+    void refresh();
+    void unload();
 	void save() const;
 
 private:

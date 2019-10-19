@@ -1,13 +1,14 @@
 Version 1.0:
 
-- Label each fader with a number under mutes
+- Have fader slider in prefs reflect loaded settings, current defaults to 48
 - Master fader, aux mutes, joystick UI controls
-- Dynamically add/remove faders/mutes as specified in settings
 - Activate/deactivate or reset buttons
 - Core functionality
-- Fix initial paint issue w/ editor
 
 Version 1.1:
 
 - Scalable background image
 - UI customisation
+
+Version 1.2:
+- iPad remote control (if possible)

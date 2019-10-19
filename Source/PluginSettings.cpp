@@ -40,8 +40,8 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #endif
     
     faders = 48; // failsafe
-    
     load();
+    refresh();
 
     addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
@@ -66,7 +66,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 
     addAndMakeVisible (cancelButton);
     cancelButton.setButtonText ("Cancel");
-	cancelButton->changeWidthToFitText();
+	cancelButton.changeWidthToFitText();
     cancelButton.onClick = [this, &e] {
         load();
         e.getMainPanel()->setVisible (true);
@@ -75,16 +75,20 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 
     addAndMakeVisible (applyButton);
     applyButton.setButtonText ("Apply");
-	applyButton->changeWidthToFitText();
+	applyButton.changeWidthToFitText();
     applyButton.onClick = [this] {
 		save();
+        unload();
+        refresh();
     };
 
     addAndMakeVisible (saveButton);
     saveButton.setButtonText ("Save");
-	saveButton->changeWidthToFitText();
+	saveButton.changeWidthToFitText();
     saveButton.onClick = [this, &e] {
 		save();
+        unload();
+        refresh();
         e.getMainPanel()->setVisible (true);
         setVisible (false);
     };
@@ -114,7 +118,7 @@ MidiDeviceInfo AutomationBridgeSettings::getActiveOutput(int i) const
 
 void AutomationBridgeSettings::save() const
 {
-	FileOutputStream fs(path);
+	FileOutputStream fs (path);
 
 	if (fs.openedOk())
 	{
@@ -135,13 +139,45 @@ void AutomationBridgeSettings::save() const
 	}
 }
 
+void AutomationBridgeSettings::unload()
+{
+    editor.getMainPanel()->faders.clear();
+    editor.getMainPanel()->mutes.clear();
+    editor.getMainPanel()->faderIds.clear();
+}
+
+void AutomationBridgeSettings::refresh()
+{
+    for (int i = 0; i < faders; i++)
+    {
+        Slider* newFader = new Slider();
+        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newFader));
+        newFader->setSliderStyle (Slider::LinearVertical);
+        newFader->setRange (0.0, 127.0, 1.0);
+        editor.getMainPanel()->faders.add (newFader);
+        
+        TextButton* newMute = new TextButton("M");
+        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newMute));
+        newMute->changeWidthToFitText();
+        newMute->setClickingTogglesState (true);
+        editor.getMainPanel()->mutes.add (newMute);
+        
+        Label* newLabel = new Label();
+        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newLabel));
+        newLabel->setText (String (i + 1), NotificationType::dontSendNotification);
+        editor.getMainPanel()->faderIds.add (newLabel);
+    }
+    
+    editor.getMainPanel()->resized();
+}
+
 void AutomationBridgeSettings::load()
 {
-	File f(path);
+	File f (path);
 
 	if (f.exists() && f.existsAsFile())
 	{
-		FileInputStream fs(path);
+		FileInputStream fs (path);
 
 		if (fs.openedOk())
 		{
@@ -166,7 +202,8 @@ void AutomationBridgeSettings::load()
 	}
     else
     {
-        faders = 74; // nothing particularly special about default value
+        // nothing particularly special about default value, but let's make it more than minimum
+        faders = 74;
     }
     
     fadersSlider.setValue (static_cast<double> (faders));
