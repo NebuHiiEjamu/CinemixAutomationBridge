@@ -1,14 +1,21 @@
-Version 1.0:
+Alpha 1:
 
 - Have fader slider in prefs reflect loaded settings, current defaults to 48
-- Master fader, aux mutes, joystick UI controls
+- Fader functionality
+- Test mode
+- VST 3 support
+
+Alpha 2:
+
+- Master fader, aux mutes, joystick UI controls w/ functionality
 - Activate/deactivate or reset buttons
-- Core functionality
+- Scalable background image
+
+Beta:
+
+- Localisation
 
 Version 1.1:
 
-- Scalable background image
-- UI customisation
-
-Version 1.2:
-- iPad remote control (if possible)
+- Colour labeling faders
+- Misc. UI customisation

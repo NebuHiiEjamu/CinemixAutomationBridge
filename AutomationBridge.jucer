@@ -4,8 +4,8 @@
               pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginAUMainType="'aumi'" cppLanguageStandard="latest" pluginRTASCategory="8192"
               pluginAAXCategory="8192" pluginCode="DRcm" pluginManufacturer="Laphicet Crowe"
-              pluginAUIsSandboxSafe="1" pluginFormats="buildAU" pluginManufacturerCode="ChMe"
-              bundleIdentifier="AutomationBridge">
+              pluginAUIsSandboxSafe="1" pluginFormats="buildAU,buildVST3" pluginManufacturerCode="ChMe"
+              bundleIdentifier="AutomationBridge" version="1.0.0" pluginVST3Category="Fx">
   <MAINGROUP id="lDL9Iw" name="AutomationBridge">
     <GROUP id="{1A27E267-755A-CD36-50DE-F528BB86D1B1}" name="Source">
       <FILE id="fLSKUk" name="DeviceListBox.cpp" compile="1" resource="0"
@@ -111,5 +111,6 @@
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_FLAC="0" JUCE_USE_OGGVORBIS="0"
                JUCE_USE_MP3AUDIOFORMAT="0" JUCE_USE_WINDOWS_MEDIA_FORMAT="0"
-               JUCE_PLUGINHOST_AU="1" JUCE_WEB_BROWSER="0" JUCE_PLUGINHOST_VST3="1"/>
+               JUCE_PLUGINHOST_AU="1" JUCE_WEB_BROWSER="0" JUCE_PLUGINHOST_VST3="1"
+               JUCE_VST3_CAN_REPLACE_VST2="0"/>
 </JUCERPROJECT>
