@@ -26,6 +26,8 @@
             file="Source/PluginSettings.cpp"/>
       <FILE id="sXTsTr" name="PluginSettings.h" compile="0" resource="0"
             file="Source/PluginSettings.h"/>
+      <FILE id="mSKtlB" name="TouchPad.cpp" compile="1" resource="0" file="Source/TouchPad.cpp"/>
+      <FILE id="z0VV2F" name="TouchPad.h" compile="0" resource="0" file="Source/TouchPad.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

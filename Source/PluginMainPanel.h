@@ -26,6 +26,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class AutomationBridgeEditor;
+//class TouchPad;
 
 //==============================================================================
 /*

@@ -21,41 +21,73 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "PluginProcessor.h"
-#include "PluginEditor.h"
-#include "PluginMainPanel.h"
-#include "PluginSettings.h"
+#include "../JuceLibraryCode/JuceHeader.h"
+#include "TouchPad.h"
 
 //==============================================================================
-AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
-	: AudioProcessorEditor (&p),
-	  processor (p)
+TouchPadPoint::TouchPadPoint (TouchPad* tp)
+	: parent(tp), xValue(0.5f), xRest(0.0f), yValue(0.5f), yRest(1.0f)
 {
 	setOpaque (true);
-	setResizable (true, true);
-    
-    mainPanel = std::make_unique<PluginMainPanel> (*this);
-    prefsPanel = std::make_unique<AutomationBridgeSettings> (*this);
-    
-    addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
-    addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
-
-	setSize (1200, 720);
 }
 
-AutomationBridgeEditor::~AutomationBridgeEditor()
+TouchPadPoint::~TouchPadPoint()
 {
-	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
 }
 
-void AutomationBridgeEditor::paint (Graphics& g)
+void TouchPadPoint::mouseDown (const MouseEvent& e)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
+}
+
+void TouchPadPoint::mouseDrag (const MouseEvent& e)
+{
+}
+
+void TouchPadPoint::modifierKeysChanged (const ModifierKeys& keys)
+{
+	if ((parent->isMouseButtonDown() || parent->isMouseOverOrDragging()) &&
+		(keys.isShiftDown() || keys.isCtrlDown() || keys.isAltDown()))
+	{
+		xValue = yValue = 0.5f;
+	}
+}
+
+void TouchPadPoint::paint (Graphics& g)
+{
+	g.fillAll (Colours::blue); // to erase past positions
+
+	Point<float> mp = parent->getMouseXYRelative().toFloat();
+	g.setColour (Colours::cyan);
+	g.fillEllipse (mp.x - 12.0f, mp.y - 12.0f, 24.0f, 24.0f);
+}
+
+void TouchPadPoint::resized()
+{
+}
+
+TouchPad::TouchPad()
+	: point (this)
+{
+	setOpaque (true);
+}
+
+TouchPad::~TouchPad()
+{
+}
+
+void TouchPad::paint (Graphics& g)
+{
     g.fillAll (Colours::blue);
+
+	// draw an inset border
+    g.setColour (Colours::darkblue);
+	g.drawLine (getX(), getY(), getX() + getWidth(), getY(), 1);
+	g.drawLine (getX(), getY(), getX(), getY() + getHeight(), 1);
+	g.setColour (Colours::lightblue);
+	g.drawLine (getX() + getWidth(), getY() + 1, getX() + getWidth(), getY() + getHeight(), 1);
+	g.drawLine (getX() + 1, getY() + getHeight(), getX() + getWidth(), getY() + getHeight(), 1);
 }
 
-void AutomationBridgeEditor::resized()
+void TouchPad::resized()
 {
-    if (mainPanel) mainPanel->setBounds (getLocalBounds());
-    if (prefsPanel) prefsPanel->setBounds (getLocalBounds());
 }

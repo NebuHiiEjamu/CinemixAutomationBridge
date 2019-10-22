@@ -68,7 +68,7 @@ void DeviceListBox::paint (Graphics& g)
 	if (items.isEmpty())
 	{
 		g.setColour (Colours::dimgrey);
-		g.setFont (getRowHeight() / 2);
+		g.setFont (getRowHeight() / 2.0f);
 		g.drawText ("No devices detected", 0, 0, getWidth(), getHeight() / 2,
 			Justification::centred);
 	}

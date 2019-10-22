@@ -29,6 +29,8 @@
 */
 class AutomationBridge  : public AudioProcessor
 {
+    friend class AutomationBridgeSettings;
+    friend class PluginMainPanel;
 public:
     AutomationBridge();
     ~AutomationBridge();
@@ -56,6 +58,16 @@ public:
     void changeProgramName (int index, const String& newName) override;
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    MidiDeviceInfo getActiveInput (int) const;
+    MidiDeviceInfo getActiveOutput (int) const;
+
+private:
+    Array<MidiDeviceInfo> inDevices;
+    Array<MidiDeviceInfo> outDevices;
+    SortedSet<int> inputsOn;
+	SortedSet<int> outputsOn;
+    bool testMode;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridge)

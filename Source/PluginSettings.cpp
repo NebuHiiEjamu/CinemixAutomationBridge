@@ -51,15 +51,12 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 		faders = roundToInt (fadersSlider.getValue());
 	};
 
-	inDevices = MidiInput::getAvailableDevices();
-    outDevices = MidiOutput::getAvailableDevices();
-
-	inputs = std::make_unique<DeviceListBox> (inDevices, inputsOn);
+	inputs = std::make_unique<DeviceListBox> (e.processor.inDevices, e.processor.inputsOn);
 	addAndMakeVisible (inputs.get());
     inputsLabel.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLabel.attachToComponent (inputs.get(), false);
 
-	outputs = std::make_unique<DeviceListBox> (outDevices, outputsOn);
+	outputs = std::make_unique<DeviceListBox> (e.processor.outDevices, e.processor.outputsOn);
 	addAndMakeVisible (outputs.get());
 	outputsLabel.setText ("Output Devices:", NotificationType::dontSendNotification);
 	outputsLabel.attachToComponent (outputs.get(), false);
@@ -69,7 +66,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 	cancelButton.changeWidthToFitText();
     cancelButton.onClick = [this, &e] {
         load();
-        e.getMainPanel()->setVisible (true);
+        e.mainPanel->setVisible (true);
         setVisible (false);
     };
 
@@ -89,7 +86,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 		save();
         unload();
         refresh();
-        e.getMainPanel()->setVisible (true);
+        e.mainPanel->setVisible (true);
         setVisible (false);
     };
     
@@ -106,16 +103,6 @@ int AutomationBridgeSettings::getFaderCount() const
 	return faders;
 }
 
-MidiDeviceInfo AutomationBridgeSettings::getActiveInput(int i) const
-{
-	return inDevices[inputsOn[i]];
-}
-
-MidiDeviceInfo AutomationBridgeSettings::getActiveOutput(int i) const
-{
-	return outDevices[outputsOn[i]];
-}
-
 void AutomationBridgeSettings::save() const
 {
 	FileOutputStream fs (path);
@@ -129,11 +116,13 @@ void AutomationBridgeSettings::save() const
 		fs.writeInt (faders);
 		fs.writeInt (editor.getWidth());
 		fs.writeInt (editor.getHeight());
-		fs.writeInt (inputsOn.size());
-		fs.writeInt (outputsOn.size());
+		fs.writeInt (editor.processor.inputsOn.size());
+		fs.writeInt (editor.processor.outputsOn.size());
 
-		for (int i : inputsOn) fs.writeString (inDevices[i].identifier);
-		for (int i : outputsOn) fs.writeString (outDevices[i].identifier);
+		for (int i : editor.processor.inputsOn)
+			fs.writeString (editor.processor.inDevices[i].identifier);
+		for (int i : editor.processor.outputsOn)
+			fs.writeString (editor.processor.outDevices[i].identifier);
 
 		fs.flush();
 	}
@@ -141,9 +130,9 @@ void AutomationBridgeSettings::save() const
 
 void AutomationBridgeSettings::unload()
 {
-    editor.getMainPanel()->faders.clear();
-    editor.getMainPanel()->mutes.clear();
-    editor.getMainPanel()->faderIds.clear();
+    editor.mainPanel->faders.clear();
+    editor.mainPanel->mutes.clear();
+    editor.mainPanel->faderIds.clear();
 }
 
 void AutomationBridgeSettings::refresh()
@@ -151,24 +140,24 @@ void AutomationBridgeSettings::refresh()
     for (int i = 0; i < faders; i++)
     {
         Slider* newFader = new Slider();
-        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newFader));
+        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newFader));
         newFader->setSliderStyle (Slider::LinearVertical);
         newFader->setRange (0.0, 127.0, 1.0);
-        editor.getMainPanel()->faders.add (newFader);
+        editor.mainPanel->faders.add (newFader);
         
         TextButton* newMute = new TextButton("M");
-        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newMute));
+        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newMute));
         newMute->changeWidthToFitText();
         newMute->setClickingTogglesState (true);
-        editor.getMainPanel()->mutes.add (newMute);
+        editor.mainPanel->mutes.add (newMute);
         
         Label* newLabel = new Label();
-        editor.getMainPanel()->addAndMakeVisible (dynamic_cast<Component*> (newLabel));
+        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newLabel));
         newLabel->setText (String (i + 1), NotificationType::dontSendNotification);
-        editor.getMainPanel()->faderIds.add (newLabel);
+        editor.mainPanel->faderIds.add (newLabel);
     }
     
-    editor.getMainPanel()->resized();
+    editor.mainPanel->resized();
 }
 
 void AutomationBridgeSettings::load()
@@ -193,11 +182,13 @@ void AutomationBridgeSettings::load()
 			StringArray outputIds;
 			for (int i = 0; i < outputsSize; i++) outputIds.add (fs.readString());
 
-			for (int i = 0; i < inDevices.size(); i++)
-				if (inputIds.contains (inDevices[i].identifier)) inputsOn.add (i);
+			for (int i = 0; i < editor.processor.inDevices.size(); i++)
+				if (inputIds.contains (editor.processor.inDevices[i].identifier))
+					editor.processor.inputsOn.add (i);
 
-			for (int i = 0; i < outDevices.size(); i++)
-				if (outputIds.contains (outDevices[i].identifier)) outputsOn.add (i);
+			for (int i = 0; i < editor.processor.outDevices.size(); i++)
+				if (outputIds.contains (editor.processor.outDevices[i].identifier))
+					editor.processor.outputsOn.add (i);
 		}
 	}
     else

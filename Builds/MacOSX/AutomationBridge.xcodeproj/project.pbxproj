@@ -89,6 +89,10 @@
 			isa = PBXBuildFile;
 			fileRef = 8517561EA7CBA3FF6A4FBAA4;
 		};
+		8C49126DE62F25D35C8D3B41 = {
+			isa = PBXBuildFile;
+			fileRef = 6227C00B9A5583D3C874EC3D;
+		};
 		4F2FC90A0643B2AFDAAFB157 = {
 			isa = PBXBuildFile;
 			fileRef = 669976E705CED935C395BF13;
@@ -199,6 +203,13 @@
 			path = "../../JuceLibraryCode/include_juce_data_structures.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		1C8C35FCE6D03087522E5892 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = TouchPad.h;
+			path = ../../Source/TouchPad.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		26ABE7A001CE71A058542220 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -276,6 +287,13 @@
 			path = "Info-AU.plist";
 			sourceTree = "SOURCE_ROOT";
 		};
+		6227C00B9A5583D3C874EC3D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = TouchPad.cpp;
+			path = ../../Source/TouchPad.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		64C36EBFB5A3C57D63DE21C2 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file.r;
@@ -296,6 +314,13 @@
 			name = "include_juce_audio_basics.mm";
 			path = "../../JuceLibraryCode/include_juce_audio_basics.mm";
 			sourceTree = "SOURCE_ROOT";
+		};
+		67CA2C53EC1D3E36C6F28420 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_plugin_client";
+			path = "~/JUCE/modules/juce_audio_plugin_client";
+			sourceTree = "<absolute>";
 		};
 		67D7EB5440B6903298B50F62 = {
 			isa = PBXFileReference;
@@ -318,13 +343,6 @@
 			path = System/Library/Frameworks/CoreAudio.framework;
 			sourceTree = SDKROOT;
 		};
-		6D7ECD3C1DF019B95324BBDD = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = "include_juce_audio_processors.mm";
-			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
-			sourceTree = "SOURCE_ROOT";
-		};
 		A9E570DF983D5896DFF90DBE = {
 			isa = PBXFileReference;
 			explicitFileType = wrapper.cfbundle;
@@ -346,19 +364,19 @@
 			path = RecentFilesMenuTemplate.nib;
 			sourceTree = "SOURCE_ROOT";
 		};
-		67CA2C53EC1D3E36C6F28420 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_audio_plugin_client";
-			path = "~/JUCE/modules/juce_audio_plugin_client";
-			sourceTree = "<absolute>";
-		};
 		69A03C78CB94AB872CBF801E = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AudioUnit.framework;
 			path = System/Library/Frameworks/AudioUnit.framework;
 			sourceTree = SDKROOT;
+		};
+		6D7ECD3C1DF019B95324BBDD = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_processors.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
+			sourceTree = "SOURCE_ROOT";
 		};
 		74A03A73D17BECB23DD58F6B = {
 			isa = PBXFileReference;
@@ -590,6 +608,8 @@
 				CC739C4296608FF58980A034,
 				8517561EA7CBA3FF6A4FBAA4,
 				E24494170CD89C7BD1D9EACB,
+				6227C00B9A5583D3C874EC3D,
+				1C8C35FCE6D03087522E5892,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1300,6 +1320,7 @@
 				6B79378783E4237619AC8438,
 				9AFEDA08D030FE7330D5FD59,
 				3C4CA3EA98DBF276C8A23EF0,
+				8C49126DE62F25D35C8D3B41,
 				4F2FC90A0643B2AFDAAFB157,
 				34053A2AC5B8CF852DAE9E8C,
 				B32E72C16C746F53C01DECDB,

@@ -1,9 +1,9 @@
 Alpha 1:
 
+- Fix red error text not showing when input or output lists are empty in settings
 - Have fader slider in prefs reflect loaded settings, current defaults to 48
 - Fader functionality
 - Test mode
-- VST 3 support
 
 Alpha 2:
 
@@ -19,3 +19,4 @@ Version 1.1:
 
 - Colour labeling faders
 - Misc. UI customisation
+- Fader-channel remapping

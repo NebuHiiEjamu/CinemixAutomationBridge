@@ -424,6 +424,9 @@
     <ClCompile Include="..\..\Source\PluginSettings.cpp">
       <Filter>AutomationBridge\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\TouchPad.cpp">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <Filter>JUCE Modules\juce_audio_basics\buffers</Filter>
     </ClCompile>
@@ -2365,6 +2368,9 @@
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginSettings.h">
+      <Filter>AutomationBridge\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TouchPad.h">
       <Filter>AutomationBridge\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

@@ -21,41 +21,49 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "PluginProcessor.h"
-#include "PluginEditor.h"
-#include "PluginMainPanel.h"
-#include "PluginSettings.h"
+#pragma once
+
+#include <memory>
+#include "../JuceLibraryCode/JuceHeader.h"
+
+class TouchPad;
+
+class TouchPadPoint : public Component
+{
+public:
+	TouchPadPoint (TouchPad*);
+	~TouchPadPoint();
+
+	void paint (Graphics&) override;
+    void resized() override;
+	void mouseDown (const MouseEvent&) override;
+	void mouseDrag (const MouseEvent&) override;
+	void modifierKeysChanged (const ModifierKeys&) override;
+
+private:
+	TouchPad* parent;
+	Point<int> offset;
+	float xValue;
+	float xRest;
+	float yValue;
+	float yRest;
+};
 
 //==============================================================================
-AutomationBridgeEditor::AutomationBridgeEditor (AutomationBridge& p)
-	: AudioProcessorEditor (&p),
-	  processor (p)
+/*
+*/
+class TouchPad    : public Component
 {
-	setOpaque (true);
-	setResizable (true, true);
-    
-    mainPanel = std::make_unique<PluginMainPanel> (*this);
-    prefsPanel = std::make_unique<AutomationBridgeSettings> (*this);
-    
-    addChildComponent(dynamic_cast<Component*> (prefsPanel.get()));
-    addAndMakeVisible(dynamic_cast<Component*> (mainPanel.get()));
+public:
+    TouchPad();
+    ~TouchPad();
 
-	setSize (1200, 720);
-}
+    void paint (Graphics&) override;
+    void resized() override;
 
-AutomationBridgeEditor::~AutomationBridgeEditor()
-{
-	//deviceManager.removeMidiInputCallback (MidiInput::getDevices()[midiInputList.getSelectedItemIndex()], this);
-}
+private:
+	TouchPadPoint point;
 
-void AutomationBridgeEditor::paint (Graphics& g)
-{
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (Colours::blue);
-}
-
-void AutomationBridgeEditor::resized()
-{
-    if (mainPanel) mainPanel->setBounds (getLocalBounds());
-    if (prefsPanel) prefsPanel->setBounds (getLocalBounds());
-}
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TouchPad)
+};

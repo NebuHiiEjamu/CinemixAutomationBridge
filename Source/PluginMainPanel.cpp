@@ -25,6 +25,7 @@
 #include "PluginMainPanel.h"
 #include "PluginEditor.h"
 #include "PluginSettings.h"
+//#include "TouchPad.h"
 
 //==============================================================================
 PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
@@ -35,7 +36,7 @@ PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
     prefsButton.setButtonText ("Settings");
     prefsButton.changeWidthToFitText();
     prefsButton.onClick = [this, &e] {
-        e.getPrefsPanel()->setVisible (true);
+        e.prefsPanel->setVisible (true);
         setVisible (false);
     };
     
@@ -44,7 +45,7 @@ PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
     testModeToggle.setClickingTogglesState (true);
     testModeToggle.changeWidthToFitText();
     testModeToggle.onClick = [this, &e] {
-        //e.getProcessor().testMode();
+        //e.processor.testMode();
     };
     
     setOpaque (true);

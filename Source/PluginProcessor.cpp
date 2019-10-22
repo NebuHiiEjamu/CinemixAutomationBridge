@@ -26,6 +26,8 @@
 
 
 AutomationBridge::AutomationBridge()
+    : inDevices (MidiInput::getAvailableDevices()),
+      outDevices (MidiOutput::getAvailableDevices())
 {
 }
 
@@ -83,21 +85,28 @@ int AutomationBridge::getCurrentProgram()
 
 void AutomationBridge::setCurrentProgram (int index)
 {
+    ignoreUnused (index);
 }
 
 const String AutomationBridge::getProgramName (int index)
 {
+    ignoreUnused (index);
     return {};
 }
 
 void AutomationBridge::changeProgramName (int index, const String& newName)
 {
+    ignoreUnused (index);
+    ignoreUnused (newName);
 }
 
 void AutomationBridge::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+
+    ignoreUnused (sampleRate);
+    ignoreUnused (samplesPerBlock);
 }
 
 void AutomationBridge::releaseResources()
@@ -163,12 +172,27 @@ void AutomationBridge::getStateInformation (MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+
+    ignoreUnused (destData);
 }
 
 void AutomationBridge::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+
+    ignoreUnused (data);
+    ignoreUnused (sizeInBytes);
+}
+
+MidiDeviceInfo AutomationBridge::getActiveInput (int i) const
+{
+	return inDevices[inputsOn[i]];
+}
+
+MidiDeviceInfo AutomationBridge::getActiveOutput (int i) const
+{
+	return outDevices[outputsOn[i]];
 }
 
 //==============================================================================

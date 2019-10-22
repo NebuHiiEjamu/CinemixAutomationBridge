@@ -41,8 +41,6 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     int getFaderCount() const;
-    MidiDeviceInfo getActiveInput(int) const;
-    MidiDeviceInfo getActiveOutput(int) const;
 
 private:
   	void load();
@@ -51,12 +49,8 @@ private:
 	void save() const;
 
 private:
-    Array<MidiDeviceInfo> inDevices;
-    Array<MidiDeviceInfo> outDevices;
     std::unique_ptr<DeviceListBox> inputs;
 	std::unique_ptr<DeviceListBox> outputs;
-	SortedSet<int> inputsOn;
-	SortedSet<int> outputsOn;
     AutomationBridgeEditor& editor;
     Slider fadersSlider;
     TextButton cancelButton;

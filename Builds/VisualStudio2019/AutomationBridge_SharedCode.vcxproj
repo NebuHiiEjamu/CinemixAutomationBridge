@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\Source\PluginMainPanel.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginSettings.cpp"/>
+    <ClCompile Include="..\..\Source\TouchPad.cpp"/>
     <ClCompile Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1933,6 +1934,7 @@
     <ClInclude Include="..\..\Source\PluginMainPanel.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginSettings.h"/>
+    <ClInclude Include="..\..\Source\TouchPad.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Program Files\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

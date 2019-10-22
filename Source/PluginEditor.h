@@ -27,22 +27,18 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
-class AutomationBridgeSettings;
-class PluginMainPanel;
-
 /**
 */
 class AutomationBridgeEditor  : public AudioProcessorEditor
 {
+	friend class AutomationBridgeSettings;
+	friend class PluginMainPanel;
 public:
     AutomationBridgeEditor (AutomationBridge&);
     ~AutomationBridgeEditor();
 
     void paint (Graphics&) override;
     void resized() override;
-    AutomationBridge& getProcessor();
-    AutomationBridgeSettings* getPrefsPanel();
-    PluginMainPanel* getMainPanel();
 
 private:
     AutomationBridge& processor;
