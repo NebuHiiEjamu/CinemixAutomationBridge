@@ -1,33 +1,31 @@
 /*
-	Permission is hereby granted, free of charge, to any person
-	obtaining a copy of this software and associated documentation files
-	(the "Software"), to deal in the Software without restriction,
-	including without limitation the rights to use, copy, modify, merge,
-	publish, distribute, sublicense, and/or sell copies of the Software,
-	and to permit persons to whom the Software is furnished to do so,
-	subject to the following conditions:
-	The above copyright notice and this permission notice shall be
-	included in all copies or substantial portions of the Software.
-	Any person wishing to distribute modifications to the Software is
-	asked to send the modifications to the original developer so that
-	they can be incorporated into the canonical version.  This is,
-	however, not a binding provision of this license.
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-	ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-	CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
 
 AutomationBridge::AutomationBridge()
-    : inDevices (MidiInput::getAvailableDevices()),
-      outDevices (MidiOutput::getAvailableDevices())
+    : inDeviceData (MidiInput::getAvailableDevices()),
+      outDeviceData (MidiOutput::getAvailableDevices()),
+      faderSpeed (0),
+      muteSpeed (0),
+      faders (48),
+      channels (1),
+      testModeOn (false)
 {
 }
 
@@ -149,6 +147,16 @@ void AutomationBridge::processBlock (AudioBuffer<float>& buffer, MidiBuffer& mid
 
     for (MidiBuffer::Iterator i (midiMessages); i.getNextEvent (m, time);)
     {
+        if (m.getRawDataSize() == 3)
+        {
+            const uint8* data = m.getRawData();
+            int channel = (data[0] & 0xF) + 1;
+            int byte1 = data[1] & 0x7F;
+            int byte2 = data[2] & 0x7F;
+
+            //if (m.isController()) midiControlChanged (channel, byte1, byte2);
+        }
+
         processedMidi.addEvent (m, time);
     }
 
@@ -187,13 +195,40 @@ void AutomationBridge::setStateInformation (const void* data, int sizeInBytes)
 
 MidiDeviceInfo AutomationBridge::getActiveInput (int i) const
 {
-	return inDevices[inputsOn[i]];
+	return inDeviceData[inputsOn[i]];
 }
 
 MidiDeviceInfo AutomationBridge::getActiveOutput (int i) const
 {
-	return outDevices[outputsOn[i]];
+	return outDeviceData[outputsOn[i]];
 }
+
+void AutomationBridge::sendMidiCC (int channel, int ccNum, int value, MidiOutput* output = nullptr)
+{
+    if (!output) output = outDevices[0].get();
+    output->sendMessageNow (MidiMessage (0xAF + channel, ccNum, value));
+}
+
+void AutomationBridge::refresh()
+{
+    inDevices.clear();
+    outDevices.clear();
+
+    for (int i : inputsOn)
+        inDevices.push_back (MidiInput::openDevice (inDeviceData[i].identifier, nullptr));
+    
+    for (int i : outputsOn)
+        outDevices.push_back (MidiOutput::openDevice (outDeviceData[i].identifier));
+}
+
+/*void AutomationBridge::midiControlChanged (int channel, int byte1, int byte2)
+{
+    // Get Touch sensors and set the channels in WRITE mode automatically
+    if (channel == 3 && byte1 > 63 && byte1 < 112) // Left part
+    {
+        if (byte2 == 1) // When SEL button is depressed...
+    }
+}*/
 
 //==============================================================================
 // This creates new instances of the plugin..

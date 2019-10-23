@@ -1,25 +1,18 @@
 /*
-	Permission is hereby granted, free of charge, to any person
-	obtaining a copy of this software and associated documentation files
-	(the "Software"), to deal in the Software without restriction,
-	including without limitation the rights to use, copy, modify, merge,
-	publish, distribute, sublicense, and/or sell copies of the Software,
-	and to permit persons to whom the Software is furnished to do so,
-	subject to the following conditions:
-	The above copyright notice and this permission notice shall be
-	included in all copies or substantial portions of the Software.
-	Any person wishing to distribute modifications to the Software is
-	asked to send the modifications to the original developer so that
-	they can be incorporated into the canonical version.  This is,
-	however, not a binding provision of this license.
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-	ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-	CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginSettings.h"
@@ -39,7 +32,6 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     path += "AutomationBridge.dat";
 #endif
     
-    faders = 48; // failsafe
     load();
     refresh();
 
@@ -47,16 +39,24 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     fadersSlider.setSliderStyle (Slider::LinearBar);
     fadersSlider.setTextValueSuffix (" faders");
 	fadersSlider.setRange (48.0, 128.0, 2.0);
-	fadersSlider.onValueChange = [this] {
-		faders = roundToInt (fadersSlider.getValue());
+	fadersSlider.onValueChange = [this, &e] {
+		e.processor.faders = roundToInt (fadersSlider.getValue());
 	};
 
-	inputs = std::make_unique<DeviceListBox> (e.processor.inDevices, e.processor.inputsOn);
+    addAndMakeVisible (channelsSlider);
+    channelsSlider.setSliderStyle (Slider::LinearBar);
+    channelsSlider.setTextValueSuffix (" channels");
+	channelsSlider.setRange (1.0, 64.0, 1.0);
+	channelsSlider.onValueChange = [this, &e] {
+		e.processor.channels = roundToInt (channelsSlider.getValue());
+	};
+
+	inputs = std::make_unique<DeviceListBox> (e.processor.inDeviceData, e.processor.inputsOn);
 	addAndMakeVisible (inputs.get());
     inputsLabel.setText ("Input Devices:", NotificationType::dontSendNotification);
 	inputsLabel.attachToComponent (inputs.get(), false);
 
-	outputs = std::make_unique<DeviceListBox> (e.processor.outDevices, e.processor.outputsOn);
+	outputs = std::make_unique<DeviceListBox> (e.processor.outDeviceData, e.processor.outputsOn);
 	addAndMakeVisible (outputs.get());
 	outputsLabel.setText ("Output Devices:", NotificationType::dontSendNotification);
 	outputsLabel.attachToComponent (outputs.get(), false);
@@ -98,11 +98,6 @@ AutomationBridgeSettings::~AutomationBridgeSettings()
 {
 }
 
-int AutomationBridgeSettings::getFaderCount() const
-{
-	return faders;
-}
-
 void AutomationBridgeSettings::save() const
 {
 	FileOutputStream fs (path);
@@ -113,16 +108,17 @@ void AutomationBridgeSettings::save() const
 		fs.truncate();
 		
 		fs.writeInt (1); // format version for future revisions
-		fs.writeInt (faders);
+		fs.writeInt (editor.processor.faders);
+        fs.writeInt (editor.processor.channels);
 		fs.writeInt (editor.getWidth());
 		fs.writeInt (editor.getHeight());
 		fs.writeInt (editor.processor.inputsOn.size());
 		fs.writeInt (editor.processor.outputsOn.size());
 
 		for (int i : editor.processor.inputsOn)
-			fs.writeString (editor.processor.inDevices[i].identifier);
+			fs.writeString (editor.processor.inDeviceData[i].identifier);
 		for (int i : editor.processor.outputsOn)
-			fs.writeString (editor.processor.outDevices[i].identifier);
+			fs.writeString (editor.processor.outDeviceData[i].identifier);
 
 		fs.flush();
 	}
@@ -137,7 +133,7 @@ void AutomationBridgeSettings::unload()
 
 void AutomationBridgeSettings::refresh()
 {
-    for (int i = 0; i < faders; i++)
+    for (int i = 0; i < editor.processor.faders; i++)
     {
         Slider* newFader = new Slider();
         editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newFader));
@@ -157,6 +153,7 @@ void AutomationBridgeSettings::refresh()
         editor.mainPanel->faderIds.add (newLabel);
     }
     
+    editor.processor.refresh();
     editor.mainPanel->resized();
 }
 
@@ -171,7 +168,8 @@ void AutomationBridgeSettings::load()
 		if (fs.openedOk())
 		{
 			fs.readInt(); // format version is 1, ignore for now
-			faders = fs.readInt();
+			editor.processor.faders = fs.readInt();
+            editor.processor.channels = fs.readInt();
             editor.setSize (fs.readInt(), fs.readInt());
 			int inputsSize = fs.readInt();
 			int outputsSize = fs.readInt();
@@ -182,22 +180,21 @@ void AutomationBridgeSettings::load()
 			StringArray outputIds;
 			for (int i = 0; i < outputsSize; i++) outputIds.add (fs.readString());
 
-			for (int i = 0; i < editor.processor.inDevices.size(); i++)
-				if (inputIds.contains (editor.processor.inDevices[i].identifier))
+			for (int i = 0; i < editor.processor.inDeviceData.size(); i++)
+				if (inputIds.contains (editor.processor.inDeviceData[i].identifier))
 					editor.processor.inputsOn.add (i);
 
-			for (int i = 0; i < editor.processor.outDevices.size(); i++)
-				if (outputIds.contains (editor.processor.outDevices[i].identifier))
+			for (int i = 0; i < editor.processor.outDeviceData.size(); i++)
+				if (outputIds.contains (editor.processor.outDeviceData[i].identifier))
 					editor.processor.outputsOn.add (i);
 		}
 	}
     else
     {
-        // nothing particularly special about default value, but let's make it more than minimum
-        faders = 74;
+		editor.setSize (1200, 720);
     }
     
-    fadersSlider.setValue (static_cast<double> (faders));
+    fadersSlider.setValue (static_cast<double> (editor.processor.faders));
 }
 
 void AutomationBridgeSettings::paint (Graphics& g)
@@ -216,7 +213,8 @@ void AutomationBridgeSettings::resized()
 	saveButton.setBounds (footer.removeFromRight (100));
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));
-	fadersSlider.setBounds (area.removeFromTop (25));
+	fadersSlider.setBounds (area.removeFromTop (25).reduced (5));
+    channelsSlider.setBounds (area.removeFromTop (25).reduced (5));
 	inputs->setBounds (area.removeFromTop (area.getHeight() / 2).reduced (0, 25));
     outputs->setBounds (area);
 }
