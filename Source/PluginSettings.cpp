@@ -213,8 +213,8 @@ void AutomationBridgeSettings::resized()
 	saveButton.setBounds (footer.removeFromRight (100));
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));
-	fadersSlider.setBounds (area.removeFromTop (25).reduced (2, 100));
-    channelsSlider.setBounds (area.removeFromTop (25).reduced (2, 100));
+	fadersSlider.setBounds (area.removeFromTop (25).reduced (100, 2));
+    channelsSlider.setBounds (area.removeFromTop (25).reduced (100, 2));
 	inputs->setBounds (area.removeFromTop (area.getHeight() / 2).reduced (0, 25));
     outputs->setBounds (area);
 }
