@@ -4,7 +4,6 @@ build
 project.xcworkspace
 Thumbs.db
 x64
-xcuserdata
 *.mode1v3
 *.pbxuser
 *.user

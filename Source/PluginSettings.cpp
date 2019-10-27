@@ -210,6 +210,7 @@ void AutomationBridgeSettings::resized()
 {
     Rectangle<int> area = getLocalBounds();
 	Rectangle<int> footer = area.removeFromBottom (30);
+    
 	saveButton.setBounds (footer.removeFromRight (100));
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));

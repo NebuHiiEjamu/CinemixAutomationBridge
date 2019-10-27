@@ -11,8 +11,9 @@ Alpha 2:
 - Activate/deactivate or reset buttons
 - Scalable background image
 
-Beta:
+Version 1.0.1:
 
+- Fix Windows VST3 build
 - Localisation
 
 Version 1.1:
