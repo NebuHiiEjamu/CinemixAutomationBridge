@@ -203,7 +203,8 @@ AudioProcessorEditor* AutomationBridge::createEditor()
     faderModeRight.resize (getTotalNumInputChannels());
     prevCCVals.ensureStorageAllocated (params.size());
     animRamp.ensureStorageAllocated (faders);
-
+    
+    fullInit = true;
     return editor;
 }
 

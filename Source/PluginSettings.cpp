@@ -154,6 +154,7 @@ void AutomationBridgeSettings::load()
     else
     {
 		editor.setSize (1200, 720);
+        editor.processor.faders = 48;
     }
     
     fadersSlider.setValue (static_cast<double> (editor.processor.faders));
