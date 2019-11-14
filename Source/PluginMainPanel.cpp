@@ -24,7 +24,6 @@
 PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
 : editor (e)
 {
-    
     addAndMakeVisible (prefsButton);
     prefsButton.setButtonText ("Settings");
     prefsButton.changeWidthToFitText();
@@ -38,8 +37,28 @@ PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
     testModeToggle.setClickingTogglesState (true);
     testModeToggle.changeWidthToFitText();
     testModeToggle.onClick = [this, &e] {
-        //e.processor.testMode();
+        e.processor.testMode();
     };
+
+    for (int i = 0; i < editor.processor.faders; i++)
+    {
+        Slider* newFader = new Slider();
+        addAndMakeVisible (dynamic_cast<Component*> (newFader));
+        newFader->setSliderStyle (Slider::LinearVertical);
+        newFader->setRange (0.0, 127.0, 1.0);
+        faders.add (newFader);
+        
+        TextButton* newMute = new TextButton("M");
+        addAndMakeVisible (dynamic_cast<Component*> (newMute));
+        newMute->changeWidthToFitText();
+        newMute->setClickingTogglesState (true);
+        mutes.add (newMute);
+        
+        Label* newLabel = new Label();
+        addAndMakeVisible (dynamic_cast<Component*> (newLabel));
+        newLabel->setText (String (i + 1), NotificationType::dontSendNotification);
+        faderIds.add (newLabel);
+    }
     
     setOpaque (true);
     setVisible (true);
@@ -60,7 +79,7 @@ void PluginMainPanel::resized()
 {
     Rectangle<int> area = getLocalBounds();
     Rectangle<int> header = area.removeFromTop (25);
-    Rectangle<int> faderLayout = area.removeFromLeft (area.getWidth() * 0.75f);
+    Rectangle<int> faderLayout = area.removeFromLeft (roundToInt (area.getWidth() * 0.75f));
     prefsButton.setBounds (header.removeFromLeft (100));
     testModeToggle.setBounds (header.removeFromRight (100));
     

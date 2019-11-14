@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <array>
 #include <memory>
 #include <vector>
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -24,6 +25,8 @@
 */
 class AutomationBridge  : public AudioProcessor
 {
+public:
+    static constexpr float one127th = 0.00787401574803f;
 public:
     AutomationBridge();
     ~AutomationBridge();
@@ -56,8 +59,10 @@ public:
     MidiDeviceInfo getActiveOutput (int) const;
     void refresh();
     void sendMidiCC (int, int, int, MidiOutput*);
-    //void setAllChannelsMode (int);
-
+    void setAllChannelsMode (int);
+    void sendSnapshot();
+    void resetAllMixer();
+    void testMode();
 public:
     Array<MidiDeviceInfo> inDeviceData;
     Array<MidiDeviceInfo> outDeviceData;
@@ -65,14 +70,25 @@ public:
     std::vector<std::unique_ptr<MidiOutput>> outDevices;
     SortedSet<int> inputsOn;
 	SortedSet<int> outputsOn;
+    std::array<Array<int>, 2> midiControllers;
+    OwnedArray<AudioParameterFloat> params;
+    std::vector<int> faderModeLeft;
+    std::vector<int> faderModeRight;
+    Array<int> midiChannels;
+    Array<int> prevCCVals;
+    Array<float> animRamp;
+    int faderModeMaster;
     int faderSpeed;
     int muteSpeed;
     int faders;
-    int channels;
+    int auxStart;
+    bool fullInit;
     bool testModeOn;
+    bool allMutesStatus;
 
 private:
-    //void midiControlChanged (int, int, int);
+    void midiControlChanged (int, int, int);
+    void sendMidiData (int, float);
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridge)

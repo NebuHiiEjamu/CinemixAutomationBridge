@@ -33,7 +33,11 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 #endif
     
     load();
-    refresh();
+
+    addAndMakeVisible (reloadNoticeLabel);
+    reloadNoticeLabel.setText ("Changes to fader count require a plugin reload",
+		NotificationType::dontSendNotification);
+	reloadNoticeLabel.setJustificationType (Justification::centred);
 
     addAndMakeVisible (fadersSlider);
     fadersSlider.setSliderStyle (Slider::LinearBar);
@@ -41,14 +45,6 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 	fadersSlider.setRange (48.0, 128.0, 2.0);
 	fadersSlider.onValueChange = [this, &e] {
 		e.processor.faders = roundToInt (fadersSlider.getValue());
-	};
-
-    addAndMakeVisible (channelsSlider);
-    channelsSlider.setSliderStyle (Slider::LinearBar);
-    channelsSlider.setTextValueSuffix (" channels");
-	channelsSlider.setRange (1.0, 64.0, 1.0);
-	channelsSlider.onValueChange = [this, &e] {
-		e.processor.channels = roundToInt (channelsSlider.getValue());
 	};
 
 	inputs = std::make_unique<DeviceListBox> (e.processor.inDeviceData, e.processor.inputsOn);
@@ -66,6 +62,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 	cancelButton.changeWidthToFitText();
     cancelButton.onClick = [this, &e] {
         load();
+		e.processor.refresh();
         e.mainPanel->setVisible (true);
         setVisible (false);
     };
@@ -73,10 +70,9 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
     addAndMakeVisible (applyButton);
     applyButton.setButtonText ("Apply");
 	applyButton.changeWidthToFitText();
-    applyButton.onClick = [this] {
+    applyButton.onClick = [this, &e] {
 		save();
-        unload();
-        refresh();
+		e.processor.refresh();
     };
 
     addAndMakeVisible (saveButton);
@@ -84,8 +80,7 @@ AutomationBridgeSettings::AutomationBridgeSettings (AutomationBridgeEditor& e)
 	saveButton.changeWidthToFitText();
     saveButton.onClick = [this, &e] {
 		save();
-        unload();
-        refresh();
+		e.processor.refresh();
         e.mainPanel->setVisible (true);
         setVisible (false);
     };
@@ -108,8 +103,8 @@ void AutomationBridgeSettings::save() const
 		fs.truncate();
 		
 		fs.writeInt (1); // format version for future revisions
+        fs.writeInt (1); // number of programs, 1 for now
 		fs.writeInt (editor.processor.faders);
-        fs.writeInt (editor.processor.channels);
 		fs.writeInt (editor.getWidth());
 		fs.writeInt (editor.getHeight());
 		fs.writeInt (editor.processor.inputsOn.size());
@@ -124,39 +119,6 @@ void AutomationBridgeSettings::save() const
 	}
 }
 
-void AutomationBridgeSettings::unload()
-{
-    editor.mainPanel->faders.clear();
-    editor.mainPanel->mutes.clear();
-    editor.mainPanel->faderIds.clear();
-}
-
-void AutomationBridgeSettings::refresh()
-{
-    for (int i = 0; i < editor.processor.faders; i++)
-    {
-        Slider* newFader = new Slider();
-        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newFader));
-        newFader->setSliderStyle (Slider::LinearVertical);
-        newFader->setRange (0.0, 127.0, 1.0);
-        editor.mainPanel->faders.add (newFader);
-        
-        TextButton* newMute = new TextButton("M");
-        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newMute));
-        newMute->changeWidthToFitText();
-        newMute->setClickingTogglesState (true);
-        editor.mainPanel->mutes.add (newMute);
-        
-        Label* newLabel = new Label();
-        editor.mainPanel->addAndMakeVisible (dynamic_cast<Component*> (newLabel));
-        newLabel->setText (String (i + 1), NotificationType::dontSendNotification);
-        editor.mainPanel->faderIds.add (newLabel);
-    }
-    
-    editor.processor.refresh();
-    editor.mainPanel->resized();
-}
-
 void AutomationBridgeSettings::load()
 {
 	File f (path);
@@ -168,8 +130,8 @@ void AutomationBridgeSettings::load()
 		if (fs.openedOk())
 		{
 			fs.readInt(); // format version is 1, ignore for now
+            fs.readInt(); // ignore, multiple programs not currently supported
 			editor.processor.faders = fs.readInt();
-            editor.processor.channels = fs.readInt();
             editor.setSize (fs.readInt(), fs.readInt());
 			int inputsSize = fs.readInt();
 			int outputsSize = fs.readInt();
@@ -214,8 +176,8 @@ void AutomationBridgeSettings::resized()
 	saveButton.setBounds (footer.removeFromRight (100));
 	applyButton.setBounds (footer.removeFromRight (100));
 	cancelButton.setBounds (footer.removeFromRight (100));
+	reloadNoticeLabel.setBounds (area.removeFromTop (25));
 	fadersSlider.setBounds (area.removeFromTop (25).reduced (100, 2));
-    channelsSlider.setBounds (area.removeFromTop (25).reduced (100, 2));
 	inputs->setBounds (area.removeFromTop (area.getHeight() / 2).reduced (0, 25));
     outputs->setBounds (area);
 }

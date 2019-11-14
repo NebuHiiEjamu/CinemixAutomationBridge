@@ -36,8 +36,6 @@ public:
 
 private:
   	void load();
-    void refresh();
-    void unload();
 	void save() const;
 
 private:
@@ -45,12 +43,12 @@ private:
 	std::unique_ptr<DeviceListBox> outputs;
     AutomationBridgeEditor& editor;
     Slider fadersSlider;
-    Slider channelsSlider;
     TextButton cancelButton;
     TextButton applyButton;
     TextButton saveButton;
 	Label inputsLabel;
 	Label outputsLabel;
+    Label reloadNoticeLabel;
     String path;
 
 private:
