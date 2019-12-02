@@ -196,6 +196,8 @@ AudioProcessorEditor* AutomationBridge::createEditor()
         params.add (param);
     }
 
+    for (AudioParameterFloat* param : param) addParameter (param);
+
     midiControllers[0].ensureStorageAllocated (params.size());
     midiControllers[1].ensureStorageAllocated (faders);
     midiChannels.ensureStorageAllocated (params.size());

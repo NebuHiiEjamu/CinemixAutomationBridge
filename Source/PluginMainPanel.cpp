@@ -52,6 +52,8 @@ PluginMainPanel::PluginMainPanel (AutomationBridgeEditor& e)
         addAndMakeVisible (dynamic_cast<Component*> (newMute));
         newMute->changeWidthToFitText();
         newMute->setClickingTogglesState (true);
+        newMute->onClick = [this, &e] {
+        };
         mutes.add (newMute);
         
         Label* newLabel = new Label();
