@@ -24,7 +24,6 @@
 */
 class AutomationBridgeEditor  : public AudioProcessorEditor
 {
-    friend class AutomationBridgeProcessor;
 public:
     AutomationBridgeEditor (AutomationBridgeProcessor&);
     ~AutomationBridgeEditor();
