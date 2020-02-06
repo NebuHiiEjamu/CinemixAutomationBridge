@@ -150,8 +150,8 @@ bool AutomationBridgeProcessor::isBusesLayoutSupported (const BusesLayout& layou
 
 void AutomationBridgeProcessor::processBlock (AudioBuffer<float>&, MidiBuffer& midiMessages)
 {
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    /*auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();*/
 }
 
 //==============================================================================
@@ -162,7 +162,7 @@ bool AutomationBridgeProcessor::hasEditor() const
 
 AudioProcessorEditor* AutomationBridgeProcessor::createEditor()
 {
-    return new AutomationBridgeProcessorEditor (*this);
+    return new AutomationBridgeEditor (*this);
 }
 
 //==============================================================================
