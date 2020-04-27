@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <array>
 #include <memory>
 #include <RtMidi.h>
 
@@ -63,11 +64,14 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    void sendMidiCC(uint8_t channel, uint8_t ccNum, uint8_t value, RtMidiOut* port = nullptr);
+    void setAllChannelsMode(int mode);
 
 private:
-    std::unique_ptr<RtMidiIn> midiIn;
-    std::unique_ptr<RtMidiOut> midiOut;
-    bool muteOn;
+    std::array<std::unique_ptr<RtMidiIn>, 2> midiIn;
+    std::array<std::unique_ptr<RtMidiOut>, 2> midiOut;
+    std::array<bool, 74> muteOn;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeProcessor)
 };

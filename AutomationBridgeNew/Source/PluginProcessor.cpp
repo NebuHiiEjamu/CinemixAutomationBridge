@@ -33,16 +33,27 @@ AutomationBridgeProcessor::AutomationBridgeProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       ),
+                       )
 #endif
-    midiIn(new RtMidiIn()),
-    midiOut(new RtMidiOut()),
-    muteOn(false)
 {
-    midiIn->openPort(4);
-    midiOut->openPort(4);
-    midiIn->setCallback(&callback);
-    midiIn->ignoreTypes(false, false, false);
+    for (int i = 0; i < 74; i++) muteOn[i] = false;
+    
+    for (int i = 0; i < midiIn.size(); i++)
+    {
+        midiIn[i].reset(new RtMidiIn());
+        midiIn[i]->setCallback(&callback);
+        midiIn[i]->ignoreTypes(false, false, false);
+    }
+    
+    for (int i = 0; i < midiOut.size(); i++)
+    {
+        midiOut[i].reset(new RtMidiOut());
+    }
+    
+    midiIn[0]->openPort(2);
+    midiOut[0]->openPort(2);
+    midiIn[1]->openPort(3);
+    midiOut[1]->openPort(3);
 }
 
 AutomationBridgeProcessor::~AutomationBridgeProcessor()
@@ -184,4 +195,28 @@ void AutomationBridgeProcessor::setStateInformation (const void* data, int sizeI
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new AutomationBridgeProcessor();
+}
+
+void AutomationBridgeProcessor::sendMidiCC(uint8_t channel, uint8_t ccNum, uint8_t value, RtMidiOut *port)
+{
+    if (!port) port = midiOut[0].get();
+    std::vector<uint8_t> msg { static_cast<uint8_t>(175 + channel), ccNum, value };
+    port->sendMessage(&msg);
+}
+
+void AutomationBridgeProcessor::setAllChannelsMode(int mode)
+{
+    for (int i = 0; i < 74; i++)
+    {
+        if (i < 48)
+        {
+            sendMidiCC(3, 64 + i, mode);
+            sendMidiCC(4, 64 + i, mode);
+        }
+        else
+        {
+            sendMidiCC(3, 64 + i, mode, midiOut[1].get());
+            sendMidiCC(4, 64 + i, mode, midiOut[1].get());
+        }
+    }
 }

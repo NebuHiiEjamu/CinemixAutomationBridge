@@ -36,7 +36,10 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     AutomationBridgeProcessor& processor;
-    TextButton testMute;
+    TextButton activateBtn, deactivateBtn;
+    OwnedArray<TextButton> muteBtns;
+    Slider testFader;
+    TextEditor faderTxt;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationBridgeEditor)
 };
